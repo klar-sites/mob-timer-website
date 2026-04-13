@@ -1,7 +1,7 @@
 /* =============================================
    THEME TOGGLE
    ============================================= */
-
+console.log('hehe');
 const styleDefault = document.getElementById("style-default");
 const styleTest = document.getElementById("style-test");
 

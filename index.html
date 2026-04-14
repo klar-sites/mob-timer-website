@@ -36,6 +36,172 @@
     </nav>
 
     <!-- ========== HERO ========== -->
+    <section id="klar-hero-section">
+      <div id="klar-hero-overlay"></div>
+      <div id="klar-hero-content">
+        <p id="klar-hero-tagline">Welcome to the future</p>
+        <h1 id="klar-hero-title">Build Something<br><span id="klar-hero-highlight">Extraordinary</span></h1>
+        <p id="klar-hero-description">Craft stunning digital experiences with precision, speed, and elegance. Your
+          vision, beautifully realized.</p>
+        <div id="klar-hero-buttons">
+          <a href="#" id="klar-hero-cta-primary">Get Started</a>
+          <a href="#" id="klar-hero-cta-secondary">Learn More →</a>
+        </div>
+      </div>
+      <div id="klar-hero-glow-orb-1"></div>
+      <div id="klar-hero-glow-orb-2"></div>
+    </section>
+    <style>
+      #klar-hero-section {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0f;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      #klar-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, 0.12) 0%, transparent 60%),
+          radial-gradient(ellipse at 80% 50%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+        pointer-events: none;
+      }
+
+      #klar-hero-glow-orb-1 {
+        position: absolute;
+        width: 500px;
+        height: 500px;
+        top: -150px;
+        left: -100px;
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.15) 0%, transparent 70%);
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: klar-hero-float 8s ease-in-out infinite;
+        pointer-events: none;
+      }
+
+      #klar-hero-glow-orb-2 {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        bottom: -100px;
+        right: -80px;
+        background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+        border-radius: 50%;
+        filter: blur(60px);
+        animation: klar-hero-float 10s ease-in-out infinite reverse;
+        pointer-events: none;
+      }
+
+      @keyframes klar-hero-float {
+
+        0%,
+        100% {
+          transform: translateY(0px) scale(1);
+        }
+
+        50% {
+          transform: translateY(-30px) scale(1.05);
+        }
+      }
+
+      #klar-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        padding: 2rem;
+      }
+
+      #klar-hero-tagline {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: #a78bfa;
+        background: rgba(139, 92, 246, 0.1);
+        border: 1px solid rgba(139, 92, 246, 0.2);
+        border-radius: 50px;
+        padding: 0.5rem 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      #klar-hero-title {
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        color: #f0f0f5;
+        margin: 0 0 1.5rem 0;
+        letter-spacing: -0.03em;
+      }
+
+      #klar-hero-highlight {
+        background: linear-gradient(135deg, #818cf8, #a78bfa, #c084fc);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      #klar-hero-description {
+        font-size: 1.2rem;
+        line-height: 1.7;
+        color: #8888a4;
+        max-width: 560px;
+        margin: 0 auto 2.5rem auto;
+      }
+
+      #klar-hero-buttons {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 1.2rem;
+        flex-wrap: wrap;
+      }
+
+      #klar-hero-cta-primary {
+        display: inline-block;
+        padding: 0.9rem 2.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #fff;
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        border-radius: 12px;
+        text-decoration: none;
+        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 25px rgba(99, 102, 241, 0.35);
+      }
+
+      #klar-hero-cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 35px rgba(99, 102, 241, 0.5);
+      }
+
+      #klar-hero-cta-secondary {
+        display: inline-block;
+        padding: 0.9rem 2.2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        color: #c4c4d8;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        text-decoration: none;
+        transition: background 0.2s ease, color 0.2s ease, transform 0.2s ease;
+      }
+
+      #klar-hero-cta-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+    </style>
+
+    <!-- ========== HERO ========== -->
     <style>
       /* Hero Section */
       .hero {

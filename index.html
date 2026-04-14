@@ -16,6 +16,629 @@
       rel="stylesheet">
   </head>
   <body>
+<style>/* =============================================
+   PORTFOLIO SECTION
+   ============================================= */
+
+#klar-portfolio-section {
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+#klar-portfolio-section::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 900px;
+  height: 600px;
+  background: radial-gradient(ellipse, rgba(64, 140, 255, 0.06) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 70%);
+  filter: blur(80px);
+  pointer-events: none;
+}
+
+.klar-portfolio-header {
+  text-align: center;
+  margin-bottom: 64px;
+  position: relative;
+  z-index: 1;
+}
+
+.klar-portfolio-subtitle {
+  font-size: 18px;
+  color: var(--text-2);
+  max-width: 520px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Grid Layout */
+.klar-portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  position: relative;
+  z-index: 1;
+}
+
+.klar-portfolio-featured {
+  grid-column: 1 / 2;
+  grid-row: 1 / 3;
+}
+
+/* Card Base */
+.klar-portfolio-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.klar-portfolio-card:hover {
+  border-color: rgba(64, 140, 255, 0.25);
+  transform: translateY(-6px);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(64, 140, 255, 0.1),
+    0 0 60px rgba(64, 140, 255, 0.06);
+}
+
+/* Card Image Area */
+.klar-portfolio-card-img {
+  position: relative;
+  overflow: hidden;
+}
+
+.klar-portfolio-featured .klar-portfolio-card-img {
+  height: 280px;
+}
+
+.klar-portfolio-card:not(.klar-portfolio-featured) .klar-portfolio-card-img {
+  height: 180px;
+}
+
+/* Placeholder visuals */
+.klar-portfolio-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(64, 140, 255, 0.08) 0%, rgba(99, 102, 241, 0.15) 50%, rgba(64, 140, 255, 0.05) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.klar-portfolio-placeholder::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(64, 140, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(99, 102, 241, 0.08) 0%, transparent 50%);
+}
+
+.klar-portfolio-placeholder::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+.klar-portfolio-placeholder-purple {
+  background: linear-gradient(135deg, rgba(139, 92, 246, 0.08) 0%, rgba(168, 85, 247, 0.15) 50%, rgba(139, 92, 246, 0.05) 100%);
+}
+
+.klar-portfolio-placeholder-purple::before {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(168, 85, 247, 0.08) 0%, transparent 50%);
+}
+
+.klar-portfolio-placeholder-green {
+  background: linear-gradient(135deg, rgba(74, 222, 128, 0.06) 0%, rgba(52, 211, 153, 0.12) 50%, rgba(74, 222, 128, 0.04) 100%);
+}
+
+.klar-portfolio-placeholder-green::before {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(74, 222, 128, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(52, 211, 153, 0.07) 0%, transparent 50%);
+}
+
+.klar-portfolio-placeholder-orange {
+  background: linear-gradient(135deg, rgba(251, 146, 60, 0.06) 0%, rgba(245, 158, 11, 0.12) 50%, rgba(251, 146, 60, 0.04) 100%);
+}
+
+.klar-portfolio-placeholder-orange::before {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(251, 146, 60, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(245, 158, 11, 0.07) 0%, transparent 50%);
+}
+
+.klar-portfolio-placeholder-cyan {
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.06) 0%, rgba(6, 182, 212, 0.12) 50%, rgba(34, 211, 238, 0.04) 100%);
+}
+
+.klar-portfolio-placeholder-cyan::before {
+  background:
+    radial-gradient(circle at 30% 40%, rgba(34, 211, 238, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 70% 60%, rgba(6, 182, 212, 0.07) 0%, transparent 50%);
+}
+
+.klar-portfolio-placeholder-icon {
+  position: relative;
+  z-index: 1;
+  color: rgba(255, 255, 255, 0.2);
+  animation: klar-portfolio-icon-float 4s ease-in-out infinite;
+}
+
+.klar-portfolio-placeholder-label {
+  position: relative;
+  z-index: 1;
+  font-size: 11px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.15);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+@keyframes klar-portfolio-icon-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-4px); }
+}
+
+/* Hover Overlay */
+.klar-portfolio-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(14, 16, 25, 0.7);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.klar-portfolio-card:hover .klar-portfolio-card-overlay {
+  opacity: 1;
+}
+
+.klar-portfolio-view-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--accent);
+  border-radius: 10px;
+  text-decoration: none;
+  transform: translateY(8px);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 20px rgba(64, 140, 255, 0.35);
+}
+
+.klar-portfolio-card:hover .klar-portfolio-view-btn {
+  transform: translateY(0);
+}
+
+.klar-portfolio-view-btn:hover {
+  background: #5a9fff;
+  box-shadow: 0 8px 30px rgba(64, 140, 255, 0.5);
+}
+
+/* Card Body */
+.klar-portfolio-card-body {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex: 1;
+}
+
+.klar-portfolio-featured .klar-portfolio-card-body {
+  padding: 28px;
+}
+
+/* Tags */
+.klar-portfolio-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.klar-portfolio-tag {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent);
+  background: rgba(64, 140, 255, 0.1);
+  border: 1px solid rgba(64, 140, 255, 0.15);
+  padding: 3px 10px;
+  border-radius: 100px;
+  letter-spacing: 0.02em;
+}
+
+/* Card Title */
+.klar-portfolio-card-title {
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
+  margin: 0;
+}
+
+.klar-portfolio-featured .klar-portfolio-card-title {
+  font-size: 22px;
+}
+
+/* Card Description */
+.klar-portfolio-card-desc {
+  font-size: 14px;
+  color: var(--text-2);
+  line-height: 1.65;
+  margin: 0;
+}
+
+/* Card Meta */
+.klar-portfolio-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: auto;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+}
+
+.klar-portfolio-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+}
+
+.klar-portfolio-meta-item svg {
+  color: var(--text-3);
+  opacity: 0.7;
+}
+
+/* Stats Bar */
+.klar-portfolio-stats-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 48px;
+  margin-top: 64px;
+  padding: 32px 40px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.klar-portfolio-stats-bar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(64, 140, 255, 0.04) 0%, transparent 50%, rgba(99, 102, 241, 0.03) 100%);
+  pointer-events: none;
+}
+
+.klar-portfolio-stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  position: relative;
+  z-index: 1;
+}
+
+.klar-portfolio-stat-num {
+  font-size: 28px;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  color: var(--text);
+}
+
+.klar-portfolio-stat-label {
+  font-size: 12px;
+  color: var(--text-3);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.klar-portfolio-stat-divider {
+  width: 1px;
+  height: 44px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+
+/* =============================================
+   PORTFOLIO RESPONSIVE
+   ============================================= */
+
+@media (max-width: 900px) {
+  .klar-portfolio-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .klar-portfolio-featured {
+    grid-column: 1 / -1;
+    grid-row: auto;
+  }
+
+  .klar-portfolio-featured .klar-portfolio-card-img {
+    height: 220px;
+  }
+
+  .klar-portfolio-stats-bar {
+    gap: 32px;
+    padding: 28px 24px;
+  }
+
+  .klar-portfolio-stat-num {
+    font-size: 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  #klar-portfolio-section {
+    padding: 80px 0;
+  }
+
+  .klar-portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .klar-portfolio-featured .klar-portfolio-card-img,
+  .klar-portfolio-card:not(.klar-portfolio-featured) .klar-portfolio-card-img {
+    height: 180px;
+  }
+
+  .klar-portfolio-stats-bar {
+    flex-wrap: wrap;
+    gap: 24px;
+    padding: 24px 20px;
+  }
+
+  .klar-portfolio-stat-divider {
+    display: none;
+  }
+
+  .klar-portfolio-stat-item {
+    min-width: 120px;
+  }
+}</style>
+<section id="klar-portfolio-section">
+  <div class="container">
+    <div class="klar-portfolio-header">
+      <div class="section-tag">Portfolio</div>
+      <h2 class="section-title">Crafted with<br><span class="gradient-text">intention</span></h2>
+      <p class="klar-portfolio-subtitle">A selection of projects that showcase our commitment to detail, performance, and beautiful design.</p>
+    </div>
+
+    <div class="klar-portfolio-grid">
+      <!-- Project 1 - Featured -->
+      <div class="klar-portfolio-card klar-portfolio-featured">
+        <div class="klar-portfolio-card-img">
+          <div class="klar-portfolio-placeholder">
+            <div class="klar-portfolio-placeholder-icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <span class="klar-portfolio-placeholder-label">Project Preview</span>
+          </div>
+          <div class="klar-portfolio-card-overlay">
+            <a href="#" class="klar-portfolio-view-btn">
+              View Project
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="klar-portfolio-card-body">
+          <div class="klar-portfolio-tags">
+            <span class="klar-portfolio-tag">Design System</span>
+            <span class="klar-portfolio-tag">SwiftUI</span>
+            <span class="klar-portfolio-tag">macOS</span>
+          </div>
+          <h3 class="klar-portfolio-card-title">Nebula Dashboard</h3>
+          <p class="klar-portfolio-card-desc">A comprehensive analytics dashboard built with native SwiftUI, featuring real-time data visualization and a refined dark interface.</p>
+          <div class="klar-portfolio-card-meta">
+            <span class="klar-portfolio-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="10"></circle>
+                <polyline points="12 6 12 12 16 14"></polyline>
+              </svg>
+              2024
+            </span>
+            <span class="klar-portfolio-meta-item">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path>
+              </svg>
+              Featured
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Project 2 -->
+      <div class="klar-portfolio-card">
+        <div class="klar-portfolio-card-img">
+          <div class="klar-portfolio-placeholder klar-portfolio-placeholder-purple">
+            <div class="klar-portfolio-placeholder-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M12 2a10 10 0 1 0 10 10H12V2z"></path>
+                <path d="M12 2a10 10 0 0 1 10 10H12V2z" opacity="0.4"></path>
+              </svg>
+            </div>
+            <span class="klar-portfolio-placeholder-label">Project Preview</span>
+          </div>
+          <div class="klar-portfolio-card-overlay">
+            <a href="#" class="klar-portfolio-view-btn">
+              View Project
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="klar-portfolio-card-body">
+          <div class="klar-portfolio-tags">
+            <span class="klar-portfolio-tag">Web App</span>
+            <span class="klar-portfolio-tag">React</span>
+          </div>
+          <h3 class="klar-portfolio-card-title">Pulse Analytics</h3>
+          <p class="klar-portfolio-card-desc">Real-time metrics platform with live collaboration features and intelligent alerting.</p>
+        </div>
+      </div>
+
+      <!-- Project 3 -->
+      <div class="klar-portfolio-card">
+        <div class="klar-portfolio-card-img">
+          <div class="klar-portfolio-placeholder klar-portfolio-placeholder-green">
+            <div class="klar-portfolio-placeholder-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+              </svg>
+            </div>
+            <span class="klar-portfolio-placeholder-label">Project Preview</span>
+          </div>
+          <div class="klar-portfolio-card-overlay">
+            <a href="#" class="klar-portfolio-view-btn">
+              View Project
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="klar-portfolio-card-body">
+          <div class="klar-portfolio-tags">
+            <span class="klar-portfolio-tag">iOS</span>
+            <span class="klar-portfolio-tag">Swift</span>
+          </div>
+          <h3 class="klar-portfolio-card-title">Vertex Engine</h3>
+          <p class="klar-portfolio-card-desc">A 3D rendering toolkit optimized for Apple Silicon with GPU-accelerated workflows.</p>
+        </div>
+      </div>
+
+      <!-- Project 4 -->
+      <div class="klar-portfolio-card">
+        <div class="klar-portfolio-card-img">
+          <div class="klar-portfolio-placeholder klar-portfolio-placeholder-orange">
+            <div class="klar-portfolio-placeholder-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" y1="22" x2="4" y2="15"></line>
+              </svg>
+            </div>
+            <span class="klar-portfolio-placeholder-label">Project Preview</span>
+          </div>
+          <div class="klar-portfolio-card-overlay">
+            <a href="#" class="klar-portfolio-view-btn">
+              View Project
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="klar-portfolio-card-body">
+          <div class="klar-portfolio-tags">
+            <span class="klar-portfolio-tag">Branding</span>
+            <span class="klar-portfolio-tag">Motion</span>
+          </div>
+          <h3 class="klar-portfolio-card-title">Solaris Identity</h3>
+          <p class="klar-portfolio-card-desc">Full brand identity system with animated logos, type system, and comprehensive guidelines.</p>
+        </div>
+      </div>
+
+      <!-- Project 5 -->
+      <div class="klar-portfolio-card">
+        <div class="klar-portfolio-card-img">
+          <div class="klar-portfolio-placeholder klar-portfolio-placeholder-cyan">
+            <div class="klar-portfolio-placeholder-icon">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+            </div>
+            <span class="klar-portfolio-placeholder-label">Project Preview</span>
+          </div>
+          <div class="klar-portfolio-card-overlay">
+            <a href="#" class="klar-portfolio-view-btn">
+              View Project
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M7 17L17 7"></path>
+                <path d="M7 7h10v10"></path>
+              </svg>
+            </a>
+          </div>
+        </div>
+        <div class="klar-portfolio-card-body">
+          <div class="klar-portfolio-tags">
+            <span class="klar-portfolio-tag">CLI Tool</span>
+            <span class="klar-portfolio-tag">Rust</span>
+          </div>
+          <h3 class="klar-portfolio-card-title">Arcflow CLI</h3>
+          <p class="klar-portfolio-card-desc">Blazing-fast developer workflow automation tool with intelligent task orchestration.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Stats bar -->
+    <div class="klar-portfolio-stats-bar">
+      <div class="klar-portfolio-stat-item">
+        <span class="klar-portfolio-stat-num">50+</span>
+        <span class="klar-portfolio-stat-label">Projects Delivered</span>
+      </div>
+      <div class="klar-portfolio-stat-divider"></div>
+      <div class="klar-portfolio-stat-item">
+        <span class="klar-portfolio-stat-num">12</span>
+        <span class="klar-portfolio-stat-label">Industries Served</span>
+      </div>
+      <div class="klar-portfolio-stat-divider"></div>
+      <div class="klar-portfolio-stat-item">
+        <span class="klar-portfolio-stat-num">98%</span>
+        <span class="klar-portfolio-stat-label">Client Retention</span>
+      </div>
+      <div class="klar-portfolio-stat-divider"></div>
+      <div class="klar-portfolio-stat-item">
+        <span class="klar-portfolio-stat-num">4.9★</span>
+        <span class="klar-portfolio-stat-label">Average Rating</span>
+      </div>
+    </div>
+  </div>
+</section>
+
 
     <!-- ========== NAV ========== -->
     <nav class="nav" id="nav">

@@ -1,888 +1,22 @@
-<!DOCTYPE html><html lang="en" data-theme="dark"><head>
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
     <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
     <title>Mob Timer — Focus Timer for macOS</title>
-    <meta name="description" content="A minimal macOS timer designed for deep focus and mob programming. Start instantly, stay focused, get notified.">
+    <meta name="description"
+      content="A minimal macOS timer designed for deep focus and mob programming. Start instantly, stay focused, get notified.">
     <link rel="stylesheet" href="styles.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+      rel="stylesheet">
   </head>
   <body>
-<style>#klar-promo-banner {
-  position: relative;
-  padding: 80px 0;
-  overflow: hidden;
-}
-
-#klar-promo-banner-bg {
-  position: absolute;
-  inset: 0;
-  z-index: 0;
-}
-
-#klar-promo-banner-glow-1 {
-  position: absolute;
-  width: 500px;
-  height: 300px;
-  top: -80px;
-  left: 10%;
-  background: radial-gradient(ellipse, rgba(64, 140, 255, 0.12) 0%, transparent 70%);
-  filter: blur(60px);
-  pointer-events: none;
-  animation: klar-promo-glow-drift 10s ease-in-out infinite;
-}
-
-#klar-promo-banner-glow-2 {
-  position: absolute;
-  width: 400px;
-  height: 250px;
-  bottom: -60px;
-  right: 5%;
-  background: radial-gradient(ellipse, rgba(99, 102, 241, 0.1) 0%, transparent 70%);
-  filter: blur(60px);
-  pointer-events: none;
-  animation: klar-promo-glow-drift 12s ease-in-out infinite reverse;
-}
-
-#klar-promo-banner-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
-  background-size: 48px 48px;
-  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
-  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black, transparent);
-}
-
-@keyframes klar-promo-glow-drift {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-20px) scale(1.08); }
-}
-
-#klar-promo-banner-inner {
-  position: relative;
-  z-index: 1;
-  background: linear-gradient(135deg, rgba(64, 140, 255, 0.08) 0%, rgba(99, 102, 241, 0.05) 50%, rgba(30, 34, 55, 0.6) 100%);
-  border: 1px solid rgba(64, 140, 255, 0.15);
-  border-radius: 24px;
-  padding: 48px 56px;
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 32px;
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.04),
-    0 24px 80px rgba(0, 0, 0, 0.35),
-    inset 0 1px 0 rgba(255, 255, 255, 0.05);
-  overflow: hidden;
-}
-
-#klar-promo-banner-inner::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, rgba(64, 140, 255, 0.3), rgba(99, 102, 241, 0.2), transparent);
-}
-
-#klar-promo-banner-content {
-  flex: 1;
-  min-width: 280px;
-}
-
-#klar-promo-banner-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(64, 140, 255, 0.1);
-  border: 1px solid rgba(64, 140, 255, 0.2);
-  padding: 5px 14px;
-  border-radius: 100px;
-  margin-bottom: 16px;
-}
-
-#klar-promo-banner-badge-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--accent);
-  border-radius: 50%;
-  box-shadow: 0 0 8px var(--accent);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-#klar-promo-banner-title {
-  font-size: clamp(28px, 4vw, 40px);
-  font-weight: 800;
-  letter-spacing: -0.03em;
-  line-height: 1.15;
-  color: var(--text);
-  margin-bottom: 10px;
-}
-
-#klar-promo-banner-desc {
-  font-size: 16px;
-  color: var(--text-2);
-  line-height: 1.65;
-  max-width: 480px;
-}
-
-#klar-promo-banner-actions {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 14px;
-  flex-shrink: 0;
-}
-
-#klar-promo-banner-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--text-2);
-  transition: all 0.2s ease;
-}
-
-#klar-promo-banner-link:hover {
-  color: var(--accent);
-  gap: 10px;
-}
-
-#klar-promo-banner-link svg {
-  transition: transform 0.2s ease;
-}
-
-#klar-promo-banner-link:hover svg {
-  transform: translateX(3px);
-}
-
-#klar-promo-banner-features {
-  width: 100%;
-  display: flex;
-  align-items: center;
-  gap: 24px;
-  padding-top: 32px;
-  margin-top: 8px;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  flex-wrap: wrap;
-}
-
-.klar-promo-banner-feat {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 1;
-  min-width: 200px;
-}
-
-.klar-promo-banner-feat-icon {
-  width: 40px;
-  height: 40px;
-  background: rgba(64, 140, 255, 0.1);
-  border: 1px solid rgba(64, 140, 255, 0.18);
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--accent);
-  flex-shrink: 0;
-}
-
-.klar-promo-banner-feat-text {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-
-.klar-promo-banner-feat-text strong {
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text);
-}
-
-.klar-promo-banner-feat-text span {
-  font-size: 13px;
-  color: var(--text-3);
-}
-
-.klar-promo-banner-feat-divider {
-  width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.06);
-  flex-shrink: 0;
-}
-
-@media (max-width: 900px) {
-  #klar-promo-banner-inner {
-    flex-direction: column;
-    padding: 36px 28px;
-    text-align: center;
-    align-items: center;
-  }
-
-  #klar-promo-banner-content {
-    text-align: center;
-  }
-
-  #klar-promo-banner-desc {
-    margin: 0 auto;
-  }
-
-  #klar-promo-banner-actions {
-    align-items: center;
-  }
-
-  #klar-promo-banner-features {
-    flex-direction: column;
-    gap: 16px;
-    align-items: center;
-  }
-
-  .klar-promo-banner-feat {
-    min-width: auto;
-    justify-content: center;
-  }
-
-  .klar-promo-banner-feat-divider {
-    width: 60px;
-    height: 1px;
-  }
-}</style>
-<section id="klar-promo-banner">
-  <div id="klar-promo-banner-bg">
-    <div id="klar-promo-banner-glow-1"></div>
-    <div id="klar-promo-banner-glow-2"></div>
-    <div id="klar-promo-banner-grid"></div>
-  </div>
-  <div class="container">
-    <div id="klar-promo-banner-inner">
-      <div id="klar-promo-banner-content">
-        <div id="klar-promo-banner-badge">
-          <span id="klar-promo-banner-badge-dot"></span>
-          New Release
-        </div>
-        <h2 id="klar-promo-banner-title">Mob Timer 2.0 is here</h2>
-        <p id="klar-promo-banner-desc">Persistent sessions, break timer sync, and a completely redesigned interface — built from the ground up in SwiftUI.</p>
-      </div>
-      <div id="klar-promo-banner-actions">
-        <a href="#download" class="btn btn-primary btn-lg" id="klar-promo-banner-cta">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Download Free
-        </a>
-        <a href="#features" id="klar-promo-banner-link">
-          See what's new
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        </a>
-      </div>
-      <div id="klar-promo-banner-features">
-        <div class="klar-promo-banner-feat">
-          <div class="klar-promo-banner-feat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-          </div>
-          <div class="klar-promo-banner-feat-text">
-            <strong>Persistent Sessions</strong>
-            <span>Rejoin anytime with the same code</span>
-          </div>
-        </div>
-        <div class="klar-promo-banner-feat-divider"></div>
-        <div class="klar-promo-banner-feat">
-          <div class="klar-promo-banner-feat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-          </div>
-          <div class="klar-promo-banner-feat-text">
-            <strong>Team Sync</strong>
-            <span>Real-time across all Macs</span>
-          </div>
-        </div>
-        <div class="klar-promo-banner-feat-divider"></div>
-        <div class="klar-promo-banner-feat">
-          <div class="klar-promo-banner-feat-icon">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-          </div>
-          <div class="klar-promo-banner-feat-text">
-            <strong>100% Native</strong>
-            <span>Pure SwiftUI, no Electron</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<style>/* =============================================
-   EXTRAORDINARY HERO — MOB TIMER
-   ============================================= */
-
-/* Orbs */
-.mobtimer-hero-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(100px);
-  pointer-events: none;
-  will-change: transform;
-  animation: mobtimer-hero-orb-drift 12s ease-in-out infinite;
-}
-
-.mobtimer-hero-orb-1 {
-  width: 650px;
-  height: 650px;
-  background: rgba(64, 140, 255, 0.14);
-  top: -200px;
-  left: -150px;
-  animation-delay: 0s;
-}
-
-.mobtimer-hero-orb-2 {
-  width: 450px;
-  height: 450px;
-  background: rgba(99, 102, 241, 0.12);
-  top: 60px;
-  right: -100px;
-  animation-delay: -4s;
-}
-
-.mobtimer-hero-orb-3 {
-  width: 350px;
-  height: 350px;
-  background: rgba(74, 222, 128, 0.06);
-  bottom: -80px;
-  left: 30%;
-  animation-delay: -8s;
-}
-
-@keyframes mobtimer-hero-orb-drift {
-  0%, 100% { transform: translateY(0) scale(1); }
-  33% { transform: translateY(-25px) scale(1.04); }
-  66% { transform: translateY(15px) scale(0.97); }
-}
-
-/* Noise texture overlay */
-.mobtimer-hero-noise {
-  position: absolute;
-  inset: 0;
-  opacity: 0.025;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 128px 128px;
-  pointer-events: none;
-}
-
-/* Staggered entrance animations */
-.mobtimer-hero-title-anim {
-  animation: mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.1s both;
-}
-
-.mobtimer-hero-sub-anim {
-  animation: mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.25s both;
-}
-
-.mobtimer-hero-actions-anim {
-  animation: mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s both;
-}
-
-.mobtimer-hero-meta-anim {
-  animation: mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.55s both;
-}
-
-@keyframes mobtimer-hero-rise {
-  from {
-    opacity: 0;
-    transform: translateY(32px);
-    filter: blur(4px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-    filter: blur(0);
-  }
-}
-
-/* Mockup wrapper with glow */
-.mobtimer-hero-mockup-wrap {
-  position: relative;
-  animation: mobtimer-hero-rise 1.2s cubic-bezier(0.16, 1, 0.3, 1) 0.3s both;
-}
-
-.mobtimer-hero-mockup-glow {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 340px;
-  height: 340px;
-  background: radial-gradient(circle, rgba(64, 140, 255, 0.18) 0%, rgba(99, 102, 241, 0.08) 40%, transparent 70%);
-  filter: blur(50px);
-  pointer-events: none;
-  z-index: -1;
-  animation: mobtimer-hero-glow-pulse 5s ease-in-out infinite;
-}
-
-@keyframes mobtimer-hero-glow-pulse {
-  0%, 100% { opacity: 0.7; transform: translate(-50%, -50%) scale(1); }
-  50% { opacity: 1; transform: translate(-50%, -50%) scale(1.15); }
-}
-
-/* Floating UI badges */
-.mobtimer-hero-floating-badge {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 8px 16px;
-  background: rgba(30, 34, 55, 0.85);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--text-2);
-  z-index: 3;
-  pointer-events: none;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-}
-
-.mobtimer-hero-fb-1 {
-  bottom: 28%;
-  left: 6%;
-  animation: mobtimer-hero-fb-float 6s ease-in-out infinite,
-             mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 0.8s both;
-}
-
-.mobtimer-hero-fb-2 {
-  top: 32%;
-  right: 4%;
-  animation: mobtimer-hero-fb-float 7s ease-in-out infinite reverse,
-             mobtimer-hero-rise 1s cubic-bezier(0.16, 1, 0.3, 1) 1s both;
-}
-
-@keyframes mobtimer-hero-fb-float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
-}
-
-.mobtimer-hero-fb-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
-
-.mobtimer-hero-fb-dot-green {
-  background: var(--accent-green);
-  box-shadow: 0 0 8px var(--accent-green);
-  animation: pulse-dot 2s ease-in-out infinite;
-}
-
-/* Responsive hiding of floating badges */
-@media (max-width: 1100px) {
-  .mobtimer-hero-floating-badge {
-    display: none;
-  }
-}</style>
-<section class="hero" id="hero">
-  <div class="hero-bg">
-    <div class="mobtimer-hero-orb mobtimer-hero-orb-1"></div>
-    <div class="mobtimer-hero-orb mobtimer-hero-orb-2"></div>
-    <div class="mobtimer-hero-orb mobtimer-hero-orb-3"></div>
-    <div class="hero-grid"></div>
-    <div class="mobtimer-hero-noise"></div>
-  </div>
-
-  <div class="container">
-    <div class="hero-content">
-      <div class="hero-badge">
-        <span class="badge-dot"></span>
-        Native macOS · Free Download
-      </div>
-
-      <h1 class="hero-title mobtimer-hero-title-anim">
-        The timer that<br>
-        <span class="gradient-text">gets out of your way</span>
-      </h1>
-
-      <p class="hero-subtitle mobtimer-hero-sub-anim">
-        Mob Timer is a minimal macOS timer built for deep focus sessions and collaborative mob programming. Start in seconds. Stay in the zone.
-      </p>
-
-      <div class="hero-actions mobtimer-hero-actions-anim">
-        <a href="#download" class="btn btn-primary btn-lg">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-          Download for Mac
-        </a>
-        <a href="#features" class="btn btn-ghost btn-lg">
-          See features
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-            <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-          </svg>
-        </a>
-      </div>
-
-      <div class="hero-meta mobtimer-hero-meta-anim">
-        <span>macOS 13+</span>
-        <span class="meta-dot">·</span>
-        <span>Native SwiftUI</span>
-        <span class="meta-dot">·</span>
-        <span>No subscription</span>
-      </div>
-    </div>
-
-    <!-- App Window Mockup -->
-    <div class="hero-visual">
-      <div class="mobtimer-hero-mockup-wrap">
-        <div class="app-window app-window-mob">
-          <div class="window-chrome">
-            <div class="window-dots">
-              <span class="dot dot-red"></span>
-              <span class="dot dot-yellow"></span>
-              <span class="dot dot-green"></span>
-            </div>
-          </div>
-          <div class="window-body mob-window-body">
-            <img src="images/app-screenshot.png" alt="Mob Timer app" class="app-screenshot">
-            <div class="screenshot-time-overlay" id="screenshot-timer">07:28</div>
-          </div>
-        </div>
-        <div class="mobtimer-hero-mockup-glow"></div>
-        <div class="window-reflection"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Floating UI accents -->
-  <div class="mobtimer-hero-floating-badge mobtimer-hero-fb-1">
-    <span class="mobtimer-hero-fb-dot mobtimer-hero-fb-dot-green"></span>
-    Synced · 3 members
-  </div>
-  <div class="mobtimer-hero-floating-badge mobtimer-hero-fb-2">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
-    Next: Gabriel
-  </div>
-</section>
-<script>// Enhanced hero orb parallax
-(function() {
-  const orbs = document.querySelectorAll('.mobtimer-hero-orb');
-  if (!orbs.length) return;
-
-  let targetX = 0, targetY = 0, currentX = 0, currentY = 0;
-
-  document.addEventListener('mousemove', function(e) {
-    targetX = (e.clientX / window.innerWidth - 0.5) * 2;
-    targetY = (e.clientY / window.innerHeight - 0.5) * 2;
-  }, { passive: true });
-
-  function lerp(a, b, t) { return a + (b - a) * t; }
-
-  function animate() {
-    currentX = lerp(currentX, targetX, 0.04);
-    currentY = lerp(currentY, targetY, 0.04);
-
-    orbs.forEach(function(orb, i) {
-      const speed = (i + 1) * 15;
-      const baseTransform = orb.style.transform || '';
-      orb.style.transform = 'translate(' + (currentX * speed) + 'px, ' + (currentY * speed) + 'px)';
-    });
-
-    requestAnimationFrame(animate);
-  }
-
-  requestAnimationFrame(animate);
-})();</script>
-
-<style>#klar-hero-extraordinary {
-  position: relative;
-  min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #050510;
-  overflow: hidden;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-}
-
-#klar-hero-bg-canvas {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 80, 255, 0.15), transparent),
-    radial-gradient(circle at 20% 80%, rgba(0, 180, 255, 0.06), transparent),
-    radial-gradient(circle at 80% 60%, rgba(255, 50, 150, 0.06), transparent);
-}
-
-#klar-hero-overlay {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-  mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent);
-  -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent);
-}
-
-#klar-hero-glow-orb-1, #klar-hero-glow-orb-2, #klar-hero-glow-orb-3 {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.4;
-  animation: klar-hero-float 8s ease-in-out infinite;
-}
-
-#klar-hero-glow-orb-1 {
-  width: 400px; height: 400px;
-  background: rgba(120, 80, 255, 0.3);
-  top: -10%; left: 10%;
-  animation-delay: 0s;
-}
-
-#klar-hero-glow-orb-2 {
-  width: 300px; height: 300px;
-  background: rgba(0, 180, 255, 0.25);
-  bottom: -5%; right: 10%;
-  animation-delay: -3s;
-}
-
-#klar-hero-glow-orb-3 {
-  width: 250px; height: 250px;
-  background: rgba(255, 50, 150, 0.2);
-  top: 30%; right: 25%;
-  animation-delay: -5s;
-}
-
-@keyframes klar-hero-float {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-30px) scale(1.05); }
-}
-
-#klar-hero-content {
-  position: relative;
-  z-index: 2;
-  text-align: center;
-  max-width: 800px;
-  padding: 2rem;
-  animation: klar-hero-fadeUp 1s ease-out;
-}
-
-@keyframes klar-hero-fadeUp {
-  from { opacity: 0; transform: translateY(40px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-#klar-hero-badge {
-  display: inline-block;
-  padding: 8px 20px;
-  border-radius: 50px;
-  background: rgba(120, 80, 255, 0.1);
-  border: 1px solid rgba(120, 80, 255, 0.25);
-  color: rgba(180, 160, 255, 0.9);
-  font-size: 0.85rem;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  margin-bottom: 2rem;
-  animation: klar-hero-fadeUp 1s ease-out 0.1s both;
-}
-
-#klar-hero-headline {
-  font-size: clamp(2.8rem, 7vw, 5.5rem);
-  font-weight: 800;
-  color: #ffffff;
-  line-height: 1.1;
-  margin: 0 0 1.5rem 0;
-  letter-spacing: -0.03em;
-  animation: klar-hero-fadeUp 1s ease-out 0.2s both;
-}
-
-#klar-hero-gradient-text {
-  background: linear-gradient(135deg, #7850ff, #00b4ff, #ff3296);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-#klar-hero-subtext {
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  color: rgba(200, 200, 220, 0.7);
-  line-height: 1.7;
-  max-width: 580px;
-  margin: 0 auto 2.5rem auto;
-  animation: klar-hero-fadeUp 1s ease-out 0.35s both;
-}
-
-#klar-hero-cta-group {
-  display: flex;
-  gap: 1rem;
-  justify-content: center;
-  flex-wrap: wrap;
-  margin-bottom: 3rem;
-  animation: klar-hero-fadeUp 1s ease-out 0.5s both;
-}
-
-#klar-hero-cta-primary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 36px;
-  background: linear-gradient(135deg, #7850ff, #5a30e0);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 14px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  box-shadow: 0 4px 30px rgba(120, 80, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.15);
-}
-
-#klar-hero-cta-primary:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 40px rgba(120, 80, 255, 0.5), inset 0 1px 0 rgba(255,255,255,0.15);
-}
-
-#klar-hero-cta-arrow {
-  transition: transform 0.3s ease;
-  display: inline-block;
-}
-
-#klar-hero-cta-primary:hover #klar-hero-cta-arrow {
-  transform: translateX(4px);
-}
-
-#klar-hero-cta-secondary {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 16px 36px;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: rgba(255, 255, 255, 0.85);
-  font-size: 1rem;
-  font-weight: 600;
-  border-radius: 14px;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-}
-
-#klar-hero-cta-secondary:hover {
-  background: rgba(255, 255, 255, 0.1);
-  border-color: rgba(255, 255, 255, 0.2);
-  transform: translateY(-2px);
-}
-
-#klar-hero-play-icon {
-  opacity: 0.8;
-}
-
-#klar-hero-stats {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 2rem;
-  animation: klar-hero-fadeUp 1s ease-out 0.65s both;
-}
-
-.klar-hero-stat-item {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.klar-hero-stat-number {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #ffffff;
-}
-
-.klar-hero-stat-label {
-  font-size: 0.8rem;
-  color: rgba(200, 200, 220, 0.5);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-
-.klar-hero-stat-divider {
-  width: 1px;
-  height: 36px;
-  background: rgba(255, 255, 255, 0.1);
-}
-
-@media (max-width: 640px) {
-  #klar-hero-stats { gap: 1.2rem; }
-  .klar-hero-stat-number { font-size: 1.2rem; }
-  #klar-hero-cta-group { flex-direction: column; align-items: center; }
-}</style>
-<section id="klar-hero-extraordinary">
-  <div id="klar-hero-bg-canvas"></div>
-  <div id="klar-hero-overlay"></div>
-  <div id="klar-hero-content">
-    <div id="klar-hero-badge">✦ Welcome to the future</div>
-    <h1 id="klar-hero-headline">
-      Build something
-      <span id="klar-hero-gradient-text">extraordinary</span>
-    </h1>
-    <p id="klar-hero-subtext">Craft stunning digital experiences that captivate your audience and elevate your brand beyond the ordinary.</p>
-    <div id="klar-hero-cta-group">
-      <a href="#" id="klar-hero-cta-primary">Get Started <span id="klar-hero-cta-arrow">→</span></a>
-      <a href="#" id="klar-hero-cta-secondary">Watch Demo <svg id="klar-hero-play-icon" width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"></polygon></svg></a>
-    </div>
-    <div id="klar-hero-stats">
-      <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">10K+</span><span class="klar-hero-stat-label">Users</span></div>
-      <div class="klar-hero-stat-divider"></div>
-      <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">99%</span><span class="klar-hero-stat-label">Uptime</span></div>
-      <div class="klar-hero-stat-divider"></div>
-      <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">4.9★</span><span class="klar-hero-stat-label">Rating</span></div>
-    </div>
-  </div>
-  <div id="klar-hero-glow-orb-1"></div>
-  <div id="klar-hero-glow-orb-2"></div>
-  <div id="klar-hero-glow-orb-3"></div>
-</section>
-<script>// Parallax orb movement on mouse move
-document.addEventListener('mousemove', function(e) {
-  const orbs = document.querySelectorAll('#klar-hero-glow-orb-1, #klar-hero-glow-orb-2, #klar-hero-glow-orb-3');
-  const x = (e.clientX / window.innerWidth - 0.5) * 2;
-  const y = (e.clientY / window.innerHeight - 0.5) * 2;
-  orbs.forEach(function(orb, i) {
-    const speed = (i + 1) * 12;
-    orb.style.transform = 'translate(' + (x * speed) + 'px, ' + (y * speed) + 'px)';
-  });
-});
-
-// Animate stat numbers on scroll into view
-constklarHeroObserver = new IntersectionObserver(function(entries) {
-  entries.forEach(function(entry) {
-    if (entry.isIntersecting) {
-      const statNumbers = document.querySelectorAll('.klar-hero-stat-number');
-      statNumbers.forEach(function(el) {
-        el.style.animation = 'klar-hero-fadeUp 0.6s ease-out forwards';
-      });
-      klarHeroObserver.disconnect();
-    }
-  });
-}, { threshold: 0.5 });
-
-const klarHeroStats = document.getElementById('klar-hero-stats');
-if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
-
-
+    
     <!-- ========== NAV ========== -->
     <nav class="nav" id="nav">
       <div class="nav-inner">
@@ -900,6 +34,713 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
         <a href="#download" class="btn btn-sm btn-primary">Download</a>
       </div>
     </nav>
+
+    <!-- ========== HERO ========== -->
+    <style>
+      #klar-hero-extraordinary {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #050510;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      #klar-hero-bg-canvas {
+        position: absolute;
+        inset: 0;
+        background-image:
+          radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 80, 255, 0.15), transparent),
+          radial-gradient(circle at 20% 80%, rgba(0, 180, 255, 0.06), transparent),
+          radial-gradient(circle at 80% 60%, rgba(255, 50, 150, 0.06), transparent);
+      }
+
+      #klar-hero-overlay {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent);
+        -webkit-mask-image: radial-gradient(ellipse 60% 60% at 50% 50%, black, transparent);
+      }
+
+      #klar-hero-glow-orb-1,
+      #klar-hero-glow-orb-2,
+      #klar-hero-glow-orb-3 {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(80px);
+        opacity: 0.4;
+        animation: klar-hero-float 8s ease-in-out infinite;
+      }
+
+      #klar-hero-glow-orb-1 {
+        width: 400px;
+        height: 400px;
+        background: rgba(120, 80, 255, 0.3);
+        top: -10%;
+        left: 10%;
+        animation-delay: 0s;
+      }
+
+      #klar-hero-glow-orb-2 {
+        width: 300px;
+        height: 300px;
+        background: rgba(0, 180, 255, 0.25);
+        bottom: -5%;
+        right: 10%;
+        animation-delay: -3s;
+      }
+
+      #klar-hero-glow-orb-3 {
+        width: 250px;
+        height: 250px;
+        background: rgba(255, 50, 150, 0.2);
+        top: 30%;
+        right: 25%;
+        animation-delay: -5s;
+      }
+
+      @keyframes klar-hero-float {
+
+        0%,
+        100% {
+          transform: translateY(0) scale(1);
+        }
+
+        50% {
+          transform: translateY(-30px) scale(1.05);
+        }
+      }
+
+      #klar-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        padding: 2rem;
+        animation: klar-hero-fadeUp 1s ease-out;
+      }
+
+      @keyframes klar-hero-fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #klar-hero-badge {
+        display: inline-block;
+        padding: 8px 20px;
+        border-radius: 50px;
+        background: rgba(120, 80, 255, 0.1);
+        border: 1px solid rgba(120, 80, 255, 0.25);
+        color: rgba(180, 160, 255, 0.9);
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.5px;
+        margin-bottom: 2rem;
+        animation: klar-hero-fadeUp 1s ease-out 0.1s both;
+      }
+
+      #klar-hero-headline {
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
+        font-weight: 800;
+        color: #ffffff;
+        line-height: 1.1;
+        margin: 0 0 1.5rem 0;
+        letter-spacing: -0.03em;
+        animation: klar-hero-fadeUp 1s ease-out 0.2s both;
+      }
+
+      #klar-hero-gradient-text {
+        background: linear-gradient(135deg, #7850ff, #00b4ff, #ff3296);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      #klar-hero-subtext {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: rgba(200, 200, 220, 0.7);
+        line-height: 1.7;
+        max-width: 580px;
+        margin: 0 auto 2.5rem auto;
+        animation: klar-hero-fadeUp 1s ease-out 0.35s both;
+      }
+
+      #klar-hero-cta-group {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 3rem;
+        animation: klar-hero-fadeUp 1s ease-out 0.5s both;
+      }
+
+      #klar-hero-cta-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 36px;
+        background: linear-gradient(135deg, #7850ff, #5a30e0);
+        color: #fff;
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 30px rgba(120, 80, 255, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+
+      #klar-hero-cta-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 40px rgba(120, 80, 255, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+      }
+
+      #klar-hero-cta-arrow {
+        transition: transform 0.3s ease;
+        display: inline-block;
+      }
+
+      #klar-hero-cta-primary:hover #klar-hero-cta-arrow {
+        transform: translateX(4px);
+      }
+
+      #klar-hero-cta-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 16px 36px;
+        background: rgba(255, 255, 255, 0.05);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        color: rgba(255, 255, 255, 0.85);
+        font-size: 1rem;
+        font-weight: 600;
+        border-radius: 14px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+      }
+
+      #klar-hero-cta-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        transform: translateY(-2px);
+      }
+
+      #klar-hero-play-icon {
+        opacity: 0.8;
+      }
+
+      #klar-hero-stats {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        animation: klar-hero-fadeUp 1s ease-out 0.65s both;
+      }
+
+      .klar-hero-stat-item {
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+
+      .klar-hero-stat-number {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #ffffff;
+      }
+
+      .klar-hero-stat-label {
+        font-size: 0.8rem;
+        color: rgba(200, 200, 220, 0.5);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .klar-hero-stat-divider {
+        width: 1px;
+        height: 36px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      @media (max-width: 640px) {
+        #klar-hero-stats {
+          gap: 1.2rem;
+        }
+
+        .klar-hero-stat-number {
+          font-size: 1.2rem;
+        }
+
+        #klar-hero-cta-group {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+    <section id="klar-hero-extraordinary">
+      <div id="klar-hero-bg-canvas"></div>
+      <div id="klar-hero-overlay"></div>
+      <div id="klar-hero-content">
+        <div id="klar-hero-badge">✦ Welcome to the future</div>
+        <h1 id="klar-hero-headline">
+          Build something
+          <span id="klar-hero-gradient-text">extraordinary</span>
+        </h1>
+        <p id="klar-hero-subtext">Craft stunning digital experiences that captivate your audience and elevate your brand
+          beyond the ordinary.</p>
+        <div id="klar-hero-cta-group">
+          <a href="#" id="klar-hero-cta-primary">Get Started <span id="klar-hero-cta-arrow">→</span></a>
+          <a href="#" id="klar-hero-cta-secondary">Watch Demo <svg id="klar-hero-play-icon" width="16" height="16"
+              viewBox="0 0 24 24" fill="currentColor">
+              <polygon points="5,3 19,12 5,21"></polygon>
+            </svg></a>
+        </div>
+        <div id="klar-hero-stats">
+          <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">10K+</span><span
+              class="klar-hero-stat-label">Users</span></div>
+          <div class="klar-hero-stat-divider"></div>
+          <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">99%</span><span
+              class="klar-hero-stat-label">Uptime</span></div>
+          <div class="klar-hero-stat-divider"></div>
+          <div class="klar-hero-stat-item"><span class="klar-hero-stat-number">4.9★</span><span
+              class="klar-hero-stat-label">Rating</span></div>
+        </div>
+      </div>
+      <div id="klar-hero-glow-orb-1"></div>
+      <div id="klar-hero-glow-orb-2"></div>
+      <div id="klar-hero-glow-orb-3"></div>
+    </section>
+    <script>
+      // Parallax orb movement on mouse move
+      document.addEventListener('mousemove', function(e) {
+        const orbs = document.querySelectorAll(
+          '#klar-hero-glow-orb-1, #klar-hero-glow-orb-2, #klar-hero-glow-orb-3');
+        const x = (e.clientX / window.innerWidth - 0.5) * 2;
+        const y = (e.clientY / window.innerHeight - 0.5) * 2;
+        orbs.forEach(function(orb, i) {
+          const speed = (i + 1) * 12;
+          orb.style.transform = 'translate(' + (x * speed) + 'px, ' + (y * speed) + 'px)';
+        });
+      });
+
+      // Animate stat numbers on scroll into view
+      constklarHeroObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            const statNumbers = document.querySelectorAll('.klar-hero-stat-number');
+            statNumbers.forEach(function(el) {
+              el.style.animation = 'klar-hero-fadeUp 0.6s ease-out forwards';
+            });
+            klarHeroObserver.disconnect();
+          }
+        });
+      }, {
+        threshold: 0.5
+      });
+
+      const klarHeroStats = document.getElementById('klar-hero-stats');
+      if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);
+    </script>
+
+    <!-- ========== HERO ========== -->
+    <style>
+      /* Hero Section */
+      .klar2-hero {
+        position: relative;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #0a0a0f;
+        overflow: hidden;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      }
+
+      .klar2-hero-bg-overlay {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
+          radial-gradient(ellipse 60% 50% at 20% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse 60% 50% at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
+      }
+
+      /* Floating Particles */
+      .klar2-hero-particles {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+
+      .klar2-hero-particles span {
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        background: rgba(167, 139, 250, 0.4);
+        border-radius: 50%;
+        animation: klar2-float-up linear infinite;
+      }
+
+      .klar2-hero-particles span:nth-child(1) {
+        left: 10%;
+        animation-duration: 12s;
+        animation-delay: 0s;
+        width: 3px;
+        height: 3px;
+      }
+
+      .klar2-hero-particles span:nth-child(2) {
+        left: 20%;
+        animation-duration: 15s;
+        animation-delay: -2s;
+        width: 5px;
+        height: 5px;
+        background: rgba(99, 102, 241, 0.3);
+      }
+
+      .klar2-hero-particles span:nth-child(3) {
+        left: 35%;
+        animation-duration: 10s;
+        animation-delay: -4s;
+      }
+
+      .klar2-hero-particles span:nth-child(4) {
+        left: 50%;
+        animation-duration: 18s;
+        animation-delay: -6s;
+        width: 6px;
+        height: 6px;
+        background: rgba(236, 72, 153, 0.3);
+      }
+
+      .klar2-hero-particles span:nth-child(5) {
+        left: 65%;
+        animation-duration: 14s;
+        animation-delay: -1s;
+        width: 3px;
+        height: 3px;
+      }
+
+      .klar2-hero-particles span:nth-child(6) {
+        left: 75%;
+        animation-duration: 11s;
+        animation-delay: -3s;
+        background: rgba(59, 130, 246, 0.3);
+      }
+
+      .klar2-hero-particles span:nth-child(7) {
+        left: 85%;
+        animation-duration: 16s;
+        animation-delay: -5s;
+        width: 5px;
+        height: 5px;
+      }
+
+      .klar2-hero-particles span:nth-child(8) {
+        left: 45%;
+        animation-duration: 13s;
+        animation-delay: -7s;
+        width: 3px;
+        height: 3px;
+        background: rgba(236, 72, 153, 0.25);
+      }
+
+      .klar2-hero-particles span:nth-child(9) {
+        left: 90%;
+        animation-duration: 17s;
+        animation-delay: -8s;
+      }
+
+      .klar2-hero-particles span:nth-child(10) {
+        left: 5%;
+        animation-duration: 14s;
+        animation-delay: -9s;
+        width: 5px;
+        height: 5px;
+        background: rgba(59, 130, 246, 0.25);
+      }
+
+      @keyframes klar2-float-up {
+        0% {
+          transform: translateY(100vh) scale(0);
+          opacity: 0;
+        }
+
+        10% {
+          opacity: 1;
+        }
+
+        90% {
+          opacity: 1;
+        }
+
+        100% {
+          transform: translateY(-10vh) scale(1);
+          opacity: 0;
+        }
+      }
+
+      /* Hero Content */
+      .klar2-hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        max-width: 800px;
+        padding: 2rem;
+        animation: klar2-fadeInUp 1s ease-out;
+      }
+
+      @keyframes klar2-fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .klar2-hero-tagline {
+        display: inline-block;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: rgba(167, 139, 250, 0.9);
+        background: rgba(167, 139, 250, 0.1);
+        border: 1px solid rgba(167, 139, 250, 0.2);
+        padding: 0.5rem 1.25rem;
+        border-radius: 50px;
+        margin-bottom: 2rem;
+        animation: klar2-fadeInUp 1s ease-out 0.1s both;
+      }
+
+      .klar2-hero-title {
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1.1;
+        color: #ffffff;
+        margin: 0 0 1.5rem;
+        letter-spacing: -0.03em;
+        animation: klar2-fadeInUp 1s ease-out 0.2s both;
+      }
+
+      .klar2-hero-gradient-text {
+        background: linear-gradient(135deg, #818cf8 0%, #c084fc 40%, #f472b6 70%, #fb923c 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .klar2-hero-description {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        line-height: 1.7;
+        color: rgba(255, 255, 255, 0.55);
+        max-width: 580px;
+        margin: 0 auto 2.5rem;
+        animation: klar2-fadeInUp 1s ease-out 0.3s both;
+      }
+
+      /* Buttons */
+      .klar2-hero-buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+        margin-bottom: 3.5rem;
+        animation: klar2-fadeInUp 1s ease-out 0.4s both;
+      }
+
+      .klar2-hero-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.9rem 2rem;
+        font-size: 1rem;
+        font-weight: 600;
+        text-decoration: none;
+        border-radius: 12px;
+        transition: all 0.3s ease;
+        cursor: pointer;
+      }
+
+      .klar2-hero-btn-primary {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        box-shadow: 0 4px 25px rgba(99, 102, 241, 0.35), 0 0 0 0 rgba(99, 102, 241, 0);
+      }
+
+      .klar2-hero-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 35px rgba(99, 102, 241, 0.5), 0 0 0 4px rgba(99, 102, 241, 0.1);
+      }
+
+      .klar2-hero-btn-primary svg {
+        transition: transform 0.3s ease;
+      }
+
+      .klar2-hero-btn-primary:hover svg {
+        transform: translateX(4px);
+      }
+
+      .klar2-hero-btn-secondary {
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        backdrop-filter: blur(10px);
+      }
+
+      .klar2-hero-btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.1);
+        border-color: rgba(255, 255, 255, 0.2);
+        color: #fff;
+        transform: translateY(-2px);
+      }
+
+      /* Stats */
+      .klar2-hero-stats {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 2rem;
+        animation: klar2-fadeInUp 1s ease-out 0.5s both;
+      }
+
+      .klar2-hero-stat {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+      }
+
+      .klar2-hero-stat-number {
+        font-size: 1.5rem;
+        font-weight: 800;
+        color: #ffffff;
+      }
+
+      .klar2-hero-stat-label {
+        font-size: 0.8rem;
+        color: rgba(255, 255, 255, 0.4);
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+      }
+
+      .klar2-hero-stat-divider {
+        width: 1px;
+        height: 40px;
+        background: rgba(255, 255, 255, 0.1);
+      }
+
+      /* Glow Effect */
+      .klar2-hero-glow {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
+        pointer-events: none;
+        animation: klar2-pulse-glow 6s ease-in-out infinite;
+      }
+
+      @keyframes klar2-pulse-glow {
+
+        0%,
+        100% {
+          transform: translate(-50%, -50%) scale(1);
+          opacity: 0.5;
+        }
+
+        50% {
+          transform: translate(-50%, -50%) scale(1.3);
+          opacity: 1;
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 640px) {
+        .klar2-hero-content {
+          padding: 1.5rem;
+        }
+
+        .klar2-hero-tagline {
+          font-size: 0.75rem;
+          padding: 0.4rem 1rem;
+        }
+
+        .klar2-hero-description {
+          font-size: 0.95rem;
+        }
+
+        .klar2-hero-btn {
+          padding: 0.8rem 1.5rem;
+          font-size: 0.9rem;
+        }
+
+        .klar2-hero-stats {
+          gap: 1.25rem;
+        }
+
+        .klar2-hero-stat-number {
+          font-size: 1.25rem;
+        }
+      }
+    </style>
+    <div class="klar2-hero">
+      <div class="klar2-hero-bg-overlay"></div>
+      <div class="klar2-hero-particles">
+        <span></span><span></span><span></span><span></span><span></span>
+        <span></span><span></span><span></span><span></span><span></span>
+      </div>
+      <div class="klar2-hero-content">
+        <p class="klar2-hero-tagline">Welcome to the future</p>
+        <h1 class="klar2-hero-title">Build Something<br><span class="klar2-hero-gradient-text">Extraordinary</span></h1>
+        <p class="klar2-hero-description">Craft stunning digital experiences with elegance and precision. Your vision,
+          beautifully realized — pixel by pixel, line by line.</p>
+        <div class="klar2-hero-buttons">
+          <a href="#" class="klar2-hero-btn klar2-hero-btn-primary">Get Started <svg width="16" height="16"
+              viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"
+              stroke-linejoin="round">
+              <path d="M5 12h14"></path>
+              <path d="m12 5 7 7-7 7"></path>
+            </svg></a>
+          <a href="#" class="klar2-hero-btn klar2-hero-btn-secondary">Learn More</a>
+        </div>
+        <div class="klar2-hero-stats">
+          <div class="klar2-hero-stat">
+            <span class="klar2-hero-stat-number">10K+</span>
+            <span class="klar2-hero-stat-label">Users</span>
+          </div>
+          <div class="klar2-hero-stat-divider"></div>
+          <div class="klar2-hero-stat">
+            <span class="klar2-hero-stat-number">99%</span>
+            <span class="klar2-hero-stat-label">Satisfaction</span>
+          </div>
+          <div class="klar2-hero-stat-divider"></div>
+          <div class="klar2-hero-stat">
+            <span class="klar2-hero-stat-number">24/7</span>
+            <span class="klar2-hero-stat-label">Support</span>
+          </div>
+        </div>
+      </div>
+      <div class="klar2-hero-glow"></div>
+    </div>
 
     <!-- ========== HERO ========== -->
     <section id="klar-hero-section">
@@ -1068,391 +909,6 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
     </style>
 
     <!-- ========== HERO ========== -->
-    <style>
-      /* Hero Section */
-      .hero {
-        position: relative;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        background: #0a0a0f;
-        overflow: hidden;
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      }
-
-      .hero-bg-overlay {
-        position: absolute;
-        inset: 0;
-        background:
-          radial-gradient(ellipse 80% 60% at 50% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 60%),
-          radial-gradient(ellipse 60% 50% at 20% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
-          radial-gradient(ellipse 60% 50% at 80% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%);
-      }
-
-      /* Floating Particles */
-      .hero-particles {
-        position: absolute;
-        inset: 0;
-        overflow: hidden;
-      }
-
-      .hero-particles span {
-        position: absolute;
-        width: 4px;
-        height: 4px;
-        background: rgba(167, 139, 250, 0.4);
-        border-radius: 50%;
-        animation: float-up linear infinite;
-      }
-
-      .hero-particles span:nth-child(1) {
-        left: 10%;
-        animation-duration: 12s;
-        animation-delay: 0s;
-        width: 3px;
-        height: 3px;
-      }
-
-      .hero-particles span:nth-child(2) {
-        left: 20%;
-        animation-duration: 15s;
-        animation-delay: -2s;
-        width: 5px;
-        height: 5px;
-        background: rgba(99, 102, 241, 0.3);
-      }
-
-      .hero-particles span:nth-child(3) {
-        left: 35%;
-        animation-duration: 10s;
-        animation-delay: -4s;
-      }
-
-      .hero-particles span:nth-child(4) {
-        left: 50%;
-        animation-duration: 18s;
-        animation-delay: -6s;
-        width: 6px;
-        height: 6px;
-        background: rgba(236, 72, 153, 0.3);
-      }
-
-      .hero-particles span:nth-child(5) {
-        left: 65%;
-        animation-duration: 14s;
-        animation-delay: -1s;
-        width: 3px;
-        height: 3px;
-      }
-
-      .hero-particles span:nth-child(6) {
-        left: 75%;
-        animation-duration: 11s;
-        animation-delay: -3s;
-        background: rgba(59, 130, 246, 0.3);
-      }
-
-      .hero-particles span:nth-child(7) {
-        left: 85%;
-        animation-duration: 16s;
-        animation-delay: -5s;
-        width: 5px;
-        height: 5px;
-      }
-
-      .hero-particles span:nth-child(8) {
-        left: 45%;
-        animation-duration: 13s;
-        animation-delay: -7s;
-        width: 3px;
-        height: 3px;
-        background: rgba(236, 72, 153, 0.25);
-      }
-
-      .hero-particles span:nth-child(9) {
-        left: 90%;
-        animation-duration: 17s;
-        animation-delay: -8s;
-      }
-
-      .hero-particles span:nth-child(10) {
-        left: 5%;
-        animation-duration: 14s;
-        animation-delay: -9s;
-        width: 5px;
-        height: 5px;
-        background: rgba(59, 130, 246, 0.25);
-      }
-
-      @keyframes float-up {
-        0% {
-          transform: translateY(100vh) scale(0);
-          opacity: 0;
-        }
-
-        10% {
-          opacity: 1;
-        }
-
-        90% {
-          opacity: 1;
-        }
-
-        100% {
-          transform: translateY(-10vh) scale(1);
-          opacity: 0;
-        }
-      }
-
-      /* Hero Content */
-      .hero-content {
-        position: relative;
-        z-index: 2;
-        text-align: center;
-        max-width: 800px;
-        padding: 2rem;
-        animation: fadeInUp 1s ease-out;
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(40px);
-        }
-
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .hero-tagline {
-        display: inline-block;
-        font-size: 0.85rem;
-        font-weight: 600;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: rgba(167, 139, 250, 0.9);
-        background: rgba(167, 139, 250, 0.1);
-        border: 1px solid rgba(167, 139, 250, 0.2);
-        padding: 0.5rem 1.25rem;
-        border-radius: 50px;
-        margin-bottom: 2rem;
-        animation: fadeInUp 1s ease-out 0.1s both;
-      }
-
-      .hero-title {
-        font-size: clamp(2.8rem, 7vw, 5.5rem);
-        font-weight: 800;
-        line-height: 1.1;
-        color: #ffffff;
-        margin: 0 0 1.5rem;
-        letter-spacing: -0.03em;
-        animation: fadeInUp 1s ease-out 0.2s both;
-      }
-
-      .gradient-text {
-        background: linear-gradient(135deg, #818cf8 0%, #c084fc 40%, #f472b6 70%, #fb923c 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        background-clip: text;
-      }
-
-      .hero-description {
-        font-size: clamp(1rem, 2vw, 1.25rem);
-        line-height: 1.7;
-        color: rgba(255, 255, 255, 0.55);
-        max-width: 580px;
-        margin: 0 auto 2.5rem;
-        animation: fadeInUp 1s ease-out 0.3s both;
-      }
-
-      /* Buttons */
-      .hero-buttons {
-        display: flex;
-        gap: 1rem;
-        justify-content: center;
-        flex-wrap: wrap;
-        margin-bottom: 3.5rem;
-        animation: fadeInUp 1s ease-out 0.4s both;
-      }
-
-      .btn {
-        display: inline-flex;
-        align-items: center;
-        gap: 0.5rem;
-        padding: 0.9rem 2rem;
-        font-size: 1rem;
-        font-weight: 600;
-        text-decoration: none;
-        border-radius: 12px;
-        transition: all 0.3s ease;
-        cursor: pointer;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, #6366f1, #8b5cf6);
-        color: #fff;
-        box-shadow: 0 4px 25px rgba(99, 102, 241, 0.35), 0 0 0 0 rgba(99, 102, 241, 0);
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 35px rgba(99, 102, 241, 0.5), 0 0 0 4px rgba(99, 102, 241, 0.1);
-      }
-
-      .btn-primary svg {
-        transition: transform 0.3s ease;
-      }
-
-      .btn-primary:hover svg {
-        transform: translateX(4px);
-      }
-
-      .btn-secondary {
-        background: rgba(255, 255, 255, 0.05);
-        color: rgba(255, 255, 255, 0.8);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        backdrop-filter: blur(10px);
-      }
-
-      .btn-secondary:hover {
-        background: rgba(255, 255, 255, 0.1);
-        border-color: rgba(255, 255, 255, 0.2);
-        color: #fff;
-        transform: translateY(-2px);
-      }
-
-      /* Stats */
-      .hero-stats {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 2rem;
-        animation: fadeInUp 1s ease-out 0.5s both;
-      }
-
-      .stat {
-        display: flex;
-        flex-direction: column;
-        gap: 0.25rem;
-      }
-
-      .stat-number {
-        font-size: 1.5rem;
-        font-weight: 800;
-        color: #ffffff;
-      }
-
-      .stat-label {
-        font-size: 0.8rem;
-        color: rgba(255, 255, 255, 0.4);
-        text-transform: uppercase;
-        letter-spacing: 0.1em;
-      }
-
-      .stat-divider {
-        width: 1px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.1);
-      }
-
-      /* Glow Effect */
-      .hero-glow {
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background: radial-gradient(circle, rgba(99, 102, 241, 0.08) 0%, transparent 70%);
-        pointer-events: none;
-        animation: pulse-glow 6s ease-in-out infinite;
-      }
-
-      @keyframes pulse-glow {
-
-        0%,
-        100% {
-          transform: translate(-50%, -50%) scale(1);
-          opacity: 0.5;
-        }
-
-        50% {
-          transform: translate(-50%, -50%) scale(1.3);
-          opacity: 1;
-        }
-      }
-
-      /* Responsive */
-      @media (max-width: 640px) {
-        .hero-content {
-          padding: 1.5rem;
-        }
-
-        .hero-tagline {
-          font-size: 0.75rem;
-          padding: 0.4rem 1rem;
-        }
-
-        .hero-description {
-          font-size: 0.95rem;
-        }
-
-        .btn {
-          padding: 0.8rem 1.5rem;
-          font-size: 0.9rem;
-        }
-
-        .hero-stats {
-          gap: 1.25rem;
-        }
-
-        .stat-number {
-          font-size: 1.25rem;
-        }
-      }
-    </style>
-    <div class="hero">
-      <div class="hero-bg-overlay"></div>
-      <div class="hero-particles">
-        <span></span><span></span><span></span><span></span><span></span>
-        <span></span><span></span><span></span><span></span><span></span>
-      </div>
-      <div class="hero-content">
-        <p class="hero-tagline">Welcome to the future</p>
-        <h1 class="hero-title">Build Something<br><span class="gradient-text">Extraordinary</span></h1>
-        <p class="hero-description">Craft stunning digital experiences with elegance and precision. Your vision,
-          beautifully realized — pixel by pixel, line by line.</p>
-        <div class="hero-buttons">
-          <a href="#" class="btn btn-primary">Get Started <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M5 12h14"></path>
-              <path d="m12 5 7 7-7 7"></path>
-            </svg></a>
-          <a href="#" class="btn btn-secondary">Learn More</a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat">
-            <span class="stat-number">10K+</span>
-            <span class="stat-label">Users</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-number">99%</span>
-            <span class="stat-label">Satisfaction</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-number">24/7</span>
-            <span class="stat-label">Support</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-glow"></div>
-    </div>
-
-    <!-- ========== HERO ========== -->
     <section class="hero" id="hero">
       <div class="hero-bg">
         <div class="hero-glow hero-glow-1"></div>
@@ -1476,14 +932,16 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
           <div class="hero-actions">
             <a href="#download" class="btn btn-primary btn-lg">
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round"></path>
               </svg>
               Download for Mac
             </a>
             <a href="/assets/Mob Timer.dmg" download="" class="btn btn-ghost btn-lg">
               See features
               <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                  stroke-linejoin="round"></path>
               </svg>
             </a>
           </div>
@@ -1623,7 +1081,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
               <!-- Arrow -->
               <div class="flow-arrow">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                    stroke-linejoin="round"></path>
                 </svg>
               </div>
 
@@ -1728,7 +1187,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
           <div class="feature-card feature-card-large">
             <div class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M11 3C7.134 3 4 6.134 4 10s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7z" stroke="currentColor" stroke-width="1.5"></path>
+                <path d="M11 3C7.134 3 4 6.134 4 10s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7z" stroke="currentColor"
+                  stroke-width="1.5"></path>
                 <path d="M11 7v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
               </svg>
             </div>
@@ -1771,8 +1231,10 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
           <div class="feature-card">
             <div class="feature-icon">
               <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M4 11a7 7 0 0 1 7-7M18 11a7 7 0 0 1-7 7" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-                <path d="M15 7l3-3 1 4-4-1M7 15l-3 3-1-4 4 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                <path d="M4 11a7 7 0 0 1 7-7M18 11a7 7 0 0 1-7 7" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round"></path>
+                <path d="M15 7l3-3 1 4-4-1M7 15l-3 3-1-4 4 1" stroke="currentColor" stroke-width="1.5"
+                  stroke-linecap="round" stroke-linejoin="round"></path>
               </svg>
             </div>
             <h3>Turn Rotation</h3>
@@ -1859,7 +1321,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
                 <div class="app-ring-container">
                   <svg viewBox="0 0 100 100" class="app-ring-svg">
                     <circle cx="50" cy="50" r="42" class="app-ring-track"></circle>
-                    <circle cx="50" cy="50" r="42" class="app-ring-progress" id="step-ring-progress" style="--progress: 0.5"></circle>
+                    <circle cx="50" cy="50" r="42" class="app-ring-progress" id="step-ring-progress"
+                      style="--progress: 0.5"></circle>
                   </svg>
                   <div class="app-ring-inner">
                     <div class="app-ring-name">GABRIEL</div>
@@ -2199,31 +1662,36 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
               <ul class="compare-list">
                 <li class="compare-item good">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   Minimal, focused UI
                 </li>
                 <li class="compare-item good">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   Native SwiftUI app
                 </li>
                 <li class="compare-item good">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   Free forever
                 </li>
                 <li class="compare-item good">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   Real-time mob sync
                 </li>
                 <li class="compare-item good">
                   <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
+                      stroke-linejoin="round"></path>
                   </svg>
                   Designed for macOS
                 </li>
@@ -2242,7 +1710,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
       <div class="container">
         <div class="cta-content">
           <div class="cta-icon">
-            <img src="logo-large.png" alt="Mob Timer" width="72" height="72" style="filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5))">
+            <img src="logo-large.png" alt="Mob Timer" width="72" height="72"
+              style="filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5))">
           </div>
           <h2 class="cta-title">Start focusing today.</h2>
           <p class="cta-subtitle">
@@ -2250,7 +1719,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
           </p>
           <a href="#" id="download-btn" class="btn btn-cta">
             <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 1v11M4 8l5 5 5-5M2 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
+              <path d="M9 1v11M4 8l5 5 5-5M2 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round"></path>
             </svg>
             Download Mob Timer for macOS
           </a>
@@ -2555,7 +2025,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
             <div class="contact-details">
               <div class="contact-detail-item">
                 <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <rect x="2" y="4" width="20" height="16" rx="2"></rect>
                     <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                   </svg>
@@ -2567,7 +2038,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
               </div>
               <div class="contact-detail-item">
                 <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
                     <circle cx="12" cy="9" r="2.5"></circle>
                   </svg>
@@ -2579,7 +2051,8 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
               </div>
               <div class="contact-detail-item">
                 <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="12" cy="12" r="10"></circle>
                     <polyline points="12 6 12 12 16 14"></polyline>
                   </svg>
@@ -2609,17 +2082,20 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
               </div>
               <div class="form-group">
                 <label class="form-label" for="contact-message">Message</label>
-                <textarea class="form-input form-textarea" id="contact-message" rows="5" placeholder="Tell us more..." required=""></textarea>
+                <textarea class="form-input form-textarea" id="contact-message" rows="5" placeholder="Tell us more..."
+                  required=""></textarea>
               </div>
               <button type="submit" class="btn btn-primary btn-lg contact-submit">
                 <span class="contact-submit-text">Send Message</span>
-                <svg class="contact-submit-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="contact-submit-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                   <line x1="22" y1="2" x2="11" y2="13"></line>
                   <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                 </svg>
               </button>
               <div id="contact-success" class="contact-success">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                  stroke-linecap="round" stroke-linejoin="round">
                   <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
                   <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
@@ -2667,5 +2143,6 @@ if (klarHeroStats) klarHeroObserver.observe(klarHeroStats);</script>
     <script src="main.js"></script>
 
 
-  
-</body></html>
+
+  </body>
+</html>

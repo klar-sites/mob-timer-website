@@ -16,6 +16,354 @@
       rel="stylesheet">
   </head>
   <body>
+<script>// Contact form interaction
+const contactForm = document.getElementById('contact-form');
+if (contactForm) {
+  contactForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const submitBtn = contactForm.querySelector('.contact-submit');
+    const submitText = contactForm.querySelector('.contact-submit-text');
+    const successMsg = document.getElementById('contact-success');
+    
+    // Disable button and show loading state
+    submitBtn.disabled = true;
+    submitBtn.style.opacity = '0.7';
+    submitText.textContent = 'Sending...';
+    
+    // Simulate send delay
+    setTimeout(() => {
+      // Show success
+      successMsg.classList.add('visible');
+      submitText.textContent = 'Send Message';
+      submitBtn.style.opacity = '1';
+      submitBtn.disabled = false;
+      
+      // Reset form
+      contactForm.reset();
+      
+      // Hide success after 5s
+      setTimeout(() => {
+        successMsg.classList.remove('visible');
+      }, 5000);
+    }, 1500);
+  });
+}</script>
+<style>/* =============================================
+   CONTACT SECTION
+   ============================================= */
+
+.contact-section {
+  padding: 120px 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-section::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 800px;
+  height: 600px;
+  background: radial-gradient(
+    ellipse,
+    rgba(64, 140, 255, 0.06) 0%,
+    rgba(99, 102, 241, 0.03) 40%,
+    transparent 70%
+  );
+  filter: blur(60px);
+  pointer-events: none;
+}
+
+.contact-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+  position: relative;
+  z-index: 1;
+}
+
+.contact-info .section-tag {
+  display: inline-block;
+  margin-bottom: 20px;
+}
+
+.contact-info .section-title {
+  text-align: left;
+  margin-bottom: 20px;
+}
+
+.contact-desc {
+  font-size: 16px;
+  color: var(--text-2);
+  line-height: 1.7;
+  margin-bottom: 40px;
+  max-width: 420px;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contact-detail-item {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.contact-detail-icon {
+  width: 44px;
+  height: 44px;
+  background: rgba(64, 140, 255, 0.1);
+  border: 1px solid rgba(64, 140, 255, 0.2);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.contact-detail-item strong {
+  display: block;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.contact-detail-item span {
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+/* Form card */
+.contact-form-wrap {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-form-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.03) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  position: relative;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-2);
+  letter-spacing: -0.01em;
+}
+
+.form-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  font-size: 14px;
+  color: var(--text);
+  font-family: var(--font);
+  outline: none;
+  transition: all var(--transition);
+  -webkit-font-smoothing: antialiased;
+}
+
+.form-input::placeholder {
+  color: var(--text-3);
+}
+
+.form-input:hover {
+  border-color: var(--border-hover);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.form-input:focus {
+  border-color: var(--accent);
+  background: rgba(64, 140, 255, 0.04);
+  box-shadow: 0 0 0 3px rgba(64, 140, 255, 0.1);
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 120px;
+  line-height: 1.6;
+}
+
+.contact-submit {
+  align-self: flex-start;
+  margin-top: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.contact-submit-icon {
+  transition: transform var(--transition);
+}
+
+.contact-submit:hover .contact-submit-icon {
+  transform: translate(2px, -2px);
+}
+
+/* Success message */
+.contact-success {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  background: rgba(74, 222, 128, 0.08);
+  border: 1px solid rgba(74, 222, 128, 0.2);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--accent-green);
+  animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.contact-success.visible {
+  display: flex;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .contact-layout {
+    grid-template-columns: 1fr;
+    gap: 48px;
+  }
+  .contact-info .section-title {
+    text-align: center;
+  }
+  .contact-info .section-tag {
+    display: block;
+    text-align: center;
+  }
+  .contact-desc {
+    text-align: center;
+    margin: 0 auto 40px;
+  }
+  .contact-details {
+    align-items: center;
+  }
+}
+
+@media (max-width: 640px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  .contact-form-wrap {
+    padding: 24px;
+  }
+  .contact-submit {
+    width: 100%;
+    justify-content: center;
+  }
+}</style>
+<section id="contact" class="contact-section">
+  <div class="container">
+    <div class="contact-layout">
+      <div class="contact-info">
+        <span class="section-tag">Get in Touch</span>
+        <h2 class="section-title">Let's start a<br><span class="gradient-text">conversation</span></h2>
+        <p class="contact-desc">Have a question, feedback, or just want to say hello? We'd love to hear from you. Fill out the form and we'll get back to you shortly.</p>
+        <div class="contact-details">
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+            </div>
+            <div>
+              <strong>Email us</strong>
+              <span>hello@mobtimer.app</span>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+            </div>
+            <div>
+              <strong>Based in</strong>
+              <span>San Francisco, CA</span>
+            </div>
+          </div>
+          <div class="contact-detail-item">
+            <div class="contact-detail-icon">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <div>
+              <strong>Response time</strong>
+              <span>Within 24 hours</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form-wrap">
+        <form id="contact-form" class="contact-form" onsubmit="return false;">
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label" for="contact-name">Name</label>
+              <input class="form-input" type="text" id="contact-name" placeholder="Your name" required />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="contact-email">Email</label>
+              <input class="form-input" type="email" id="contact-email" placeholder="you@example.com" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-subject">Subject</label>
+            <input class="form-input" type="text" id="contact-subject" placeholder="What's this about?" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="contact-message">Message</label>
+            <textarea class="form-input form-textarea" id="contact-message" rows="5" placeholder="Tell us more..." required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg contact-submit">
+            <span class="contact-submit-text">Send Message</span>
+            <svg class="contact-submit-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+          </button>
+          <div id="contact-success" class="contact-success">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            <span>Message sent! We'll get back to you soon.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
     
     <!-- ========== NAV ========== -->
     <nav class="nav" id="nav">

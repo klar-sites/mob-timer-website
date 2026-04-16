@@ -1,1721 +1,1897 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nexova — Strategic Digital Solutions</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <style>
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        :root {
-            --nexova-primary: #4F46E5;
-            --nexova-primary-dark: #3730A3;
-            --nexova-primary-light: #818CF8;
-            --nexova-accent: #06B6D4;
-            --nexova-dark: #0F172A;
-            --nexova-dark-mid: #1E293B;
-            --nexova-dark-light: #334155;
-            --nexova-gray-100: #F1F5F9;
-            --nexova-gray-200: #E2E8F0;
-            --nexova-gray-300: #CBD5E1;
-            --nexova-gray-400: #94A3B8;
-            --nexova-gray-500: #64748B;
-            --nexova-gray-600: #475569;
-            --nexova-white: #FFFFFF;
-            --nexova-font: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            --nexova-transition: cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: var(--nexova-font);
-            color: var(--nexova-dark);
-            background: var(--nexova-white);
-            overflow-x: hidden;
-            line-height: 1.6;
-        }
-
-        /* ========== NAVIGATION ========== */
-        .nexova-navbar {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 1.25rem 0;
-            transition: all 0.4s var(--nexova-transition);
-            background: transparent;
-        }
-
-        .nexova-navbar.nexova-navbar--scrolled {
-            background: rgba(15, 23, 42, 0.95);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            padding: 0.75rem 0;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15);
-        }
-
-        .nexova-navbar__container {
-            max-width: 1280px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
-
-        .nexova-navbar__logo {
-            font-size: 1.75rem;
-            font-weight: 800;
-            color: var(--nexova-white);
-            text-decoration: none;
-            letter-spacing: -0.5px;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nexova-navbar__logo-icon {
-            width: 36px;
-            height: 36px;
-            background: linear-gradient(135deg, var(--nexova-primary), var(--nexova-accent));
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.1rem;
-        }
-
-        .nexova-navbar__links {
-            display: flex;
-            align-items: center;
-            gap: 2.25rem;
-            list-style: none;
-        }
-
-        .nexova-navbar__links a {
-            color: rgba(255, 255, 255, 0.8);
-            text-decoration: none;
-            font-size: 0.925rem;
-            font-weight: 500;
-            transition: color 0.3s;
-            position: relative;
-        }
-
-        .nexova-navbar__links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--nexova-primary-light);
-            transition: width 0.3s var(--nexova-transition);
-        }
-
-        .nexova-navbar__links a:hover {
-            color: var(--nexova-white);
-        }
-
-        .nexova-navbar__links a:hover::after {
-            width: 100%;
-        }
-
-        .nexova-navbar__cta {
-            background: var(--nexova-primary);
-            color: var(--nexova-white) !important;
-            padding: 0.6rem 1.5rem;
-            border-radius: 8px;
-            font-weight: 600 !important;
-            transition: background 0.3s, transform 0.2s !important;
-        }
-
-        .nexova-navbar__cta::after {
-            display: none !important;
-        }
-
-        .nexova-navbar__cta:hover {
-            background: var(--nexova-primary-dark);
-            transform: translateY(-1px);
-        }
-
-        .nexova-navbar__hamburger {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .nexova-navbar__hamburger span {
-            width: 26px;
-            height: 2.5px;
-            background: var(--nexova-white);
-            border-radius: 2px;
-            transition: all 0.3s;
-        }
-
-        /* ========== HERO SECTION ========== */
-        .nexova-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            background: var(--nexova-dark);
-        }
-
-        .nexova-hero__bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
-        }
-
-        .nexova-hero__gradient-orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.3;
-        }
-
-        .nexova-hero__gradient-orb--1 {
-            width: 600px;
-            height: 600px;
-            background: var(--nexova-primary);
-            top: -15%;
-            right: -10%;
-        }
-
-        .nexova-hero__gradient-orb--2 {
-            width: 500px;
-            height: 500px;
-            background: var(--nexova-accent);
-            bottom: -20%;
-            left: -10%;
-        }
-
-        .nexova-hero__gradient-orb--3 {
-            width: 300px;
-            height: 300px;
-            background: #A855F7;
-            top: 50%;
-            left: 40%;
-            transform: translate(-50%, -50%);
-        }
-
-        .nexova-hero__pattern {
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px);
-            background-size: 40px 40px;
-        }
-
-        .nexova-hero__content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 820px;
-            padding: 0 2rem;
-        }
-
-        .nexova-hero__badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: rgba(79, 70, 229, 0.15);
-            border: 1px solid rgba(79, 70, 229, 0.3);
-            color: var(--nexova-primary-light);
-            padding: 0.5rem 1.25rem;
-            border-radius: 100px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            margin-bottom: 2rem;
-            animation: nexovaFadeInDown 0.8s var(--nexova-transition) both;
-        }
-
-        .nexova-hero__badge i {
-            font-size: 0.75rem;
-        }
-
-        .nexova-hero__title {
-            font-size: clamp(2.5rem, 5.5vw, 4.25rem);
-            font-weight: 800;
-            color: var(--nexova-white);
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -1.5px;
-            animation: nexovaFadeInDown 0.8s 0.15s var(--nexova-transition) both;
-        }
-
-        .nexova-hero__title-highlight {
-            background: linear-gradient(135deg, var(--nexova-primary-light), var(--nexova-accent));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .nexova-hero__subtitle {
-            font-size: 1.2rem;
-            color: var(--nexova-gray-400);
-            max-width: 600px;
-            margin: 0 auto 2.5rem;
-            line-height: 1.7;
-            animation: nexovaFadeInDown 0.8s 0.3s var(--nexova-transition) both;
-        }
-
-        .nexova-hero__actions {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            flex-wrap: wrap;
-            animation: nexovaFadeInDown 0.8s 0.45s var(--nexova-transition) both;
-        }
-
-        .nexova-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: var(--nexova-primary);
-            color: var(--nexova-white);
-            padding: 0.95rem 2.25rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s var(--nexova-transition);
-            box-shadow: 0 4px 25px rgba(79, 70, 229, 0.4);
-        }
-
-        .nexova-btn-primary:hover {
-            background: var(--nexova-primary-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 8px 35px rgba(79, 70, 229, 0.5);
-        }
-
-        .nexova-btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.6rem;
-            background: rgba(255, 255, 255, 0.06);
-            color: var(--nexova-white);
-            padding: 0.95rem 2.25rem;
-            border-radius: 12px;
-            font-size: 1rem;
-            font-weight: 600;
-            text-decoration: none;
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            cursor: pointer;
-            transition: all 0.3s var(--nexova-transition);
-        }
-
-        .nexova-btn-secondary:hover {
-            background: rgba(255, 255, 255, 0.12);
-            transform: translateY(-2px);
-        }
-
-        .nexova-btn-secondary .nexova-play-icon {
-            width: 28px;
-            height: 28px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.65rem;
-        }
-
-        /* ========== TRUST STRIP ========== */
-        .nexova-trust {
-            padding: 4rem 0;
-            background: var(--nexova-gray-100);
-            border-top: 1px solid var(--nexova-gray-200);
-        }
-
-        .nexova-trust__label {
-            text-align: center;
-            font-size: 0.825rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            color: var(--nexova-gray-400);
-            margin-bottom: 2.5rem;
-        }
-
-        .nexova-trust__logos {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 3.5rem;
-            flex-wrap: wrap;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .nexova-trust__logo-item {
-            opacity: 0.3;
-            transition: opacity 0.3s;
-            font-size: 1.6rem;
-            font-weight: 800;
-            color: var(--nexova-gray-500);
-            letter-spacing: -0.5px;
-            user-select: none;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            filter: grayscale(100%);
-        }
-
-        .nexova-trust__logo-item:hover {
-            opacity: 0.55;
-        }
-
-        .nexova-trust__logo-item i {
-            font-size: 1.4rem;
-        }
-
-        /* ========== SERVICES TABS ========== */
-        .nexova-services {
-            padding: 7rem 0;
-            background: var(--nexova-white);
-        }
-
-        .nexova-section-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .nexova-section-header {
-            text-align: center;
-            margin-bottom: 4rem;
-        }
-
-        .nexova-section-tag {
-            display: inline-block;
-            font-size: 0.8rem;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            color: var(--nexova-primary);
-            margin-bottom: 1rem;
-        }
-
-        .nexova-section-title {
-            font-size: clamp(2rem, 3.5vw, 2.75rem);
-            font-weight: 800;
-            color: var(--nexova-dark);
-            letter-spacing: -1px;
-            margin-bottom: 1rem;
-        }
-
-        .nexova-section-desc {
-            font-size: 1.1rem;
-            color: var(--nexova-gray-500);
-            max-width: 550px;
-            margin: 0 auto;
-        }
-
-        .nexova-tabs__nav {
-            display: flex;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 3rem;
-            flex-wrap: wrap;
-        }
-
-        .nexova-tabs__btn {
-            padding: 0.85rem 1.75rem;
-            border: 2px solid var(--nexova-gray-200);
-            background: var(--nexova-white);
-            color: var(--nexova-gray-500);
-            border-radius: 12px;
-            font-size: 0.95rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s var(--nexova-transition);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nexova-tabs__btn:hover {
-            border-color: var(--nexova-primary-light);
-            color: var(--nexova-primary);
-        }
-
-        .nexova-tabs__btn.nexova-tabs__btn--active {
-            background: var(--nexova-primary);
-            border-color: var(--nexova-primary);
-            color: var(--nexova-white);
-            box-shadow: 0 4px 20px rgba(79, 70, 229, 0.3);
-        }
-
-        .nexova-tabs__content-wrapper {
-            position: relative;
-            min-height: 320px;
-        }
-
-        .nexova-tabs__panel {
-            display: none;
-            animation: nexovaTabFadeIn 0.5s var(--nexova-transition) both;
-        }
-
-        .nexova-tabs__panel.nexova-tabs__panel--active {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 3rem;
-            align-items: center;
-        }
-
-        .nexova-tabs__panel-text h3 {
-            font-size: 1.75rem;
-            font-weight: 700;
-            color: var(--nexova-dark);
-            margin-bottom: 1rem;
-            letter-spacing: -0.5px;
-        }
-
-        .nexova-tabs__panel-text p {
-            color: var(--nexova-gray-500);
-            font-size: 1.05rem;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .nexova-tabs__features {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.75rem;
-        }
-
-        .nexova-tabs__features li {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            font-size: 0.95rem;
-            color: var(--nexova-gray-600);
-            font-weight: 500;
-        }
-
-        .nexova-tabs__features li i {
-            color: var(--nexova-primary);
-            font-size: 0.8rem;
-            width: 22px;
-            height: 22px;
-            background: rgba(79, 70, 229, 0.1);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .nexova-tabs__panel-visual {
-            background: linear-gradient(135deg, var(--nexova-gray-100), rgba(79, 70, 229, 0.05));
-            border-radius: 20px;
-            padding: 3rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 320px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexova-tabs__panel-visual::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(var(--nexova-gray-300) 1px, transparent 1px);
-            background-size: 20px 20px;
-            opacity: 0.3;
-        }
-
-        .nexova-tabs__visual-icon {
-            position: relative;
-            font-size: 5rem;
-            color: var(--nexova-primary);
-            opacity: 0.2;
-        }
-
-        .nexova-tabs__visual-card {
-            position: relative;
-            background: var(--nexova-white);
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
-            width: 100%;
-            max-width: 320px;
-        }
-
-        .nexova-tabs__visual-card-icon {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            background: linear-gradient(135deg, var(--nexova-primary), var(--nexova-primary-light));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.25rem;
-            margin-bottom: 1rem;
-        }
-
-        .nexova-tabs__visual-card h4 {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--nexova-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .nexova-tabs__visual-card p {
-            font-size: 0.85rem;
-            color: var(--nexova-gray-400);
-            line-height: 1.6;
-        }
-
-        .nexova-tabs__visual-bar {
-            height: 6px;
-            background: var(--nexova-gray-200);
-            border-radius: 3px;
-            margin-top: 1rem;
-            overflow: hidden;
-        }
-
-        .nexova-tabs__visual-bar-fill {
-            height: 100%;
-            border-radius: 3px;
-            background: linear-gradient(90deg, var(--nexova-primary), var(--nexova-accent));
-            width: 0;
-            animation: nexovaBarFill 1.5s 0.3s var(--nexova-transition) forwards;
-        }
-
-        /* ========== STATS / COUNTERS ========== */
-        .nexova-stats {
-            padding: 6rem 0;
-            background: var(--nexova-dark);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexova-stats__bg-pattern {
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-
-        .nexova-stats__orb {
-            position: absolute;
-            width: 400px;
-            height: 400px;
-            border-radius: 50%;
-            filter: blur(100px);
-            opacity: 0.15;
-        }
-
-        .nexova-stats__orb--left {
-            background: var(--nexova-primary);
-            left: -200px;
-            top: -100px;
-        }
-
-        .nexova-stats__orb--right {
-            background: var(--nexova-accent);
-            right: -200px;
-            bottom: -100px;
-        }
-
-        .nexova-stats__grid {
-            position: relative;
-            z-index: 2;
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 2rem;
-        }
-
-        .nexova-stats__card {
-            text-align: center;
-            padding: 2.5rem 1.5rem;
-            border-radius: 16px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            transition: all 0.3s var(--nexova-transition);
-        }
-
-        .nexova-stats__card:hover {
-            background: rgba(255, 255, 255, 0.06);
-            transform: translateY(-4px);
-        }
-
-        .nexova-stats__card-icon {
-            width: 56px;
-            height: 56px;
-            margin: 0 auto 1.25rem;
-            border-radius: 14px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-        }
-
-        .nexova-stats__card:nth-child(1) .nexova-stats__card-icon {
-            background: rgba(79, 70, 229, 0.15);
-            color: var(--nexova-primary-light);
-        }
-        .nexova-stats__card:nth-child(2) .nexova-stats__card-icon {
-            background: rgba(6, 182, 212, 0.15);
-            color: var(--nexova-accent);
-        }
-        .nexova-stats__card:nth-child(3) .nexova-stats__card-icon {
-            background: rgba(168, 85, 247, 0.15);
-            color: #A855F7;
-        }
-        .nexova-stats__card:nth-child(4) .nexova-stats__card-icon {
-            background: rgba(34, 197, 94, 0.15);
-            color: #22C55E;
-        }
-
-        .nexova-stats__number {
-            font-size: 2.75rem;
-            font-weight: 800;
-            color: var(--nexova-white);
-            letter-spacing: -1px;
-            margin-bottom: 0.25rem;
-        }
-
-        .nexova-stats__label {
-            font-size: 0.95rem;
-            color: var(--nexova-gray-400);
-            font-weight: 500;
-        }
-
-        /* ========== TEAM SLIDER ========== */
-        .nexova-team {
-            padding: 7rem 0;
-            background: var(--nexova-gray-100);
-        }
-
-        .nexova-team__slider-container {
-            position: relative;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-            overflow: hidden;
-        }
-
-        .nexova-team__slider-track {
-            display: flex;
-            gap: 2rem;
-            transition: transform 0.5s var(--nexova-transition);
-        }
-
-        .nexova-team__card {
-            min-width: calc(25% - 1.5rem);
-            background: var(--nexova-white);
-            border-radius: 20px;
-            overflow: hidden;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-            transition: all 0.3s var(--nexova-transition);
-            border: 1px solid var(--nexova-gray-200);
-        }
-
-        .nexova-team__card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.1);
-        }
-
-        .nexova-team__card-img {
-            width: 100%;
-            height: 260px;
-            background: linear-gradient(135deg, var(--nexova-dark-mid), var(--nexova-dark));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexova-team__card-img::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-            background-size: 15px 15px;
-        }
-
-        .nexova-team__card-avatar {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--nexova-primary), var(--nexova-accent));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.25rem;
-            color: var(--nexova-white);
-            font-weight: 700;
-            position: relative;
-            z-index: 1;
-        }
-
-        .nexova-team__card-body {
-            padding: 1.75rem;
-            text-align: center;
-        }
-
-        .nexova-team__card-name {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--nexova-dark);
-            margin-bottom: 0.25rem;
-        }
-
-        .nexova-team__card-role {
-            font-size: 0.875rem;
-            color: var(--nexova-primary);
-            font-weight: 600;
-            margin-bottom: 1rem;
-        }
-
-        .nexova-team__card-bio {
-            font-size: 0.85rem;
-            color: var(--nexova-gray-500);
-            line-height: 1.6;
-            margin-bottom: 1.25rem;
-        }
-
-        .nexova-team__card-linkedin {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: rgba(79, 70, 229, 0.08);
-            color: var(--nexova-primary);
-            font-size: 1.1rem;
-            text-decoration: none;
-            transition: all 0.3s;
-        }
-
-        .nexova-team__card-linkedin:hover {
-            background: var(--nexova-primary);
-            color: var(--nexova-white);
-            transform: scale(1.05);
-        }
-
-        .nexova-team__slider-controls {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2.5rem;
-        }
-
-        .nexova-team__slider-btn {
-            width: 48px;
-            height: 48px;
-            border-radius: 12px;
-            border: 2px solid var(--nexova-gray-200);
-            background: var(--nexova-white);
-            color: var(--nexova-dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 1rem;
-        }
-
-        .nexova-team__slider-btn:hover {
-            background: var(--nexova-primary);
-            border-color: var(--nexova-primary);
-            color: var(--nexova-white);
-        }
-
-        .nexova-team__slider-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .nexova-team__slider-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--nexova-gray-300);
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s;
-        }
-
-        .nexova-team__slider-dot.nexova-team__slider-dot--active {
-            background: var(--nexova-primary);
-            width: 28px;
-            border-radius: 5px;
-        }
-
-        /* ========== MEGA FOOTER ========== */
-        .nexova-footer {
-            background: var(--nexova-dark);
-            padding: 5rem 0 0;
-        }
-
-        .nexova-footer__container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-
-        .nexova-footer__top {
-            display: grid;
-            grid-template-columns: 1.5fr repeat(4, 1fr);
-            gap: 3rem;
-            padding-bottom: 4rem;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        }
-
-        .nexova-footer__brand p {
-            color: var(--nexova-gray-500);
-            font-size: 0.9rem;
-            line-height: 1.7;
-            margin-top: 1rem;
-            max-width: 280px;
-        }
-
-        .nexova-footer__brand-logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--nexova-white);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .nexova-footer__brand-logo-icon {
-            width: 32px;
-            height: 32px;
-            background: linear-gradient(135deg, var(--nexova-primary), var(--nexova-accent));
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: var(--nexova-white);
-        }
-
-        .nexova-footer__socials {
-            display: flex;
-            gap: 0.75rem;
-            margin-top: 1.5rem;
-        }
-
-        .nexova-footer__social-link {
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--nexova-gray-400);
-            text-decoration: none;
-            transition: all 0.3s;
-            font-size: 0.95rem;
-        }
-
-        .nexova-footer__social-link:hover {
-            background: var(--nexova-primary);
-            color: var(--nexova-white);
-            transform: translateY(-2px);
-        }
-
-        .nexova-footer__column h4 {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--nexova-white);
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-
-        .nexova-footer__links {
-            list-style: none;
-            display: flex;
-            flex-direction: column;
-            gap: 0.85rem;
-        }
-
-        .nexova-footer__links a {
-            color: var(--nexova-gray-500);
-            text-decoration: none;
-            font-size: 0.9rem;
-            transition: all 0.3s;
-            display: flex;
-            align-items: center;
-            gap: 0;
-        }
-
-        .nexova-footer__links a:hover {
-            color: var(--nexova-white);
-            gap: 0.4rem;
-        }
-
-        .nexova-footer__links a::before {
-            content: '';
-            width: 0;
-            height: 1px;
-            background: var(--nexova-primary-light);
-            transition: width 0.3s;
-        }
-
-        .nexova-footer__links a:hover::before {
-            width: 12px;
-        }
-
-        .nexova-footer__bottom {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 2rem 0;
-            margin-top: 0;
-        }
-
-        .nexova-footer__bottom p {
-            color: var(--nexova-gray-600);
-            font-size: 0.85rem;
-        }
-
-        .nexova-footer__bottom-links {
-            display: flex;
-            gap: 2rem;
-        }
-
-        .nexova-footer__bottom-links a {
-            color: var(--nexova-gray-600);
-            font-size: 0.85rem;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-
-        .nexova-footer__bottom-links a:hover {
-            color: var(--nexova-gray-400);
-        }
-
-        /* ========== ANIMATIONS ========== */
-        @keyframes nexovaFadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(25px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes nexovaTabFadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(12px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes nexovaBarFill {
-            to {
-                width: var(--fill-width, 75%);
-            }
-        }
-
-        /* ========== RESPONSIVE ========== */
-        @media (max-width: 1024px) {
-            .nexova-tabs__panel.nexova-tabs__panel--active {
-                grid-template-columns: 1fr;
-                gap: 2rem;
-            }
-
-            .nexova-stats__grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nexova-team__card {
-                min-width: calc(50% - 1rem);
-            }
-
-            .nexova-footer__top {
-                grid-template-columns: 1fr 1fr;
-                gap: 2.5rem;
-            }
-
-            .nexova-footer__brand {
-                grid-column: 1 / -1;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nexova-navbar__links {
-                display: none;
-                position: absolute;
-                top: 100%;
-                left: 0;
-                width: 100%;
-                background: var(--nexova-dark);
-                flex-direction: column;
-                padding: 2rem;
-                gap: 1.25rem;
-                border-top: 1px solid rgba(255, 255, 255, 0.06);
-            }
-
-            .nexova-navbar__links.nexova-navbar__links--open {
-                display: flex;
-            }
-
-            .nexova-navbar__hamburger {
-                display: flex;
-            }
-
-            .nexova-tabs__nav {
-                gap: 0.4rem;
-            }
-
-            .nexova-tabs__btn {
-                padding: 0.65rem 1.1rem;
-                font-size: 0.85rem;
-            }
-
-            .nexova-stats__grid {
-                grid-template-columns: 1fr 1fr;
-                gap: 1rem;
-            }
-
-            .nexova-stats__number {
-                font-size: 2rem;
-            }
-
-            .nexova-team__card {
-                min-width: calc(85%);
-            }
-
-            .nexova-footer__top {
-                grid-template-columns: 1fr 1fr;
-                gap: 2rem;
-            }
-
-            .nexova-footer__bottom {
-                flex-direction: column;
-                gap: 1rem;
-                text-align: center;
-            }
-
-            .nexova-trust__logos {
-                gap: 2rem;
-            }
-
-            .nexova-trust__logo-item {
-                font-size: 1.3rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nexova-hero__actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .nexova-btn-primary,
-            .nexova-btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
-
-            .nexova-stats__grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nexova-footer__top {
-                grid-template-columns: 1fr;
-            }
-
-            .nexova-team__card {
-                min-width: 100%;
-            }
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aurelian — Fine Dining Experience</title>
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===========================
+       CSS CUSTOM PROPERTIES
+       =========================== */
+    :root {
+      /* Dark mode (default) */
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #12121a;
+      --text-primary: #f0ece2;
+      --text-secondary: #b8b2a6;
+      --accent: #c9a96e;
+      --accent-hover: #dbb978;
+      --glass-bg: rgba(255, 255, 255, 0.05);
+      --glass-border: rgba(255, 255, 255, 0.1);
+      --glass-shadow: rgba(0, 0, 0, 0.3);
+      --glass-blur: 20px;
+      --overlay: rgba(10, 10, 15, 0.6);
+      --input-bg: rgba(255, 255, 255, 0.05);
+      --input-border: rgba(255, 255, 255, 0.15);
+      --nav-bg: rgba(10, 10, 15, 0.8);
+      --card-hover-bg: rgba(255, 255, 255, 0.1);
+      --toggle-bg: rgba(255, 255, 255, 0.1);
+      --footer-bg: rgba(0, 0, 0, 0.3);
+    }
+
+    /* Light mode */
+    [data-theme="light"] {
+      --bg-primary: #f5f0e8;
+      --bg-secondary: #ebe5d9;
+      --text-primary: #1a1a2e;
+      --text-secondary: #555555;
+      --accent: #a07830;
+      --accent-hover: #b8923e;
+      --glass-bg: rgba(255, 255, 255, 0.45);
+      --glass-border: rgba(255, 255, 255, 0.6);
+      --glass-shadow: rgba(0, 0, 0, 0.1);
+      --glass-blur: 20px;
+      --overlay: rgba(245, 240, 232, 0.4);
+      --input-bg: rgba(255, 255, 255, 0.6);
+      --input-border: rgba(0, 0, 0, 0.1);
+      --nav-bg: rgba(245, 240, 232, 0.85);
+      --card-hover-bg: rgba(255, 255, 255, 0.65);
+      --toggle-bg: rgba(0, 0, 0, 0.08);
+      --footer-bg: rgba(0, 0, 0, 0.05);
+    }
+
+    /* ===========================
+       RESET & BASE STYLES
+       =========================== */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      font-size: 16px;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-primary);
+      color: var(--text-primary);
+      overflow-x: hidden;
+      transition: background-color 0.5s ease, color 0.5s ease;
+      line-height: 1.6;
+    }
+
+    h1, h2, h3, h4 {
+      font-family: 'Playfair Display', serif;
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    /* ===========================
+       SCROLLBAR STYLING
+       =========================== */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-primary);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--accent);
+      border-radius: 4px;
+    }
+
+    /* ===========================
+       ANIMATED BACKGROUND GRADIENT
+       =========================== */
+    .aurelian-bg-gradient {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: -1;
+      pointer-events: none;
+      overflow: hidden;
+    }
+
+    .aurelian-bg-gradient .aurelian-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(120px);
+      opacity: 0.15;
+      animation: aurelianFloat 20s ease-in-out infinite;
+    }
+
+    [data-theme="light"] .aurelian-bg-gradient .aurelian-orb {
+      opacity: 0.08;
+    }
+
+    .aurelian-orb--1 {
+      width: 600px;
+      height: 600px;
+      background: var(--accent);
+      top: -10%;
+      right: -10%;
+      animation-delay: 0s;
+    }
+
+    .aurelian-orb--2 {
+      width: 400px;
+      height: 400px;
+      background: #4a2c6e;
+      bottom: 10%;
+      left: -5%;
+      animation-delay: -7s;
+    }
+
+    .aurelian-orb--3 {
+      width: 300px;
+      height: 300px;
+      background: #2c6e5a;
+      top: 50%;
+      left: 40%;
+      animation-delay: -14s;
+    }
+
+    @keyframes aurelianFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(30px, -40px) scale(1.05); }
+      66% { transform: translate(-20px, 30px) scale(0.95); }
+    }
+
+    /* ===========================
+       NAVIGATION
+       =========================== */
+    .aurelian-nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 1000;
+      padding: 1rem 2rem;
+      transition: all 0.4s ease;
+      background: transparent;
+    }
+
+    .aurelian-nav.aurelian-nav--scrolled {
+      background: var(--nav-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border-bottom: 1px solid var(--glass-border);
+      padding: 0.7rem 2rem;
+    }
+
+    .aurelian-nav__container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .aurelian-nav__logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+
+    .aurelian-nav__links {
+      display: flex;
+      list-style: none;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .aurelian-nav__links a {
+      font-size: 0.9rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      transition: color 0.3s ease;
+      position: relative;
+    }
+
+    .aurelian-nav__links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+
+    .aurelian-nav__links a:hover {
+      color: var(--accent);
+    }
+
+    .aurelian-nav__links a:hover::after {
+      width: 100%;
+    }
+
+    /* Dark mode toggle button */
+    .aurelian-theme-toggle {
+      background: var(--toggle-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      padding: 0.5rem 0.65rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      color: var(--text-primary);
+      font-size: 1.1rem;
+    }
+
+    .aurelian-theme-toggle:hover {
+      background: var(--card-hover-bg);
+      transform: scale(1.1);
+    }
+
+    /* Mobile hamburger */
+    .aurelian-nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      z-index: 1001;
+      background: none;
+      border: none;
+      padding: 5px;
+    }
+
+    .aurelian-nav__hamburger span {
+      width: 25px;
+      height: 2px;
+      background: var(--text-primary);
+      transition: all 0.3s ease;
+      display: block;
+    }
+
+    .aurelian-nav__hamburger.active span:nth-child(1) {
+      transform: rotate(45deg) translate(5px, 5px);
+    }
+    .aurelian-nav__hamburger.active span:nth-child(2) {
+      opacity: 0;
+    }
+    .aurelian-nav__hamburger.active span:nth-child(3) {
+      transform: rotate(-45deg) translate(5px, -5px);
+    }
+
+    /* ===========================
+       GLASSMORPHISM UTILITY
+       =========================== */
+    .aurelian-glass {
+      background: var(--glass-bg);
+      backdrop-filter: blur(var(--glass-blur));
+      -webkit-backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--glass-border);
+      border-radius: 20px;
+      box-shadow: 0 8px 32px var(--glass-shadow);
+    }
+
+    /* ===========================
+       SECTION COMMON
+       =========================== */
+    .aurelian-section {
+      padding: 6rem 2rem;
+      max-width: 1300px;
+      margin: 0 auto;
+    }
+
+    .aurelian-section__title {
+      text-align: center;
+      font-size: 2.8rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    .aurelian-section__subtitle {
+      text-align: center;
+      font-size: 1rem;
+      color: var(--text-secondary);
+      margin-bottom: 3.5rem;
+      font-weight: 300;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .aurelian-section__divider {
+      width: 60px;
+      height: 2px;
+      background: var(--accent);
+      margin: 0.8rem auto 1.5rem;
+      border: none;
+    }
+
+    /* Scroll reveal animation */
+    .aurelian-reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+
+    .aurelian-reveal.aurelian-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===========================
+       HERO SECTION
+       =========================== */
+    .aurelian-hero {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .aurelian-hero__bg {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background:
+        linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.7) 100%),
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80') center/cover no-repeat;
+      transform: scale(1.05);
+      animation: aurelianHeroZoom 25s ease-in-out infinite alternate;
+    }
+
+    [data-theme="light"] .aurelian-hero__bg {
+      background:
+        linear-gradient(180deg, rgba(245,240,232,0.2) 0%, rgba(245,240,232,0.6) 100%),
+        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80') center/cover no-repeat;
+    }
+
+    @keyframes aurelianHeroZoom {
+      0% { transform: scale(1.05); }
+      100% { transform: scale(1.15); }
+    }
+
+    .aurelian-hero__content {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      padding: 2rem;
+    }
+
+    .aurelian-hero__badge {
+      display: inline-block;
+      font-size: 0.75rem;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 0.5rem 1.5rem;
+      border-radius: 50px;
+      margin-bottom: 2rem;
+      font-weight: 500;
+    }
+
+    .aurelian-hero__title {
+      font-size: clamp(3rem, 8vw, 7rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1rem;
+      color: #fff;
+      text-shadow: 0 2px 40px rgba(0,0,0,0.3);
+    }
+
+    [data-theme="light"] .aurelian-hero__title {
+      color: #1a1a2e;
+      text-shadow: none;
+    }
+
+    .aurelian-hero__title span {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .aurelian-hero__tagline {
+      font-size: 1.15rem;
+      color: rgba(255,255,255,0.8);
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      letter-spacing: 1px;
+    }
+
+    [data-theme="light"] .aurelian-hero__tagline {
+      color: var(--text-secondary);
+    }
+
+    .aurelian-hero__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.7rem;
+      padding: 1rem 2.5rem;
+      background: var(--accent);
+      color: #0a0a0f;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.4s ease;
+      text-decoration: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aurelian-hero__cta::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: rgba(255,255,255,0.2);
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      transition: width 0.6s ease, height 0.6s ease;
+    }
+
+    .aurelian-hero__cta:hover::before {
+      width: 300px;
+      height: 300px;
+    }
+
+    .aurelian-hero__cta:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 10px 40px rgba(201, 169, 110, 0.3);
+    }
+
+    .aurelian-hero__scroll {
+      position: absolute;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+      color: rgba(255,255,255,0.5);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      animation: aurelianBounce 2s ease-in-out infinite;
+    }
+
+    [data-theme="light"] .aurelian-hero__scroll {
+      color: var(--text-secondary);
+    }
+
+    .aurelian-hero__scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--accent), transparent);
+    }
+
+    @keyframes aurelianBounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(10px); }
+    }
+
+    /* ===========================
+       ABOUT SECTION
+       =========================== */
+    .aurelian-about {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    .aurelian-about__image-wrapper {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      aspect-ratio: 4/5;
+    }
+
+    .aurelian-about__image-wrapper img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease;
+    }
+
+    .aurelian-about__image-wrapper:hover img {
+      transform: scale(1.05);
+    }
+
+    .aurelian-about__image-overlay {
+      position: absolute;
+      bottom: 1.5rem;
+      left: 1.5rem;
+      padding: 1rem 1.5rem;
+      border-radius: 12px;
+    }
+
+    .aurelian-about__image-overlay span {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .aurelian-about__image-overlay small {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .aurelian-about__text h2 {
+      font-size: 2.5rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .aurelian-about__text .aurelian-about__accent {
+      color: var(--accent);
+      font-style: italic;
+    }
+
+    .aurelian-about__text p {
+      color: var(--text-secondary);
+      font-size: 1rem;
+      line-height: 1.8;
+      margin-bottom: 1.5rem;
+      font-weight: 300;
+    }
+
+    .aurelian-about__stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+
+    .aurelian-about__stat {
+      text-align: center;
+      padding: 1.2rem 1.5rem;
+      flex: 1;
+    }
+
+    .aurelian-about__stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--accent);
+      display: block;
+    }
+
+    .aurelian-about__stat-label {
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-top: 0.3rem;
+      display: block;
+    }
+
+    /* ===========================
+       MENU SECTION
+       =========================== */
+    .aurelian-menu__filters {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .aurelian-menu__filter-btn {
+      padding: 0.6rem 1.5rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 50px;
+      color: var(--text-secondary);
+      font-size: 0.85rem;
+      font-weight: 400;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+    }
+
+    .aurelian-menu__filter-btn:hover,
+    .aurelian-menu__filter-btn.active {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+    }
+
+    .aurelian-menu__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .aurelian-menu__item {
+      padding: 2rem;
+      transition: all 0.4s ease;
+      cursor: default;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aurelian-menu__item::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(201,169,110,0.03), transparent);
+      transition: left 0.6s ease;
+    }
+
+    .aurelian-menu__item:hover::before {
+      left: 100%;
+    }
+
+    .aurelian-menu__item:hover {
+      background: var(--card-hover-bg);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px var(--glass-shadow);
+    }
+
+    .aurelian-menu__item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 0.8rem;
+    }
+
+    .aurelian-menu__item-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .aurelian-menu__item-price {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--accent);
+      white-space: nowrap;
+      margin-left: 1rem;
+    }
+
+    .aurelian-menu__item-desc {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.6;
+      font-weight: 300;
+    }
+
+    .aurelian-menu__item-tags {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .aurelian-menu__item-tag {
+      font-size: 0.7rem;
+      padding: 0.25rem 0.7rem;
+      border-radius: 50px;
+      background: rgba(201, 169, 110, 0.1);
+      color: var(--accent);
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+    }
+
+    /* Hidden items (for filter) */
+    .aurelian-menu__item.aurelian-hidden {
+      display: none;
+    }
+
+    /* ===========================
+       GALLERY SECTION
+       =========================== */
+    .aurelian-gallery__grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: auto;
+      gap: 1rem;
+    }
+
+    .aurelian-gallery__item {
+      position: relative;
+      border-radius: 16px;
+      overflow: hidden;
+      cursor: pointer;
+      aspect-ratio: 1;
+    }
+
+    .aurelian-gallery__item:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+      aspect-ratio: auto;
+    }
+
+    .aurelian-gallery__item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s ease, filter 0.6s ease;
+    }
+
+    .aurelian-gallery__item:hover img {
+      transform: scale(1.1);
+      filter: brightness(0.7);
+    }
+
+    .aurelian-gallery__item-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(10, 10, 15, 0.5);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
+
+    .aurelian-gallery__item:hover .aurelian-gallery__item-overlay {
+      opacity: 1;
+    }
+
+    .aurelian-gallery__item-overlay span {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* ===========================
+       RESERVATIONS / CONTACT
+       =========================== */
+    .aurelian-contact {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+
+    .aurelian-contact__info {
+      padding: 3rem;
+    }
+
+    .aurelian-contact__info h3 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .aurelian-contact__info p {
+      color: var(--text-secondary);
+      font-weight: 300;
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+
+    .aurelian-contact__detail {
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .aurelian-contact__detail-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: rgba(201, 169, 110, 0.1);
+      color: var(--accent);
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .aurelian-contact__detail-text strong {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.2rem;
+    }
+
+    .aurelian-contact__detail-text span {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      font-weight: 300;
+    }
+
+    .aurelian-contact__hours {
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    .aurelian-contact__hours h4 {
+      font-size: 1rem;
+      margin-bottom: 0.8rem;
+      color: var(--accent);
+      letter-spacing: 1px;
+    }
+
+    .aurelian-contact__hours p {
+      margin-bottom: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    /* Contact form */
+    .aurelian-contact__form {
+      padding: 3rem;
+    }
+
+    .aurelian-contact__form h3 {
+      font-size: 1.8rem;
+      margin-bottom: 2rem;
+    }
+
+    .aurelian-form__group {
+      margin-bottom: 1.5rem;
+    }
+
+    .aurelian-form__group label {
+      display: block;
+      font-size: 0.8rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+    }
+
+    .aurelian-form__group input,
+    .aurelian-form__group textarea {
+      width: 100%;
+      padding: 0.9rem 1.2rem;
+      background: var(--input-bg);
+      border: 1px solid var(--input-border);
+      border-radius: 12px;
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      font-family: 'Inter', sans-serif;
+      transition: all 0.3s ease;
+      outline: none;
+    }
+
+    .aurelian-form__group input:focus,
+    .aurelian-form__group textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 20px rgba(201, 169, 110, 0.1);
+    }
+
+    .aurelian-form__group textarea {
+      height: 130px;
+      resize: vertical;
+    }
+
+    .aurelian-form__row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+    }
+
+    .aurelian-form__submit {
+      width: 100%;
+      padding: 1rem;
+      background: var(--accent);
+      color: #0a0a0f;
+      border: none;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-family: 'Inter', sans-serif;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .aurelian-form__submit:hover {
+      background: var(--accent-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 30px rgba(201, 169, 110, 0.3);
+    }
+
+    .aurelian-form__submit.aurelian-submitted {
+      background: #2ecc71;
+      pointer-events: none;
+    }
+
+    /* ===========================
+       FOOTER
+       =========================== */
+    .aurelian-footer {
+      background: var(--footer-bg);
+      border-top: 1px solid var(--glass-border);
+      padding: 3rem 2rem;
+      margin-top: 4rem;
+    }
+
+    .aurelian-footer__container {
+      max-width: 1300px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+    }
+
+    .aurelian-footer__logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+
+    .aurelian-footer__logo small {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.75rem;
+      font-weight: 300;
+      color: var(--text-secondary);
+      letter-spacing: 1px;
+      margin-top: 0.2rem;
+    }
+
+    .aurelian-footer__social {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .aurelian-footer__social-link {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 1.1rem;
+      transition: all 0.3s ease;
+    }
+
+    .aurelian-footer__social-link:hover {
+      background: var(--accent);
+      color: #0a0a0f;
+      border-color: var(--accent);
+      transform: translateY(-3px);
+    }
+
+    .aurelian-footer__copyright {
+      width: 100%;
+      text-align: center;
+      margin-top: 2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      font-size: 0.8rem;
+      font-weight: 300;
+    }
+
+    /* ===========================
+       MOBILE RESPONSIVE
+       =========================== */
+    @media (max-width: 992px) {
+      .aurelian-about {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .aurelian-about__image-wrapper {
+        aspect-ratio: 16/9;
+        max-height: 400px;
+      }
+
+      .aurelian-contact {
+        grid-template-columns: 1fr;
+      }
+
+      .aurelian-gallery__grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .aurelian-gallery__item:nth-child(1) {
+        grid-column: span 2;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .aurelian-nav__links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 75%;
+        max-width: 350px;
+        height: 100vh;
+        flex-direction: column;
+        justify-content: center;
+        gap: 2rem;
+        background: var(--bg-primary);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        border-left: 1px solid var(--glass-border);
+        transition: right 0.4s ease;
+        padding: 2rem;
+      }
+
+      .aurelian-nav__links.aurelian-nav--open {
+        right: 0;
+      }
+
+      .aurelian-nav__hamburger {
+        display: flex;
+      }
+
+      .aurelian-section {
+        padding: 4rem 1.5rem;
+      }
+
+      .aurelian-section__title {
+        font-size: 2rem;
+      }
+
+      .aurelian-menu__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aurelian-about__stats {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .aurelian-form__row {
+        grid-template-columns: 1fr;
+      }
+
+      .aurelian-gallery__grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .aurelian-gallery__item:nth-child(1) {
+        grid-column: span 2;
+      }
+
+      .aurelian-contact__info,
+      .aurelian-contact__form {
+        padding: 2rem;
+      }
+
+      .aurelian-footer__container {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .aurelian-hero__badge {
+        font-size: 0.65rem;
+        letter-spacing: 3px;
+      }
+
+      .aurelian-gallery__grid {
+        grid-template-columns: 1fr;
+      }
+
+      .aurelian-gallery__item:nth-child(1) {
+        grid-column: span 1;
+        grid-row: span 1;
+      }
+
+      .aurelian-gallery__item {
+        aspect-ratio: 16/10;
+      }
+    }
+
+    /* ===========================
+       LIGHTBOX OVERLAY
+       =========================== */
+    .aurelian-lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0,0,0,0.9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease;
+    }
+
+    .aurelian-lightbox.aurelian-lightbox--active {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .aurelian-lightbox img {
+      max-width: 90%;
+      max-height: 85vh;
+      border-radius: 12px;
+      transform: scale(0.9);
+      transition: transform 0.4s ease;
+    }
+
+    .aurelian-lightbox.aurelian-lightbox--active img {
+      transform: scale(1);
+    }
+
+    .aurelian-lightbox__close {
+      position: absolute;
+      top: 2rem;
+      right: 2rem;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255,255,255,0.1);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: 50%;
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .aurelian-lightbox__close:hover {
+      background: rgba(255,255,255,0.2);
+      transform: rotate(90deg);
+    }
+
+    /* ===========================
+       MOBILE NAV OVERLAY
+       =========================== */
+    .aurelian-nav-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+
+    .aurelian-nav-overlay.active {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
 </head>
 <body>
 
-    <!-- ========== NAVIGATION ========== -->
-    <nav class="nexova-navbar" id="nexovaNavbar">
-        <div class="nexova-navbar__container">
-            <a href="#" class="nexova-navbar__logo">
-                <span class="nexova-navbar__logo-icon"><i class="fas fa-bolt"></i></span>
-                Nexova
-            </a>
-            <ul class="nexova-navbar__links" id="nexovaNavLinks">
-                <li><a href="#nexova-services">Services</a></li>
-                <li><a href="#nexova-stats">Results</a></li>
-                <li><a href="#nexova-team">Team</a></li>
-                <li><a href="#nexova-footer">Contact</a></li>
-                <li><a href="#" class="nexova-navbar__cta">Get Started</a></li>
-            </ul>
-            <button class="nexova-navbar__hamburger" id="nexovaHamburger" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
+  <!-- Animated background orbs -->
+  <div class="aurelian-bg-gradient" aria-hidden="true">
+    <div class="aurelian-orb aurelian-orb--1"></div>
+    <div class="aurelian-orb aurelian-orb--2"></div>
+    <div class="aurelian-orb aurelian-orb--3"></div>
+  </div>
+
+  <!-- Mobile nav overlay -->
+  <div class="aurelian-nav-overlay" id="aurelianNavOverlay"></div>
+
+  <!-- ===========================
+       NAVIGATION
+       =========================== -->
+  <nav class="aurelian-nav" id="aurelianNav">
+    <div class="aurelian-nav__container">
+      <a href="#aurelianHero" class="aurelian-nav__logo">AURELIAN</a>
+      <ul class="aurelian-nav__links" id="aurelianNavLinks">
+        <li><a href="#aurelianAbout" class="aurelian-nav-link">About</a></li>
+        <li><a href="#aurelianMenu" class="aurelian-nav-link">Menu</a></li>
+        <li><a href="#aurelianGallery" class="aurelian-nav-link">Gallery</a></li>
+        <li><a href="#aurelianContact" class="aurelian-nav-link">Contact</a></li>
+        <li>
+          <button class="aurelian-theme-toggle" id="aurelianThemeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+            ☀️
+          </button>
+        </li>
+      </ul>
+      <button class="aurelian-nav__hamburger" id="aurelianHamburger" aria-label="Toggle navigation">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ===========================
+       HERO SECTION
+       =========================== -->
+  <section class="aurelian-hero" id="aurelianHero">
+    <div class="aurelian-hero__bg"></div>
+    <div class="aurelian-hero__content">
+      <span class="aurelian-hero__badge">✦ Michelin Starred ✦</span>
+      <h1 class="aurelian-hero__title">
+        The Art of<br><span>Fine Dining</span>
+      </h1>
+      <p class="aurelian-hero__tagline">Where culinary mastery meets timeless elegance</p>
+      <a href="#aurelianContact" class="aurelian-hero__cta">
+        Book a Table
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+      </a>
+    </div>
+    <div class="aurelian-hero__scroll">
+      SCROLL
+      <div class="aurelian-hero__scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       ABOUT SECTION
+       =========================== -->
+  <section class="aurelian-section" id="aurelianAbout">
+    <div class="aurelian-about">
+      <div class="aurelian-about__image-wrapper aurelian-reveal">
+        <img 
+          src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80" 
+          alt="Aurelian restaurant interior showing elegant dining area with warm lighting"
+          loading="lazy"
+        />
+        <div class="aurelian-about__image-overlay aurelian-glass">
+          <span>25+</span>
+          <small>Years of Excellence</small>
         </div>
-    </nav>
-
-    <!-- ========== HERO ========== -->
-    <section class="nexova-hero" id="nexova-hero">
-        <div class="nexova-hero__bg">
-            <div class="nexova-hero__gradient-orb nexova-hero__gradient-orb--1"></div>
-            <div class="nexova-hero__gradient-orb nexova-hero__gradient-orb--2"></div>
-            <div class="nexova-hero__gradient-orb nexova-hero__gradient-orb--3"></div>
-            <div class="nexova-hero__pattern"></div>
+      </div>
+      <div class="aurelian-about__text aurelian-reveal">
+        <p class="aurelian-section__subtitle" style="text-align:left; margin-bottom: 0.5rem;">Our Story</p>
+        <h2>A Legacy of <span class="aurelian-about__accent">Culinary</span> Passion</h2>
+        <hr class="aurelian-section__divider" style="margin-left:0;" />
+        <p>
+          Founded in 1998 by Chef Antoine Beaumont, Aurelian has become a beacon of gastronomic excellence in the heart of the city. Our philosophy is simple — source the finest ingredients, honor traditional techniques, and create unforgettable moments at every table.
+        </p>
+        <p>
+          Every dish tells a story of heritage and innovation, crafted with precision by our award-winning culinary team. From the first amuse-bouche to the final petit four, dining at Aurelian is a journey through flavor, texture, and artistry.
+        </p>
+        <div class="aurelian-about__stats">
+          <div class="aurelian-about__stat aurelian-glass">
+            <span class="aurelian-about__stat-number" data-count="2">0</span>
+            <span class="aurelian-about__stat-label">Michelin Stars</span>
+          </div>
+          <div class="aurelian-about__stat aurelian-glass">
+            <span class="aurelian-about__stat-number" data-count="50">0</span>
+            <span class="aurelian-about__stat-label">Expert Chefs</span>
+          </div>
+          <div class="aurelian-about__stat aurelian-glass">
+            <span class="aurelian-about__stat-number" data-count="12000">0</span>
+            <span class="aurelian-about__stat-label">Guests Monthly</span>
+          </div>
         </div>
-        <div class="nexova-hero__content">
-            <div class="nexova-hero__badge">
-                <i class="fas fa-sparkles"></i>
-                Now Offering AI-Powered Analytics
-            </div>
-            <h1 class="nexova-hero__title">
-                Transform Your Business<br>
-                With <span class="nexova-hero__title-highlight">Strategic Digital</span> Solutions
-            </h1>
-            <p class="nexova-hero__subtitle">
-                We partner with forward-thinking companies to design, build, and scale digital products that drive measurable growth and lasting impact.
-            </p>
-            <div class="nexova-hero__actions">
-                <a href="#" class="nexova-btn-primary">
-                    Request a Demo
-                    <i class="fas fa-arrow-right"></i>
-                </a>
-                <a href="#" class="nexova-btn-secondary">
-                    <span class="nexova-play-icon"><i class="fas fa-play"></i></span>
-                    Watch Video
-                </a>
-            </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       MENU SECTION
+       =========================== -->
+  <section class="aurelian-section" id="aurelianMenu">
+    <p class="aurelian-section__subtitle aurelian-reveal">Curated Selection</p>
+    <h2 class="aurelian-section__title aurelian-reveal">Our <span style="color:var(--accent); font-style:italic;">Menu</span></h2>
+    <hr class="aurelian-section__divider aurelian-reveal" />
+
+    <!-- Filter buttons -->
+    <div class="aurelian-menu__filters aurelian-reveal">
+      <button class="aurelian-menu__filter-btn active" data-filter="all">All</button>
+      <button class="aurelian-menu__filter-btn" data-filter="starters">Starters</button>
+      <button class="aurelian-menu__filter-btn" data-filter="mains">Mains</button>
+      <button class="aurelian-menu__filter-btn" data-filter="desserts">Desserts</button>
+    </div>
+
+    <!-- Menu items grid -->
+    <div class="aurelian-menu__grid" id="aurelianMenuGrid">
+      
+      <!-- Starters -->
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Seared Foie Gras</span>
+          <span class="aurelian-menu__item-price">$38</span>
         </div>
-    </section>
-
-    <!-- ========== TRUST STRIP ========== -->
-    <section class="nexova-trust">
-        <div class="nexova-trust__label">Trusted by industry leaders worldwide</div>
-        <div class="nexova-trust__logos">
-            <div class="nexova-trust__logo-item"><i class="fab fa-stripe"></i> Stripe</div>
-            <div class="nexova-trust__logo-item"><i class="fab fa-slack"></i> Slack</div>
-            <div class="nexova-trust__logo-item"><i class="fab fa-shopify"></i> Shopify</div>
-            <div class="nexova-trust__logo-item"><i class="fab fa-spotify"></i> Spotify</div>
-            <div class="nexova-trust__logo-item"><i class="fab fa-figma"></i> Figma</div>
-            <div class="nexova-trust__logo-item"><i class="fab fa-google"></i> Google</div>
+        <p class="aurelian-menu__item-desc">Pan-seared duck foie gras with caramelized fig compote, toasted brioche, and aged balsamic reduction</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Signature</span>
+          <span class="aurelian-menu__item-tag">Chef's Pick</span>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== SERVICES TABS ========== -->
-    <section class="nexova-services" id="nexova-services">
-        <div class="nexova-section-container">
-            <div class="nexova-section-header">
-                <span class="nexova-section-tag">What We Do</span>
-                <h2 class="nexova-section-title">Services Tailored to Your Needs</h2>
-                <p class="nexova-section-desc">Explore our comprehensive suite of services designed to accelerate your digital transformation journey.</p>
-            </div>
-
-            <div class="nexova-tabs__nav" id="nexovaTabsNav">
-                <button class="nexova-tabs__btn nexova-tabs__btn--active" data-nexova-tab="consulting">
-                    <i class="fas fa-lightbulb"></i> Consulting
-                </button>
-                <button class="nexova-tabs__btn" data-nexova-tab="audit">
-                    <i class="fas fa-search-plus"></i> Audit
-                </button>
-                <button class="nexova-tabs__btn" data-nexova-tab="development">
-                    <i class="fas fa-code"></i> Development
-                </button>
-                <button class="nexova-tabs__btn" data-nexova-tab="marketing">
-                    <i class="fas fa-chart-line"></i> Marketing
-                </button>
-            </div>
-
-            <div class="nexova-tabs__content-wrapper" id="nexovaTabsContent">
-                <!-- Consulting Panel -->
-                <div class="nexova-tabs__panel nexova-tabs__panel--active" data-nexova-panel="consulting">
-                    <div class="nexova-tabs__panel-text">
-                        <h3>Strategic Consulting</h3>
-                        <p>Our expert consultants work hand-in-hand with your leadership team to identify opportunities, eliminate bottlenecks, and craft a roadmap that aligns technology with your business goals.</p>
-                        <ul class="nexova-tabs__features">
-                            <li><i class="fas fa-check"></i> Digital transformation strategy</li>
-                            <li><i class="fas fa-check"></i> Technology stack assessment</li>
-                            <li><i class="fas fa-check"></i> Process optimization & automation</li>
-                            <li><i class="fas fa-check"></i> Change management support</li>
-                        </ul>
-                    </div>
-                    <div class="nexova-tabs__panel-visual">
-                        <div class="nexova-tabs__visual-card">
-                            <div class="nexova-tabs__visual-card-icon"><i class="fas fa-lightbulb"></i></div>
-                            <h4>Strategy Score</h4>
-                            <p>Your organization's digital maturity assessment</p>
-                            <div class="nexova-tabs__visual-bar">
-                                <div class="nexova-tabs__visual-bar-fill" style="--fill-width: 85%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Audit Panel -->
-                <div class="nexova-tabs__panel" data-nexova-panel="audit">
-                    <div class="nexova-tabs__panel-text">
-                        <h3>Comprehensive Audit</h3>
-                        <p>We conduct deep-dive audits across your digital ecosystem — from infrastructure security to UX performance — delivering actionable insights that reduce risk and improve efficiency.</p>
-                        <ul class="nexova-tabs__features">
-                            <li><i class="fas fa-check"></i> Security vulnerability assessment</li>
-                            <li><i class="fas fa-check"></i> Performance & scalability audit</li>
-                            <li><i class="fas fa-check"></i> Compliance & regulatory review</li>
-                            <li><i class="fas fa-check"></i> UX/UI heuristic evaluation</li>
-                        </ul>
-                    </div>
-                    <div class="nexova-tabs__panel-visual">
-                        <div class="nexova-tabs__visual-card">
-                            <div class="nexova-tabs__visual-card-icon" style="background: linear-gradient(135deg, #06B6D4, #22D3EE)"><i class="fas fa-shield-alt"></i></div>
-                            <h4>Security Rating</h4>
-                            <p>Real-time vulnerability & compliance tracking</p>
-                            <div class="nexova-tabs__visual-bar">
-                                <div class="nexova-tabs__visual-bar-fill" style="--fill-width: 92%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Development Panel -->
-                <div class="nexova-tabs__panel" data-nexova-panel="development">
-                    <div class="nexova-tabs__panel-text">
-                        <h3>Custom Development</h3>
-                        <p>From MVPs to enterprise platforms, our engineering team builds robust, scalable solutions using modern technologies and agile methodologies tailored to your unique requirements.</p>
-                        <ul class="nexova-tabs__features">
-                            <li><i class="fas fa-check"></i> Full-stack web & mobile development</li>
-                            <li><i class="fas fa-check"></i> Cloud-native architecture</li>
-                            <li><i class="fas fa-check"></i> API design & integration</li>
-                            <li><i class="fas fa-check"></i> CI/CD & DevOps automation</li>
-                        </ul>
-                    </div>
-                    <div class="nexova-tabs__panel-visual">
-                        <div class="nexova-tabs__visual-card">
-                            <div class="nexova-tabs__visual-card-icon" style="background: linear-gradient(135deg, #A855F7, #C084FC)"><i class="fas fa-code"></i></div>
-                            <h4>Sprint Velocity</h4>
-                            <p>Development progress & deployment frequency</p>
-                            <div class="nexova-tabs__visual-bar">
-                                <div class="nexova-tabs__visual-bar-fill" style="--fill-width: 78%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Marketing Panel -->
-                <div class="nexova-tabs__panel" data-nexova-panel="marketing">
-                    <div class="nexova-tabs__panel-text">
-                        <h3>Growth Marketing</h3>
-                        <p>Data-driven marketing strategies that attract, convert, and retain customers. We blend creativity with analytics to maximize your ROI across every digital channel.</p>
-                        <ul class="nexova-tabs__features">
-                            <li><i class="fas fa-check"></i> SEO & content marketing</li>
-                            <li><i class="fas fa-check"></i> Paid media & PPC management</li>
-                            <li><i class="fas fa-check"></i> Marketing automation & CRM</li>
-                            <li><i class="fas fa-check"></i> Analytics & conversion optimization</li>
-                        </ul>
-                    </div>
-                    <div class="nexova-tabs__panel-visual">
-                        <div class="nexova-tabs__visual-card">
-                            <div class="nexova-tabs__visual-card-icon" style="background: linear-gradient(135deg, #22C55E, #4ADE80)"><i class="fas fa-chart-line"></i></div>
-                            <h4>Growth Rate</h4>
-                            <p>Monthly traffic & conversion improvements</p>
-                            <div class="nexova-tabs__visual-bar">
-                                <div class="nexova-tabs__visual-bar-fill" style="--fill-width: 88%"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Truffle Velouté</span>
+          <span class="aurelian-menu__item-price">$28</span>
         </div>
-    </section>
-
-    <!-- ========== STATS ========== -->
-    <section class="nexova-stats" id="nexova-stats">
-        <div class="nexova-stats__bg-pattern"></div>
-        <div class="nexova-stats__orb nexova-stats__orb--left"></div>
-        <div class="nexova-stats__orb nexova-stats__orb--right"></div>
-        <div class="nexova-stats__grid">
-            <div class="nexova-stats__card">
-                <div class="nexova-stats__card-icon"><i class="fas fa-users"></i></div>
-                <div class="nexova-stats__number"><span class="nexova-counter" data-nexova-target="500">0</span>+</div>
-                <div class="nexova-stats__label">Clients Worldwide</div>
-            </div>
-            <div class="nexova-stats__card">
-                <div class="nexova-stats__card-icon"><i class="fas fa-server"></i></div>
-                <div class="nexova-stats__number"><span class="nexova-counter" data-nexova-target="99.9" data-nexova-decimal="true">0</span>%</div>
-                <div class="nexova-stats__label">Platform Uptime</div>
-            </div>
-            <div class="nexova-stats__card">
-                <div class="nexova-stats__card-icon"><i class="fas fa-project-diagram"></i></div>
-                <div class="nexova-stats__number"><span class="nexova-counter" data-nexova-target="1200">0</span>+</div>
-                <div class="nexova-stats__label">Projects Delivered</div>
-            </div>
-            <div class="nexova-stats__card">
-                <div class="nexova-stats__card-icon"><i class="fas fa-trophy"></i></div>
-                <div class="nexova-stats__number"><span class="nexova-counter" data-nexova-target="35">0</span>+</div>
-                <div class="nexova-stats__label">Industry Awards</div>
-            </div>
+        <p class="aurelian-menu__item-desc">Silky black truffle soup finished with crème fraîche, chive oil, and shaved Périgord truffle</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Vegetarian</span>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== TEAM SLIDER ========== -->
-    <section class="nexova-team" id="nexova-team">
-        <div class="nexova-section-container">
-            <div class="nexova-section-header">
-                <span class="nexova-section-tag">Our Team</span>
-                <h2 class="nexova-section-title">Meet the Experts</h2>
-                <p class="nexova-section-desc">A diverse team of strategists, designers, and engineers committed to your success.</p>
-            </div>
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Oysters Royale</span>
+          <span class="aurelian-menu__item-price">$42</span>
         </div>
-        <div class="nexova-team__slider-container" id="nexovaTeamSlider">
-            <div class="nexova-team__slider-track" id="nexovaTeamTrack">
-                <div class="nexova-team__card">
-                    <div class="nexova-team__card-img">
-                        <div class="nexova-team__card-avatar">SR</div>
-                    </div>
-                    <div class="nexova-team__card-body">
-                        <h3 class="nexova-team__card-name">Sarah Reynolds</h3>
-                        <p class="nexova-team__card-role">Chief Executive Officer</p>
-                        <p class="nexova-team__card-bio">15+ years leading digital transformation for Fortune 500 companies across three continents.</p>
-                        <a href="#" class="nexova-team__card-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="nexova-team__card">
-                    <div class="nexova-team__card-img">
-                        <div class="nexova-team__card-avatar" style="background: linear-gradient(135deg, #06B6D4, #0891B2)">MK</div>
-                    </div>
-                    <div class="nexova-team__card-body">
-                        <h3 class="nexova-team__card-name">Marcus Kim</h3>
-                        <p class="nexova-team__card-role">Head of Engineering</p>
-                        <p class="nexova-team__card-bio">Former Google engineer with deep expertise in cloud architecture and distributed systems.</p>
-                        <a href="#" class="nexova-team__card-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="nexova-team__card">
-                    <div class="nexova-team__card-img">
-                        <div class="nexova-team__card-avatar" style="background: linear-gradient(135deg, #A855F7, #7C3AED)">EP</div>
-                    </div>
-                    <div class="nexova-team__card-body">
-                        <h3 class="nexova-team__card-name">Elena Petrova</h3>
-                        <p class="nexova-team__card-role">Design Director</p>
-                        <p class="nexova-team__card-bio">Award-winning designer passionate about creating intuitive, user-centered digital experiences.</p>
-                        <a href="#" class="nexova-team__card-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-
-                <div class="nexova-team__card">
-                    <div class="nexova-team__card-img">
-                        <div class="nexova-team__card-avatar" style="background: linear-gradient(135deg, #22C55E, #16A34A)">JC</div>
-                    </div>
-                    <div class="nexova-team__card-body">
-                        <h3 class="nexova-team__card-name">James Chen</h3>
-                        <p class="nexova-team__card-role">VP of Strategy</p>
-                        <p class="nexova-team__card-bio">McKinsey alumnus specializing in data-driven growth strategies for B2B SaaS companies.</p>
-                        <a href="#" class="nexova-team__card-linkedin" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                    </div>
-                </div>
-            </div>
-            <div class="nexova-team__slider-controls">
-                <button class="nexova-team__slider-btn" id="nexovaSliderPrev" aria-label="Previous"><i class="fas fa-chevron-left"></i></button>
-                <div class="nexova-team__slider-dots" id="nexovaSliderDots">
-                    <button class="nexova-team__slider-dot nexova-team__slider-dot--active" data-nexova-slide="0" aria-label="Slide 1"></button>
-                    <button class="nexova-team__slider-dot" data-nexova-slide="1" aria-label="Slide 2"></button>
-                    <button class="nexova-team__slider-dot" data-nexova-slide="2" aria-label="Slide 3"></button>
-                    <button class="nexova-team__slider-dot" data-nexova-slide="3" aria-label="Slide 4"></button>
-                </div>
-                <button class="nexova-team__slider-btn" id="nexovaSliderNext" aria-label="Next"><i class="fas fa-chevron-right"></i></button>
-            </div>
+        <p class="aurelian-menu__item-desc">Six premium Gillardeau oysters served with champagne mignonette, lemon, and Oscietra caviar</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Seasonal</span>
         </div>
-    </section>
+      </div>
 
-    <!-- ========== MEGA FOOTER ========== -->
-    <footer class="nexova-footer" id="nexova-footer">
-        <div class="nexova-footer__container">
-            <div class="nexova-footer__top">
-                <div class="nexova-footer__brand">
-                    <div class="nexova-footer__brand-logo">
-                        <span class="nexova-footer__brand-logo-icon"><i class="fas fa-bolt"></i></span>
-                        Nexova
-                    </div>
-                    <p>Empowering businesses with intelligent digital solutions that drive growth, efficiency, and innovation at scale.</p>
-                    <div class="nexova-footer__socials">
-                        <a href="#" class="nexova-footer__social-link" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
-                        <a href="#" class="nexova-footer__social-link" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
-                        <a href="#" class="nexova-footer__social-link" aria-label="GitHub"><i class="fab fa-github"></i></a>
-                        <a href="#" class="nexova-footer__social-link" aria-label="Dribbble"><i class="fab fa-dribbble"></i></a>
-                    </div>
-                </div>
-
-                <div class="nexova-footer__column">
-                    <h4>Company</h4>
-                    <ul class="nexova-footer__links">
-                        <li><a href="#">About Us</a></li>
-                        <li><a href="#">Careers</a></li>
-                        <li><a href="#">Press Kit</a></li>
-                        <li><a href="#">Partners</a></li>
-                        <li><a href="#">Contact</a></li>
-                    </ul>
-                </div>
-
-                <div class="nexova-footer__column">
-                    <h4>Solutions</h4>
-                    <ul class="nexova-footer__links">
-                        <li><a href="#">Consulting</a></li>
-                        <li><a href="#">Development</a></li>
-                        <li><a href="#">Cloud Services</a></li>
-                        <li><a href="#">AI & Analytics</a></li>
-                        <li><a href="#">Cybersecurity</a></li>
-                    </ul>
-                </div>
-
-                <div class="nexova-footer__column">
-                    <h4>Resources</h4>
-                    <ul class="nexova-footer__links">
-                        <li><a href="#">Blog</a></li>
-                        <li><a href="#">Case Studies</a></li>
-                        <li><a href="#">Documentation</a></li>
-                        <li><a href="#">Webinars</a></li>
-                        <li><a href="#">Help Center</a></li>
-                    </ul>
-                </div>
-
-                <div class="nexova-footer__column">
-                    <h4>Legal</h4>
-                    <ul class="nexova-footer__links">
-                        <li><a href="#">Privacy Policy</a></li>
-                        <li><a href="#">Terms of Service</a></li>
-                        <li><a href="#">Cookie Policy</a></li>
-                        <li><a href="#">GDPR</a></li>
-                        <li><a href="#">Security</a></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div class="nexova-footer__bottom">
-                <p>&copy; 2025 Nexova. All rights reserved.</p>
-                <div class="nexova-footer__bottom-links">
-                    <a href="#">Privacy</a>
-                    <a href="#">Terms</a>
-                    <a href="#">Sitemap</a>
-                </div>
-            </div>
+      <!-- Mains -->
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Wagyu Beef Tenderloin</span>
+          <span class="aurelian-menu__item-price">$85</span>
         </div>
-    </footer>
+        <p class="aurelian-menu__item-desc">A5 Japanese Wagyu with roasted bone marrow, pommes purée, and red wine jus infused with thyme</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Signature</span>
+          <span class="aurelian-menu__item-tag">Premium</span>
+        </div>
+      </div>
 
-    <script>
-        // ========== STICKY NAVBAR ==========
-        const nexovaNavbar = document.getElementById('nexovaNavbar');
-        let nexovaLastScroll = 0;
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Pan-Roasted Dover Sole</span>
+          <span class="aurelian-menu__item-price">$68</span>
+        </div>
+        <p class="aurelian-menu__item-desc">Whole Dover sole meunière with brown butter, capers, lemon, parsley, and haricots verts</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Gluten Free</span>
+        </div>
+      </div>
 
-        window.addEventListener('scroll', () => {
-            const nexovaCurrentScroll = window.pageYOffset;
-            if (nexovaCurrentScroll > 50) {
-                nexovaNavbar.classList.add('nexova-navbar--scrolled');
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Herb-Crusted Rack of Lamb</span>
+          <span class="aurelian-menu__item-price">$72</span>
+        </div>
+        <p class="aurelian-menu__item-desc">New Zealand lamb rack with Provençal herb crust, ratatouille, and rosemary lamb jus</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Chef's Pick</span>
+        </div>
+      </div>
+
+      <!-- Desserts -->
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Valrhona Chocolate Soufflé</span>
+          <span class="aurelian-menu__item-price">$24</span>
+        </div>
+        <p class="aurelian-menu__item-desc">Warm dark chocolate soufflé with molten center, vanilla bean crème anglaise, and gold leaf</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Signature</span>
+          <span class="aurelian-menu__item-tag">20 Min Prep</span>
+        </div>
+      </div>
+
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Tarte Tatin</span>
+          <span class="aurelian-menu__item-price">$22</span>
+        </div>
+        <p class="aurelian-menu__item-desc">Classic caramelized apple tart with flaky puff pastry, Calvados cream, and salted caramel</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Classic</span>
+        </div>
+      </div>
+
+      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
+        <div class="aurelian-menu__item-header">
+          <span class="aurelian-menu__item-name">Lemon Posset</span>
+          <span class="aurelian-menu__item-price">$18</span>
+        </div>
+        <p class="aurelian-menu__item-desc">Silky lemon cream with lavender shortbread, fresh berries, and elderflower syrup</p>
+        <div class="aurelian-menu__item-tags">
+          <span class="aurelian-menu__item-tag">Light</span>
+          <span class="aurelian-menu__item-tag">Vegetarian</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ===========================
+       GALLERY SECTION
+       =========================== -->
+  <section class="aurelian-section" id="aurelianGallery">
+    <p class="aurelian-section__subtitle aurelian-reveal">Visual Journey</p>
+    <h2 class="aurelian-section__title aurelian-reveal">The <span style="color:var(--accent); font-style:italic;">Gallery</span></h2>
+    <hr class="aurelian-section__divider aurelian-reveal" />
+
+    <div class="aurelian-gallery__grid aurelian-reveal">
+      <div class="aurelian-gallery__item" data-caption="The Dining Room">
+        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" alt="Elegant restaurant dining room with warm ambient lighting" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>The Dining Room</span></div>
+      </div>
+      <div class="aurelian-gallery__item" data-caption="Signature Plating">
+        <img src="https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=600&q=80" alt="Beautifully plated fine dining dish" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>Signature Plating</span></div>
+      </div>
+      <div class="aurelian-gallery__item" data-caption="Our Cellar">
+        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt="Wine cellar with vintage bottles" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>Our Cellar</span></div>
+      </div>
+      <div class="aurelian-gallery__item" data-caption="Pastry Artistry">
+        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80" alt="Artisan pastry dessert creation" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>Pastry Artistry</span></div>
+      </div>
+      <div class="aurelian-gallery__item" data-caption="Fresh Ingredients">
+        <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&q=80" alt="Fresh seasonal ingredients arrangement" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>Fresh Ingredients</span></div>
+      </div>
+      <div class="aurelian-gallery__item" data-caption="The Bar">
+        <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80" alt="Stylish cocktail bar area" loading="lazy" />
+        <div class="aurelian-gallery__item-overlay"><span>The Bar</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       CONTACT SECTION
+       =========================== -->
+  <section class="aurelian-section" id="aurelianContact">
+    <p class="aurelian-section__subtitle aurelian-reveal">Get in Touch</p>
+    <h2 class="aurelian-section__title aurelian-reveal">Reserve Your <span style="color:var(--accent); font-style:italic;">Experience</span></h2>
+    <hr class="aurelian-section__divider aurelian-reveal" />
+
+    <div class="aurelian-contact aurelian-reveal">
+      <!-- Info card -->
+      <div class="aurelian-contact__info aurelian-glass">
+        <h3>Visit Us</h3>
+        <p>We'd love to welcome you. For reservations of 8 or more, please contact us directly.</p>
+
+        <div class="aurelian-contact__detail">
+          <div class="aurelian-contact__detail-icon">📍</div>
+          <div class="aurelian-contact__detail-text">
+            <strong>Address</strong>
+            <span>42 Rue de Rivoli, 75001 Paris, France</span>
+          </div>
+        </div>
+
+        <div class="aurelian-contact__detail">
+          <div class="aurelian-contact__detail-icon">📞</div>
+          <div class="aurelian-contact__detail-text">
+            <strong>Phone</strong>
+            <span>+33 1 42 96 12 34</span>
+          </div>
+        </div>
+
+        <div class="aurelian-contact__detail">
+          <div class="aurelian-contact__detail-icon">✉️</div>
+          <div class="aurelian-contact__detail-text">
+            <strong>Email</strong>
+            <span>reservations@aurelian.fr</span>
+          </div>
+        </div>
+
+        <div class="aurelian-contact__hours">
+          <h4>Opening Hours</h4>
+          <p>Monday — Friday: 12:00 PM – 2:30 PM / 7:00 PM – 11:00 PM</p>
+          <p>Saturday: 7:00 PM – 11:30 PM</p>
+          <p>Sunday: Closed</p>
+        </div>
+      </div>
+
+      <!-- Contact form -->
+      <div class="aurelian-contact__form aurelian-glass">
+        <h3>Make a Reservation</h3>
+        <form id="aurelianContactForm">
+          <div class="aurelian-form__row">
+            <div class="aurelian-form__group">
+              <label for="aurelianName">Full Name</label>
+              <input type="text" id="aurelianName" placeholder="John Doe" required />
+            </div>
+            <div class="aurelian-form__group">
+              <label for="aurelianEmail">Email</label>
+              <input type="email" id="aurelianEmail" placeholder="john@example.com" required />
+            </div>
+          </div>
+          <div class="aurelian-form__row">
+            <div class="aurelian-form__group">
+              <label for="aurelianDate">Preferred Date</label>
+              <input type="date" id="aurelianDate" required />
+            </div>
+            <div class="aurelian-form__group">
+              <label for="aurelianGuests">Guests</label>
+              <input type="number" id="aurelianGuests" placeholder="2" min="1" max="20" required />
+            </div>
+          </div>
+          <div class="aurelian-form__group">
+            <label for="aurelianMessage">Special Requests</label>
+            <textarea id="aurelianMessage" placeholder="Dietary requirements, celebrations, seating preferences..."></textarea>
+          </div>
+          <button type="submit" class="aurelian-form__submit" id="aurelianSubmitBtn">Request Reservation</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===========================
+       FOOTER
+       =========================== -->
+  <footer class="aurelian-footer">
+    <div class="aurelian-footer__container">
+      <div class="aurelian-footer__logo">
+        AURELIAN
+        <small>Fine Dining Since 1998</small>
+      </div>
+      <div class="aurelian-footer__social">
+        <a href="#" class="aurelian-footer__social-link" aria-label="Instagram" title="Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+        </a>
+        <a href="#" class="aurelian-footer__social-link" aria-label="Facebook" title="Facebook">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+        </a>
+        <a href="#" class="aurelian-footer__social-link" aria-label="Twitter / X" title="Twitter / X">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
+        </a>
+        <a href="#" class="aurelian-footer__social-link" aria-label="TripAdvisor" title="TripAdvisor">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="13.5" r="3.5"/><circle cx="17.5" cy="13.5" r="3.5"/><path d="M3 13.5A9.5 9.5 0 0 1 12 4a9.5 9.5 0 0 1 9 9.5"/><circle cx="6.5" cy="13.5" r="1.5"/><circle cx="17.5" cy="13.5" r="1.5"/></svg>
+        </a>
+      </div>
+      <p class="aurelian-footer__copyright">
+        © 2024 Aurelian Fine Dining. All rights reserved. Crafted with passion.
+      </p>
+    </div>
+  </footer>
+
+  <!-- Lightbox for gallery -->
+  <div class="aurelian-lightbox" id="aurelianLightbox">
+    <button class="aurelian-lightbox__close" id="aurelianLightboxClose" aria-label="Close lightbox">✕</button>
+    <img src="" alt="Gallery enlarged view" id="aurelianLightboxImg" />
+  </div>
+
+  <!-- ===========================
+       JAVASCRIPT
+       =========================== -->
+  <script>
+    (function() {
+      'use strict';
+
+      // ===========================
+      // DARK MODE TOGGLE
+      // ===========================
+      const themeToggle = document.getElementById('aurelianThemeToggle');
+      const root = document.documentElement;
+
+      // Check for saved theme preference or default to dark
+      const savedTheme = localStorage.getItem('aurelian-theme') || 'dark';
+      root.setAttribute('data-theme', savedTheme);
+      updateThemeIcon(savedTheme);
+
+      themeToggle.addEventListener('click', function() {
+        const current = root.getAttribute('data-theme');
+        const next = current === 'dark' ? 'light' : 'dark';
+        root.setAttribute('data-theme', next);
+        localStorage.setItem('aurelian-theme', next);
+        updateThemeIcon(next);
+      });
+
+      function updateThemeIcon(theme) {
+        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
+      }
+
+      // ===========================
+      // NAVIGATION SCROLL EFFECT
+      // ===========================
+      const nav = document.getElementById('aurelianNav');
+      let lastScroll = 0;
+
+      window.addEventListener('scroll', function() {
+        const scrollY = window.pageYOffset;
+        if (scrollY > 80) {
+          nav.classList.add('aurelian-nav--scrolled');
+        } else {
+          nav.classList.remove('aurelian-nav--scrolled');
+        }
+        lastScroll = scrollY;
+      });
+
+      // ===========================
+      // MOBILE NAVIGATION
+      // ===========================
+      const hamburger = document.getElementById('aurelianHamburger');
+      const navLinks = document.getElementById('aurelianNavLinks');
+      const navOverlay = document.getElementById('aurelianNavOverlay');
+
+      hamburger.addEventListener('click', function() {
+        hamburger.classList.toggle('active');
+        navLinks.classList.toggle('aurelian-nav--open');
+        navOverlay.classList.toggle('active');
+        document.body.style.overflow = navLinks.classList.contains('aurelian-nav--open') ? 'hidden' : '';
+      });
+
+      navOverlay.addEventListener('click', closeNav);
+
+      // Close mobile nav when a link is clicked
+      document.querySelectorAll('.aurelian-nav-link').forEach(function(link) {
+        link.addEventListener('click', closeNav);
+      });
+
+      function closeNav() {
+        hamburger.classList.remove('active');
+        navLinks.classList.remove('aurelian-nav--open');
+        navOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      // ===========================
+      // SCROLL REVEAL ANIMATION
+      // ===========================
+      const revealElements = document.querySelectorAll('.aurelian-reveal');
+
+      const revealObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            // Stagger children for grid items
+            const delay = entry.target.dataset.delay || 0;
+            setTimeout(function() {
+              entry.target.classList.add('aurelian-revealed');
+            }, delay);
+            revealObserver.unobserve(entry.target);
+          }
+        });
+      }, {
+        threshold: 0.1,
+        rootMargin: '0px 0px -50px 0px'
+      });
+
+      revealElements.forEach(function(el, i) {
+        // Add staggered delay for items in a grid
+        const parent = el.parentElement;
+        if (parent && (parent.classList.contains('aurelian-menu__grid'))) {
+          el.dataset.delay = i * 100;
+        }
+        revealObserver.observe(el);
+      });
+
+      // ===========================
+      // COUNTER ANIMATION (About Stats)
+      // ===========================
+      const statNumbers = document.querySelectorAll('.aurelian-about__stat-number[data-count]');
+
+      const counterObserver = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            animateCounter(entry.target);
+            counterObserver.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.5 });
+
+      statNumbers.forEach(function(el) {
+        counterObserver.observe(el);
+      });
+
+      function animateCounter(element) {
+        const target = parseInt(element.dataset.count);
+        const duration = 2000;
+        const startTime = performance.now();
+
+        function update(currentTime) {
+          const elapsed = currentTime - startTime;
+          const progress = Math.min(elapsed / duration, 1);
+
+          // Ease out cubic
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const current = Math.floor(eased * target);
+
+          // Format large numbers
+          if (target >= 1000) {
+            element.textContent = current.toLocaleString() + '+';
+          } else {
+            element.textContent = current;
+          }
+
+          if (progress < 1) {
+            requestAnimationFrame(update);
+          }
+        }
+
+        requestAnimationFrame(update);
+      }
+
+      // ===========================
+      // MENU FILTERING
+      // ===========================
+      const filterBtns = document.querySelectorAll('.aurelian-menu__filter-btn');
+      const menuItems = document.querySelectorAll('.aurelian-menu__item');
+
+      filterBtns.forEach(function(btn) {
+        btn.addEventListener('click', function() {
+          // Update active state
+          filterBtns.forEach(function(b) { b.classList.remove('active'); });
+          btn.classList.add('active');
+
+          const filter = btn.dataset.filter;
+
+          menuItems.forEach(function(item) {
+            if (filter === 'all' || item.dataset.category === filter) {
+              item.classList.remove('aurelian-hidden');
+              // Re-trigger animation
+              item.style.opacity = '0';
+              item.style.transform = 'translateY(20px)';
+              setTimeout(function() {
+                item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                item.style.opacity = '1';
+                item.style.transform = 'translateY(0)';
+              }, 50);
             } else {
-                nexovaNavbar.classList.remove('nexova-navbar--scrolled');
+              item.classList.add('aurelian-hidden');
             }
-            nexovaLastScroll = nexovaCurrentScroll;
+          });
         });
+      });
 
-        // ========== HAMBURGER MENU ==========
-        const nexovaHamburger = document.getElementById('nexovaHamburger');
-        const nexovaNavLinks = document.getElementById('nexovaNavLinks');
+      // ===========================
+      // GALLERY LIGHTBOX
+      // ===========================
+      const lightbox = document.getElementById('aurelianLightbox');
+      const lightboxImg = document.getElementById('aurelianLightboxImg');
+      const lightboxClose = document.getElementById('aurelianLightboxClose');
+      const galleryItems = document.querySelectorAll('.aurelian-gallery__item');
 
-        nexovaHamburger.addEventListener('click', () => {
-            nexovaNavLinks.classList.toggle('nexova-navbar__links--open');
+      galleryItems.forEach(function(item) {
+        item.addEventListener('click', function() {
+          const img = item.querySelector('img');
+          // Use higher resolution for lightbox
+          const src = img.src.replace('w=600', 'w=1200').replace('w=800', 'w=1600');
+          lightboxImg.src = src;
+          lightboxImg.alt = item.dataset.caption || 'Gallery image';
+          lightbox.classList.add('aurelian-lightbox--active');
+          document.body.style.overflow = 'hidden';
         });
+      });
 
-        // Close menu on link click
-        nexovaNavLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                nexovaNavLinks.classList.remove('nexova-navbar__links--open');
-            });
-        });
+      lightboxClose.addEventListener('click', closeLightbox);
+      lightbox.addEventListener('click', function(e) {
+        if (e.target === lightbox) closeLightbox();
+      });
 
-        // ========== TABS SYSTEM ==========
-        const nexovaTabButtons = document.querySelectorAll('.nexova-tabs__btn');
-        const nexovaTabPanels = document.querySelectorAll('.nexova-tabs__panel');
-
-        nexovaTabButtons.forEach(btn => {
-            btn.addEventListener('click', () => {
-                const nexovaTargetTab = btn.dataset.nexovaTab;
-
-                // Update buttons
-                nexovaTabButtons.forEach(b => b.classList.remove('nexova-tabs__btn--active'));
-                btn.classList.add('nexova-tabs__btn--active');
-
-                // Update panels
-                nexovaTabPanels.forEach(panel => {
-                    panel.classList.remove('nexova-tabs__panel--active');
-                    if (panel.dataset.nexovaPanel === nexovaTargetTab) {
-                        panel.classList.add('nexova-tabs__panel--active');
-                        // Re-trigger bar animation
-                        const bar = panel.querySelector('.nexova-tabs__visual-bar-fill');
-                        if (bar) {
-                            bar.style.animation = 'none';
-                            bar.offsetHeight; // Trigger reflow
-                            bar.style.animation = 'nexovaBarFill 1.5s 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards';
-                        }
-                    }
-                });
-            });
-        });
-
-        // ========== ANIMATED COUNTERS ==========
-        const nexovaCounters = document.querySelectorAll('.nexova-counter');
-        let nexovaCountersStarted = false;
-
-        function nexovaAnimateCounters() {
-            nexovaCounters.forEach(counter => {
-                const nexovaTarget = parseFloat(counter.dataset.nexovaTarget);
-                const nexovaIsDecimal = counter.dataset.nexovaDecimal === 'true';
-                const nexovaDuration = 2000;
-                const nexovaStep = 16;
-                const nexovaTotalSteps = nexovaDuration / nexovaStep;
-                let nexovaCurrentStep = 0;
-
-                const nexovaTimer = setInterval(() => {
-                    nexovaCurrentStep++;
-                    const nexovaProgress = nexovaCurrentStep / nexovaTotalSteps;
-                    // Ease out cubic
-                    const nexovaEasedProgress = 1 - Math.pow(1 - nexovaProgress, 3);
-                    const nexovaCurrentValue = nexovaTarget * nexovaEasedProgress;
-
-                    if (nexovaIsDecimal) {
-                        counter.textContent = nexovaCurrentValue.toFixed(1);
-                    } else {
-                        counter.textContent = Math.floor(nexovaCurrentValue).toLocaleString();
-                    }
-
-                    if (nexovaCurrentStep >= nexovaTotalSteps) {
-                        if (nexovaIsDecimal) {
-                            counter.textContent = nexovaTarget.toFixed(1);
-                        } else {
-                            counter.textContent = nexovaTarget.toLocaleString();
-                        }
-                        clearInterval(nexovaTimer);
-                    }
-                }, nexovaStep);
-            });
+      // Close with Escape key
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') {
+          closeLightbox();
+          closeNav();
         }
+      });
 
-        // Intersection Observer for counters
-        const nexovaStatsSection = document.getElementById('nexova-stats');
-        const nexovaStatsObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !nexovaCountersStarted) {
-                    nexovaCountersStarted = true;
-                    nexovaAnimateCounters();
-                }
-            });
-        }, { threshold: 0.3 });
+      function closeLightbox() {
+        lightbox.classList.remove('aurelian-lightbox--active');
+        document.body.style.overflow = '';
+      }
 
-        nexovaStatsObserver.observe(nexovaStatsSection);
+      // ===========================
+      // CONTACT FORM HANDLING
+      // ===========================
+      const contactForm = document.getElementById('aurelianContactForm');
+      const submitBtn = document.getElementById('aurelianSubmitBtn');
 
-        // ========== TEAM SLIDER ==========
-        const nexovaTrack = document.getElementById('nexovaTeamTrack');
-        const nexovaPrevBtn = document.getElementById('nexovaSliderPrev');
-        const nexovaNextBtn = document.getElementById('nexovaSliderNext');
-        const nexovaDots = document.querySelectorAll('.nexova-team__slider-dot');
-        const nexovaCards = document.querySelectorAll('.nexova-team__card');
-        let nexovaCurrentSlide = 0;
+      contactForm.addEventListener('submit', function(e) {
+        e.preventDefault();
 
-        function nexovaGetSlidesVisible() {
-            if (window.innerWidth <= 480) return 1;
-            if (window.innerWidth <= 1024) return 2;
-            return 4;
+        // Simple validation visual feedback
+        const inputs = contactForm.querySelectorAll('input[required], textarea');
+        let valid = true;
+
+        inputs.forEach(function(input) {
+          if (!input.value.trim()) {
+            input.style.borderColor = '#e74c3c';
+            valid = false;
+            setTimeout(function() {
+              input.style.borderColor = '';
+            }, 2000);
+          }
+        });
+
+        if (!valid) return;
+
+        // Simulate form submission
+        submitBtn.textContent = 'Sending...';
+        submitBtn.disabled = true;
+
+        setTimeout(function() {
+          submitBtn.textContent = '✓ Reservation Requested!';
+          submitBtn.classList.add('aurelian-submitted');
+          contactForm.reset();
+
+          // Reset button after 3 seconds
+          setTimeout(function() {
+            submitBtn.textContent = 'Request Reservation';
+            submitBtn.classList.remove('aurelian-submitted');
+            submitBtn.disabled = false;
+          }, 3000);
+        }, 1500);
+      });
+
+      // ===========================
+      // PARALLAX EFFECT ON HERO
+      // ===========================
+      const heroBg = document.querySelector('.aurelian-hero__bg');
+
+      window.addEventListener('scroll', function() {
+        if (window.pageYOffset < window.innerHeight) {
+          const offset = window.pageYOffset * 0.3;
+          heroBg.style.transform = 'scale(1.05) translateY(' + offset + 'px)';
         }
+      });
 
-        function nexovaGetMaxSlide() {
-            const visible = nexovaGetSlidesVisible();
-            return Math.max(0, nexovaCards.length - visible);
-        }
+      // ===========================
+      // SET MINIMUM DATE FOR FORM
+      // ===========================
+      const dateInput = document.getElementById('aurelianDate');
+      if (dateInput) {
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.setAttribute('min', today);
+      }
 
-        function nexovaUpdateSlider() {
-            const nexovaSliderContainer = document.getElementById('nexovaTeamSlider');
-            const containerWidth = nexovaSliderContainer.offsetWidth - 64; // padding
-            const visible = nexovaGetSlidesVisible();
-            const gap = 32; // 2rem
-            const cardWidth = (containerWidth - (gap * (visible - 1))) / visible;
-            const offset = nexovaCurrentSlide * (cardWidth + gap);
-
-            nexovaTrack.style.transform = `translateX(-${offset}px)`;
-
-            nexovaDots.forEach((dot, i) => {
-                dot.classList.toggle('nexova-team__slider-dot--active', i === nexovaCurrentSlide);
-            });
-        }
-
-        nexovaNextBtn.addEventListener('click', () => {
-            const maxSlide = nexovaGetMaxSlide();
-            nexovaCurrentSlide = nexovaCurrentSlide >= maxSlide ? 0 : nexovaCurrentSlide + 1;
-            nexovaUpdateSlider();
+      // ===========================
+      // RIPPLE EFFECT ON CTA BUTTON
+      // ===========================
+      const ctaBtn = document.querySelector('.aurelian-hero__cta');
+      if (ctaBtn) {
+        ctaBtn.addEventListener('mouseenter', function(e) {
+          const rect = ctaBtn.getBoundingClientRect();
+          const x = e.clientX - rect.left;
+          const y = e.clientY - rect.top;
+          ctaBtn.style.setProperty('--ripple-x', x + 'px');
+          ctaBtn.style.setProperty('--ripple-y', y + 'px');
         });
+      }
 
-        nexovaPrevBtn.addEventListener('click', () => {
-            const maxSlide = nexovaGetMaxSlide();
-            nexovaCurrentSlide = nexovaCurrentSlide <= 0 ? maxSlide : nexovaCurrentSlide - 1;
-            nexovaUpdateSlider();
-        });
-
-        nexovaDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                nexovaCurrentSlide = parseInt(dot.dataset.nexovaSlide);
-                const maxSlide = nexovaGetMaxSlide();
-                if (nexovaCurrentSlide > maxSlide) nexovaCurrentSlide = maxSlide;
-                nexovaUpdateSlider();
-            });
-        });
-
-        window.addEventListener('resize', () => {
-            const maxSlide = nexovaGetMaxSlide();
-            if (nexovaCurrentSlide > maxSlide) nexovaCurrentSlide = maxSlide;
-            nexovaUpdateSlider();
-        });
-
-        // Smooth scroll for nav links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                const targetId = this.getAttribute('href');
-                if (targetId === '#') return;
-                const targetEl = document.querySelector(targetId);
-                if (targetEl) {
-                    e.preventDefault();
-                    targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-    </script>
+    })();
+  </script>
 </body>
 </html>

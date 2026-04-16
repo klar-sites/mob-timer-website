@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Clarity Coaching | 1:1 Coaching & Group Programs</title>
+  <meta
+    name="description"
+    content="A calm, professional coaching website for 1:1 sessions and group programs with testimonials, blog, and booking forms."
+  />
+  <style>
+    :root {
+      --clarity-bg: #f7fbfa;
+      --clarity-surface: #ffffff;
+      --clarity-surface-soft: #eef6f3;
+      --clarity-primary: #5f8f8a;
+      --clarity-primary-dark: #446d68;
+      --clarity-secondary: #8aa9c5;
+      --clarity-accent: #d88f6a;
+      --clarity-text: #24323a;
+      --clarity-text-soft: #5f6f77;
+      --clarity-border: #dbe7e4;
+      --clarity-shadow: 0 18px 45px rgba(42, 74, 77, 0.10);
+      --clarity-radius-lg: 24px;
+      --clarity-radius-md: 16px;
+      --clarity-radius-sm: 12px;
+      --clarity-max: 1180px;
+      --clarity-transition: 0.28s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--clarity-text);
+      background:
+        radial-gradient(circle at top right, rgba(138, 169, 197, 0.18), transparent 28%),
+        radial-gradient(circle at left center, rgba(95, 143, 138, 0.12), transparent 24%),
+        var(--clarity-bg);
+      line-height: 1.6;
+    }
+
+    img {
+      max-width: 100%;
+      display: block;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button,
+    input,
+    textarea,
+    select {
+      font: inherit;
+    }
+
+    .clarity-container {
+      width: min(calc(100% - 2rem), var(--clarity-max));
+      margin: 0 auto;
+    }
+
+    .clarity-section {
+      padding: 5.5rem 0;
+    }
+
+    .clarity-section-heading {
+      max-width: 700px;
+      margin-bottom: 2.25rem;
+    }
+
+    .clarity-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 999px;
+      background: rgba(95, 143, 138, 0.12);
+      color: var(--clarity-primary-dark);
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      margin-bottom: 1rem;
+    }
+
+    .clarity-kicker::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--clarity-accent);
+    }
+
+    h1, h2, h3, h4 {
+      font-family: Georgia, "Times New Roman", serif;
+      line-height: 1.15;
+      margin: 0 0 1rem;
+      color: #203039;
+    }
+
+    h1 {
+      font-size: clamp(2.5rem, 6vw, 4.7rem);
+      letter-spacing: -0.03em;
+    }
+
+    h2 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      letter-spacing: -0.02em;
+    }
+
+    h3 {
+      font-size: 1.45rem;
+    }
+
+    p {
+      margin: 0 0 1rem;
+      color: var(--clarity-text-soft);
+    }
+
+    .clarity-lead {
+      font-size: 1.08rem;
+      max-width: 62ch;
+    }
+
+    .clarity-site-header {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      backdrop-filter: blur(16px);
+      background: rgba(247, 251, 250, 0.84);
+      border-bottom: 1px solid rgba(219, 231, 228, 0.8);
+    }
+
+    .clarity-nav-wrap {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 76px;
+      gap: 1rem;
+    }
+
+    .clarity-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      font-weight: 700;
+      color: var(--clarity-text);
+      flex-shrink: 0;
+    }
+
+    .clarity-brand-mark {
+      width: 42px;
+      height: 42px;
+      border-radius: 14px;
+      display: grid;
+      place-items: center;
+      color: white;
+      font-family: Georgia, serif;
+      font-size: 1.15rem;
+      background: linear-gradient(135deg, var(--clarity-primary), var(--clarity-secondary));
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .clarity-nav a {
+      padding: 0.75rem 0.95rem;
+      border-radius: 999px;
+      color: var(--clarity-text-soft);
+      font-weight: 600;
+      transition: background var(--clarity-transition), color var(--clarity-transition), transform var(--clarity-transition);
+    }
+
+    .clarity-nav a:hover,
+    .clarity-nav a:focus-visible {
+      background: rgba(95, 143, 138, 0.10);
+      color: var(--clarity-primary-dark);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .clarity-nav .clarity-nav-cta {
+      background: var(--clarity-accent);
+      color: #fff;
+      box-shadow: 0 10px 20px rgba(216, 143, 106, 0.22);
+    }
+
+    .clarity-nav .clarity-nav-cta:hover,
+    .clarity-nav .clarity-nav-cta:focus-visible {
+      background: #c77d59;
+      color: #fff;
+    }
+
+    .clarity-mobile-toggle {
+      display: none;
+      border: 0;
+      background: var(--clarity-surface);
+      color: var(--clarity-primary-dark);
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      box-shadow: var(--clarity-shadow);
+      cursor: pointer;
+    }
+
+    .clarity-hero {
+      padding: 4rem 0 3rem;
+    }
+
+    .clarity-hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.95fr;
+      gap: 2rem;
+      align-items: center;
+    }
+
+    .clarity-hero-copy {
+      padding-right: 1rem;
+    }
+
+    .clarity-hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.9rem;
+      margin: 1.7rem 0 1.4rem;
+    }
+
+    .clarity-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      min-height: 50px;
+      padding: 0.95rem 1.3rem;
+      border-radius: 999px;
+      border: 1px solid transparent;
+      font-weight: 700;
+      transition: transform var(--clarity-transition), box-shadow var(--clarity-transition), background var(--clarity-transition);
+      cursor: pointer;
+    }
+
+    .clarity-button:hover,
+    .clarity-button:focus-visible {
+      transform: translateY(-2px);
+      outline: none;
+    }
+
+    .clarity-button-primary {
+      background: var(--clarity-primary);
+      color: #fff;
+      box-shadow: 0 12px 24px rgba(95, 143, 138, 0.24);
+    }
+
+    .clarity-button-primary:hover,
+    .clarity-button-primary:focus-visible {
+      background: var(--clarity-primary-dark);
+    }
+
+    .clarity-button-secondary {
+      background: var(--clarity-surface);
+      color: var(--clarity-primary-dark);
+      border-color: var(--clarity-border);
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1rem;
+      margin-top: 2rem;
+    }
+
+    .clarity-stat-card {
+      background: rgba(255,255,255,0.76);
+      border: 1px solid rgba(219, 231, 228, 0.9);
+      border-radius: var(--clarity-radius-md);
+      padding: 1.1rem;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-stat-card strong {
+      display: block;
+      font-size: 1.5rem;
+      color: var(--clarity-primary-dark);
+      margin-bottom: 0.2rem;
+    }
+
+    .clarity-hero-visual {
+      position: relative;
+    }
+
+    .clarity-hero-photo {
+      position: relative;
+      overflow: hidden;
+      border-radius: 30px;
+      box-shadow: var(--clarity-shadow);
+      background: linear-gradient(145deg, #dceceb, #e9f0f5);
+      min-height: 640px;
+    }
+
+    .clarity-hero-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .clarity-floating-card {
+      position: absolute;
+      right: -1rem;
+      bottom: 1.5rem;
+      max-width: 290px;
+      background: rgba(255,255,255,0.93);
+      border: 1px solid rgba(219, 231, 228, 0.95);
+      border-radius: 22px;
+      padding: 1.25rem;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-floating-card h3 {
+      font-size: 1.1rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .clarity-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.4rem;
+    }
+
+    .clarity-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+
+    .clarity-card {
+      background: var(--clarity-surface);
+      border: 1px solid var(--clarity-border);
+      border-radius: var(--clarity-radius-lg);
+      padding: 1.6rem;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-service-card {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .clarity-icon-badge {
+      width: 54px;
+      height: 54px;
+      border-radius: 16px;
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      background: rgba(138, 169, 197, 0.16);
+      margin-bottom: 1rem;
+    }
+
+    .clarity-service-list,
+    .clarity-about-list,
+    .clarity-contact-list {
+      padding: 0;
+      margin: 1rem 0 0;
+      list-style: none;
+    }
+
+    .clarity-service-list li,
+    .clarity-about-list li,
+    .clarity-contact-list li {
+      position: relative;
+      padding-left: 1.4rem;
+      margin-bottom: 0.6rem;
+      color: var(--clarity-text-soft);
+    }
+
+    .clarity-service-list li::before,
+    .clarity-about-list li::before,
+    .clarity-contact-list li::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--clarity-accent);
+      font-weight: 800;
+    }
+
+    .clarity-about-panel {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      gap: 1.8rem;
+      align-items: stretch;
+    }
+
+    .clarity-about-photo {
+      border-radius: 28px;
+      overflow: hidden;
+      min-height: 480px;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-about-photo img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .clarity-testimonial-shell {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .clarity-testimonial-track {
+      display: flex;
+      transition: transform 0.5s ease;
+      will-change: transform;
+    }
+
+    .clarity-testimonial-slide {
+      min-width: 100%;
+      padding-right: 0.25rem;
+    }
+
+    .clarity-testimonial-card {
+      display: grid;
+      grid-template-columns: 120px 1fr;
+      gap: 1.4rem;
+      align-items: center;
+      background: linear-gradient(180deg, #ffffff, #f8fbfa);
+    }
+
+    .clarity-testimonial-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 24px;
+      object-fit: cover;
+    }
+
+    .clarity-quote {
+      font-size: 1.1rem;
+      color: var(--clarity-text);
+      margin-bottom: 1rem;
+    }
+
+    .clarity-testimonial-meta strong {
+      display: block;
+      color: var(--clarity-primary-dark);
+    }
+
+    .clarity-slider-controls {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.25rem;
+    }
+
+    .clarity-slider-button {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      border: 1px solid var(--clarity-border);
+      background: var(--clarity-surface);
+      color: var(--clarity-primary-dark);
+      cursor: pointer;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-blog-card {
+      overflow: hidden;
+      padding: 0;
+    }
+
+    .clarity-blog-thumb {
+      aspect-ratio: 16 / 10;
+      overflow: hidden;
+      background: #dfeceb;
+    }
+
+    .clarity-blog-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform var(--clarity-transition);
+    }
+
+    .clarity-blog-card:hover .clarity-blog-thumb img {
+      transform: scale(1.04);
+    }
+
+    .clarity-blog-body {
+      padding: 1.4rem;
+    }
+
+    .clarity-blog-meta {
+      font-size: 0.88rem;
+      color: var(--clarity-primary-dark);
+      font-weight: 700;
+      margin-bottom: 0.7rem;
+    }
+
+    .clarity-forms-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      align-items: start;
+    }
+
+    .clarity-form-card {
+      background: var(--clarity-surface);
+      border: 1px solid var(--clarity-border);
+      border-radius: var(--clarity-radius-lg);
+      padding: 1.55rem;
+      box-shadow: var(--clarity-shadow);
+    }
+
+    .clarity-form-grid {
+      display: grid;
+      gap: 1rem;
+    }
+
+    .clarity-field-row {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.9rem;
+    }
+
+    .clarity-form-group label {
+      display: block;
+      margin-bottom: 0.45rem;
+      font-weight: 700;
+      color: var(--clarity-text);
+      font-size: 0.96rem;
+    }
+
+    .clarity-form-input,
+    .clarity-form-select,
+    .clarity-form-textarea {
+      width: 100%;
+      border: 1px solid var(--clarity-border);
+      background: #fcfefd;
+      color: var(--clarity-text);
+      border-radius: 14px;
+      padding: 0.95rem 1rem;
+      transition: border-color var(--clarity-transition), box-shadow var(--clarity-transition), background var(--clarity-transition);
+    }
+
+    .clarity-form-input:focus,
+    .clarity-form-select:focus,
+    .clarity-form-textarea:focus {
+      outline: none;
+      border-color: var(--clarity-secondary);
+      box-shadow: 0 0 0 4px rgba(138, 169, 197, 0.16);
+      background: #fff;
+    }
+
+    .clarity-form-textarea {
+      min-height: 140px;
+      resize: vertical;
+    }
+
+    .clarity-form-note,
+    .clarity-success-message {
+      font-size: 0.95rem;
+      margin-top: 0.85rem;
+    }
+
+    .clarity-success-message {
+      color: var(--clarity-primary-dark);
+      font-weight: 700;
+      display: none;
+    }
+
+    .clarity-contact-box {
+      height: 100%;
+      background: linear-gradient(180deg, rgba(95, 143, 138, 0.10), rgba(138, 169, 197, 0.12));
+    }
+
+    .clarity-footer {
+      padding: 2rem 0 3rem;
+      border-top: 1px solid var(--clarity-border);
+    }
+
+    .clarity-footer-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .clarity-footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      color: var(--clarity-text-soft);
+    }
+
+    @media (max-width: 980px) {
+      .clarity-hero-grid,
+      .clarity-about-panel,
+      .clarity-forms-grid,
+      .clarity-grid-3,
+      .clarity-grid-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .clarity-hero-copy {
+        padding-right: 0;
+      }
+
+      .clarity-hero-photo {
+        min-height: 480px;
+      }
+
+      .clarity-floating-card {
+        position: static;
+        margin-top: 1rem;
+        max-width: none;
+      }
+
+      .clarity-testimonial-card {
+        grid-template-columns: 1fr;
+      }
+
+      .clarity-field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .clarity-nav {
+        display: none;
+        position: absolute;
+        top: calc(100% + 0.5rem);
+        left: 1rem;
+        right: 1rem;
+        background: rgba(255,255,255,0.97);
+        border: 1px solid var(--clarity-border);
+        border-radius: 20px;
+        box-shadow: var(--clarity-shadow);
+        padding: 0.8rem;
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .clarity-nav.is-open {
+        display: flex;
+      }
+
+      .clarity-mobile-toggle {
+        display: inline-grid;
+        place-items: center;
+      }
+    }
+
+    @media (max-width: 680px) {
+      .clarity-section {
+        padding: 4rem 0;
+      }
+
+      .clarity-hero {
+        padding-top: 2.5rem;
+      }
+
+      .clarity-hero-stats {
+        grid-template-columns: 1fr;
+      }
+
+      .clarity-nav-wrap {
+        min-height: 70px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="clarity-site-header">
+    <div class="clarity-container clarity-nav-wrap">
+      <a href="#home" class="clarity-brand" aria-label="Clarity Coaching home">
+        <span class="clarity-brand-mark">C</span>
+        <span>Clarity Coaching</span>
+      </a>
+
+      <button class="clarity-mobile-toggle" id="clarityMobileToggle" aria-label="Open navigation" aria-expanded="false">
+        ☰
+      </button>
+
+      <nav class="clarity-nav" id="clarityMainNav">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact" class="clarity-nav-cta">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="clarity-hero" id="home">
+      <div class="clarity-container clarity-hero-grid">
+        <div class="clarity-hero-copy">
+          <span class="clarity-kicker">Personal Coach & Consultant</span>
+          <h1>Supportive coaching for clear direction, confident growth, and meaningful change.</h1>
+          <p class="clarity-lead">
+            I help professionals, founders, and purpose-driven individuals move forward with more focus,
+            stronger habits, and practical strategies through 1:1 coaching and small group programs.
+          </p>
+
+          <div class="clarity-hero-actions">
+            <a href="#contact" class="clarity-button clarity-button-primary">Book a Session</a>
+            <a href="#discovery-call" class="clarity-button clarity-button-secondary">Free Discovery Call</a>
+          </div>
+
+          <div class="clarity-hero-stats">
+            <div class="clarity-stat-card">
+              <strong>150+</strong>
+              <span>Coaching sessions delivered</span>
+            </div>
+            <div class="clarity-stat-card">
+              <strong>1:1 + Group</strong>
+              <span>Flexible support for every stage</span>
+            </div>
+            <div class="clarity-stat-card">
+              <strong>Trusted</strong>
+              <span>Practical, compassionate guidance</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="clarity-hero-visual">
+          <div class="clarity-hero-photo">
+            <img
+              src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=1200&q=80"
+              alt="Warm and approachable personal coach smiling"
+            />
+          </div>
+
+          <div class="clarity-floating-card">
+            <h3>What clients often want</h3>
+            <p>More confidence, better boundaries, stronger leadership, and a plan they can actually follow.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="clarity-section" id="services">
+      <div class="clarity-container">
+        <div class="clarity-section-heading">
+          <span class="clarity-kicker">Services</span>
+          <h2>Coaching designed around where you are now.</h2>
+          <p class="clarity-lead">
+            Choose from private coaching, group support, or focused consulting sessions tailored to your goals.
+          </p>
+        </div>
+
+        <div class="clarity-grid-3">
+          <article class="clarity-card clarity-service-card">
+            <div class="clarity-icon-badge">🌿</div>
+            <h3>1:1 Coaching Sessions</h3>
+            <p>
+              Personalized support for clarity, confidence, decision-making, mindset, and sustainable progress.
+            </p>
+            <ul class="clarity-service-list">
+              <li>60-minute private sessions</li>
+              <li>Goal setting and accountability</li>
+              <li>Action plans tailored to your life or work</li>
+            </ul>
+          </article>
+
+          <article class="clarity-card clarity-service-card">
+            <div class="clarity-icon-badge">🤝</div>
+            <h3>Group Programs</h3>
+            <p>
+              A guided, community-based experience for people who want growth with support, structure, and shared momentum.
+            </p>
+            <ul class="clarity-service-list">
+              <li>Small group cohort format</li>
+              <li>Weekly coaching themes</li>
+              <li>Peer encouragement and reflection</li>
+            </ul>
+          </article>
+
+          <article class="clarity-card clarity-service-card">
+            <div class="clarity-icon-badge">🧭</div>
+            <h3>Strategy & Consulting</h3>
+            <p>
+              Focused sessions for professionals and entrepreneurs looking for outside perspective and a clearer next step.
+            </p>
+            <ul class="clarity-service-list">
+              <li>Problem-solving and planning</li>
+              <li>Leadership and communication support</li>
+              <li>Practical recommendations you can implement fast</li>
+            </ul>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="clarity-section" id="about">
+      <div class="clarity-container">
+        <div class="clarity-about-panel">
+          <div class="clarity-about-photo">
+            <img
+              src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?auto=format&fit=crop&w=1200&q=80"
+              alt="Coach working warmly with a client"
+            />
+          </div>
+
+          <div class="clarity-card">
+            <span class="clarity-kicker">About Me</span>
+            <h2>Hi, I’m Emma — a coach focused on calm, clarity, and real progress.</h2>
+            <p>
+              My approach blends thoughtful listening, practical tools, and steady accountability. I work with people
+              who are navigating transitions, building confidence, or trying to create meaningful growth without burnout.
+            </p>
+            <p>
+              Whether we’re working on leadership, mindset, communication, or personal direction, my goal is to help
+              you feel supported and equipped with clear next steps.
+            </p>
+            <ul class="clarity-about-list">
+              <li>Approachable, trust-based coaching style</li>
+              <li>Actionable frameworks you can use immediately</li>
+              <li>Space for reflection, growth, and long-term change</li>
+            </ul>
+            <div class="clarity-hero-actions" style="margin-bottom: 0;">
+              <a href="#contact" class="clarity-button clarity-button-primary">Work With Me</a>
+              <a href="#testimonials" class="clarity-button clarity-button-secondary">Read Success Stories</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="clarity-section" id="testimonials">
+      <div class="clarity-container">
+        <div class="clarity-section-heading">
+          <span class="clarity-kicker">Testimonials</span>
+          <h2>What clients say after working together.</h2>
+          <p class="clarity-lead">
+            A few words from people who found more confidence, direction, and momentum through coaching.
+          </p>
+        </div>
+
+        <div class="clarity-testimonial-shell">
+          <div class="clarity-testimonial-track" id="clarityTestimonialTrack">
+            <div class="clarity-testimonial-slide">
+              <article class="clarity-card clarity-testimonial-card">
+                <img
+                  class="clarity-testimonial-avatar"
+                  src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=500&q=80"
+                  alt="Client portrait"
+                />
+                <div>
+                  <p class="clarity-quote">
+                    “Emma helped me move from feeling overwhelmed to having a simple, realistic plan. I left each session
+                    feeling calmer and clearer.”
+                  </p>
+                  <div class="clarity-testimonial-meta">
+                    <strong>Sophia L.</strong>
+                    <span>Creative Director</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="clarity-testimonial-slide">
+              <article class="clarity-card clarity-testimonial-card">
+                <img
+                  class="clarity-testimonial-avatar"
+                  src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=500&q=80"
+                  alt="Client portrait"
+                />
+                <div>
+                  <p class="clarity-quote">
+                    “The group program gave me structure, accountability, and the encouragement I needed. It felt both
+                    practical and deeply supportive.”
+                  </p>
+                  <div class="clarity-testimonial-meta">
+                    <strong>Daniel R.</strong>
+                    <span>Startup Founder</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+
+            <div class="clarity-testimonial-slide">
+              <article class="clarity-card clarity-testimonial-card">
+                <img
+                  class="clarity-testimonial-avatar"
+                  src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&w=500&q=80"
+                  alt="Client portrait"
+                />
+                <div>
+                  <p class="clarity-quote">
+                    “I came in wanting more confidence in my decisions. I left with stronger boundaries, better habits,
+                    and much more trust in myself.”
+                  </p>
+                  <div class="clarity-testimonial-meta">
+                    <strong>Maya T.</strong>
+                    <span>Consultant</span>
+                  </div>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <div class="clarity-slider-controls">
+          <button class="clarity-slider-button" id="clarityPrevTestimonial" aria-label="Previous testimonial">←</button>
+          <button class="clarity-slider-button" id="clarityNextTestimonial" aria-label="Next testimonial">→</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="clarity-section" id="blog">
+      <div class="clarity-container">
+        <div class="clarity-section-heading">
+          <span class="clarity-kicker">Blog</span>
+          <h2>Simple insights for personal and professional growth.</h2>
+          <p class="clarity-lead">
+            A small collection of helpful articles to support mindset, leadership, clarity, and consistent action.
+          </p>
+        </div>
+
+        <div class="clarity-grid-3">
+          <article class="clarity-card clarity-blog-card">
+            <div class="clarity-blog-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=1000&q=80"
+                alt="Notebook and coffee for planning"
+              />
+            </div>
+            <div class="clarity-blog-body">
+              <div class="clarity-blog-meta">Mindset • 5 min read</div>
+              <h3>How to make decisions with more clarity and less pressure</h3>
+              <p>Learn a simple way to pause, reflect, and move forward without second-guessing every next step.</p>
+            </div>
+          </article>
+
+          <article class="clarity-card clarity-blog-card">
+            <div class="clarity-blog-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=1000&q=80"
+                alt="Small supportive group discussion"
+              />
+            </div>
+            <div class="clarity-blog-body">
+              <div class="clarity-blog-meta">Growth • 4 min read</div>
+              <h3>Why accountability works better when it feels supportive</h3>
+              <p>Accountability does not need to feel rigid. Discover how support can create stronger follow-through.</p>
+            </div>
+          </article>
+
+          <article class="clarity-card clarity-blog-card">
+            <div class="clarity-blog-thumb">
+              <img
+                src="https://images.unsplash.com/photo-1497366754035-f200968a6e72?auto=format&fit=crop&w=1000&q=80"
+                alt="Calm workspace with laptop and notebook"
+              />
+            </div>
+            <div class="clarity-blog-body">
+              <div class="clarity-blog-meta">Leadership • 6 min read</div>
+              <h3>Three habits that help leaders communicate with more confidence</h3>
+              <p>Build a steadier presence in meetings, conversations, and moments that require clear communication.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="clarity-section" id="contact">
+      <div class="clarity-container">
+        <div class="clarity-section-heading">
+          <span class="clarity-kicker">Contact</span>
+          <h2>Take the next step when you’re ready.</h2>
+          <p class="clarity-lead">
+            Book a session or request a free discovery call. I’d love to learn more about what support you’re looking for.
+          </p>
+        </div>
+
+        <div class="clarity-forms-grid">
+          <div class="clarity-form-card">
+            <h3>Booking Form</h3>
+            <p>Choose the service that fits your current goals and send through your preferred details.</p>
+
+            <form class="clarity-form-grid" id="clarityBookingForm">
+              <div class="clarity-field-row">
+                <div class="clarity-form-group">
+                  <label for="clarityBookingName">Full name</label>
+                  <input class="clarity-form-input" id="clarityBookingName" name="name" type="text" placeholder="Your name" required />
+                </div>
+                <div class="clarity-form-group">
+                  <label for="clarityBookingEmail">Email address</label>
+                  <input class="clarity-form-input" id="clarityBookingEmail" name="email" type="email" placeholder="you@example.com" required />
+                </div>
+              </div>
+
+              <div class="clarity-field-row">
+                <div class="clarity-form-group">
+                  <label for="clarityBookingService">Service</label>
+                  <select class="clarity-form-select" id="clarityBookingService" name="service" required>
+                    <option value="">Select a service</option>
+                    <option>1:1 Coaching Session</option>
+                    <option>Group Program</option>
+                    <option>Strategy & Consulting</option>
+                  </select>
+                </div>
+                <div class="clarity-form-group">
+                  <label for="clarityBookingTime">Preferred timeframe</label>
+                  <input class="clarity-form-input" id="clarityBookingTime" name="timeframe" type="text" placeholder="Next week, this month, etc." required />
+                </div>
+              </div>
+
+              <div class="clarity-form-group">
+                <label for="clarityBookingMessage">What would you like support with?</label>
+                <textarea class="clarity-form-textarea" id="clarityBookingMessage" name="message" placeholder="Share a little about your goals or current challenges." required></textarea>
+              </div>
+
+              <button class="clarity-button clarity-button-primary" type="submit">Submit Booking Request</button>
+              <div class="clarity-success-message" id="clarityBookingSuccess">Thanks — your booking request has been received.</div>
+            </form>
+          </div>
+
+          <div class="clarity-form-card" id="discovery-call">
+            <h3>Free Discovery Call</h3>
+            <p>Not sure where to begin? This short form is a simple first step.</p>
+
+            <form class="clarity-form-grid" id="clarityLeadForm">
+              <div class="clarity-form-group">
+                <label for="clarityLeadName">First name</label>
+                <input class="clarity-form-input" id="clarityLeadName" name="firstName" type="text" placeholder="First name" required />
+              </div>
+
+              <div class="clarity-form-group">
+                <label for="clarityLeadEmail">Email address</label>
+                <input class="clarity-form-input" id="clarityLeadEmail" name="leadEmail" type="email" placeholder="you@example.com" required />
+              </div>
+
+              <div class="clarity-form-group">
+                <label for="clarityLeadGoal">What are you hoping to work on?</label>
+                <textarea class="clarity-form-textarea" id="clarityLeadGoal" name="goal" placeholder="Confidence, clarity, leadership, work-life balance, etc." required></textarea>
+              </div>
+
+              <button class="clarity-button clarity-button-secondary" type="submit">Request Free Call</button>
+              <div class="clarity-success-message" id="clarityLeadSuccess">Thank you — your discovery call request has been sent.</div>
+            </form>
+          </div>
+        </div>
+
+        <div class="clarity-grid-2" style="margin-top: 1.5rem;">
+          <div class="clarity-form-card clarity-contact-box">
+            <h3>Let’s connect</h3>
+            <p>
+              If you have questions about 1:1 coaching, group programs, or consulting, I’m happy to help you find the right fit.
+            </p>
+            <ul class="clarity-contact-list">
+              <li>Email: hello@claritycoaching.com</li>
+              <li>Hours: Monday–Friday, 9am–5pm</li>
+              <li>Sessions available online worldwide</li>
+            </ul>
+          </div>
+
+          <div class="clarity-form-card">
+            <h3>Why start with a conversation?</h3>
+            <p>
+              Coaching works best when it feels aligned, safe, and useful. A first conversation helps us understand your
+              goals and choose the best next step without pressure.
+            </p>
+            <p class="clarity-form-note">
+              Tip: Replace this sample copy, email address, and photos with your own brand details in Klar.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="clarity-footer">
+    <div class="clarity-container clarity-footer-inner">
+      <div>
+        <strong>Clarity Coaching</strong>
+        <p style="margin: 0.35rem 0 0;">Calm support for meaningful progress.</p>
+      </div>
+      <nav class="clarity-footer-nav" aria-label="Footer navigation">
+        <a href="#home">Home</a>
+        <a href="#services">Services</a>
+        <a href="#about">About</a>
+        <a href="#testimonials">Testimonials</a>
+        <a href="#blog">Blog</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </footer>
+
+  <script>
+    (function () {
+      const clarityNavToggle = document.getElementById("clarityMobileToggle");
+      const clarityMainNav = document.getElementById("clarityMainNav");
+
+      if (clarityNavToggle && clarityMainNav) {
+        clarityNavToggle.addEventListener("click", function () {
+          const isOpen = clarityMainNav.classList.toggle("is-open");
+          clarityNavToggle.setAttribute("aria-expanded", String(isOpen));
+          clarityNavToggle.textContent = isOpen ? "✕" : "☰";
+        });
+
+        clarityMainNav.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", function () {
+            clarityMainNav.classList.remove("is-open");
+            clarityNavToggle.setAttribute("aria-expanded", "false");
+            clarityNavToggle.textContent = "☰";
+          });
+        });
+      }
+
+      const clarityTrack = document.getElementById("clarityTestimonialTrack");
+      const clarityPrev = document.getElementById("clarityPrevTestimonial");
+      const clarityNext = document.getElementById("clarityNextTestimonial");
+
+      if (clarityTrack && clarityPrev && clarityNext) {
+        const claritySlides = Array.from(clarityTrack.children);
+        let clarityIndex = 0;
+
+        function updateClaritySlider() {
+          clarityTrack.style.transform = "translateX(-" + clarityIndex * 100 + "%)";
+        }
+
+        clarityPrev.addEventListener("click", function () {
+          clarityIndex = (clarityIndex - 1 + claritySlides.length) % claritySlides.length;
+          updateClaritySlider();
+        });
+
+        clarityNext.addEventListener("click", function () {
+          clarityIndex = (clarityIndex + 1) % claritySlides.length;
+          updateClaritySlider();
+        });
+
+        setInterval(function () {
+          clarityIndex = (clarityIndex + 1) % claritySlides.length;
+          updateClaritySlider();
+        }, 6000);
+      }
+
+      function setupClarityForm(formId, successId) {
+        const form = document.getElementById(formId);
+        const success = document.getElementById(successId);
+
+        if (!form || !success) return;
+
+        form.addEventListener("submit", function (event) {
+          event.preventDefault();
+          success.style.display = "block";
+          form.reset();
+
+          setTimeout(function () {
+            success.style.display = "none";
+          }, 5000);
+        });
+      }
+
+      setupClarityForm("clarityBookingForm", "clarityBookingSuccess");
+      setupClarityForm("clarityLeadForm", "clarityLeadSuccess");
+    })();
+  </script>
+</body>
+</html>

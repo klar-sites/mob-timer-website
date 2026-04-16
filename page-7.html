@@ -1,2302 +1,2900 @@
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
-<head>
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>APEX FITNESS — Build Your Strongest Self</title>
-    <style>
-        /* ========================================
-           CSS VARIABLES & THEMING
-        ======================================== */
-        :root {
-            --transition-speed: 0.4s;
+    <title>The Velvet Bean | Artisan Café</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet">
+  </head>
+  <body>
+<script>/* =====================================================
+   THE VELVET BEAN - JavaScript Functionality
+   Theme Toggle, Smooth Scroll, Form Validation
+   ===================================================== */
+
+// DOM Content Loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize all modules
+    ThemeManager.init();
+    Navigation.init();
+    SmoothScroll.init();
+    MenuFilter.init();
+    TestimonialCarousel.init();
+    ContactForm.init();
+    ScrollAnimations.init();
+    StatsCounter.init();
+});
+
+/* =====================================================
+   THEME MANAGER
+   Handles light/dark mode toggle with localStorage
+   ===================================================== */
+const ThemeManager = {
+    STORAGE_KEY: 'velvet-bean-theme',
+    
+    init() {
+        // Get saved theme or default to dark
+        const savedTheme = localStorage.getItem(this.STORAGE_KEY) || 'dark';
+        this.setTheme(savedTheme);
+        
+        // Get toggle button
+        const toggleBtn = document.querySelector('.theme-toggle');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => this.toggleTheme());
         }
+    },
+    
+    setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem(this.STORAGE_KEY, theme);
+        
+        // Update body class for CSS transitions
+        document.body.classList.add('theme-transition');
+        setTimeout(() => {
+            document.body.classList.remove('theme-transition');
+        }, 500);
+    },
+    
+    toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        this.setTheme(newTheme);
+    },
+    
+    getTheme() {
+        return document.documentElement.getAttribute('data-theme');
+    }
+};
 
-        [data-theme="dark"] {
-            --bg-primary: #0a0a0f;
-            --bg-secondary: #12121a;
-            --bg-gradient-1: #0a0a0f;
-            --bg-gradient-2: #1a0a2e;
-            --bg-gradient-3: #0f1923;
-            --text-primary: #ffffff;
-            --text-secondary: #a0a0b0;
-            --text-muted: #6a6a7a;
-            --accent-primary: #00f0ff;
-            --accent-secondary: #7b2ff7;
-            --accent-tertiary: #ff2d55;
-            --accent-glow: rgba(0, 240, 255, 0.3);
-            --glass-bg: rgba(255, 255, 255, 0.05);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: rgba(0, 0, 0, 0.3);
-            --glass-hover-bg: rgba(255, 255, 255, 0.1);
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
-            --nav-bg: rgba(10, 10, 15, 0.8);
-            --input-bg: rgba(255, 255, 255, 0.05);
-            --input-border: rgba(255, 255, 255, 0.15);
-            --hero-overlay: rgba(10, 10, 15, 0.6);
-            --orb-1: rgba(123, 47, 247, 0.15);
-            --orb-2: rgba(0, 240, 255, 0.1);
-            --orb-3: rgba(255, 45, 85, 0.1);
+/* =====================================================
+   NAVIGATION
+   Handles navbar scroll effect and mobile menu
+   ===================================================== */
+const Navigation = {
+    init() {
+        this.navbar = document.querySelector('.navbar');
+        this.mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        this.navLinks = document.querySelector('.nav-links');
+        
+        if (this.navbar) {
+            this.setupScrollEffect();
         }
-
-        [data-theme="light"] {
-            --bg-primary: #f0f2f5;
-            --bg-secondary: #ffffff;
-            --bg-gradient-1: #f0f2f5;
-            --bg-gradient-2: #e8e0f0;
-            --bg-gradient-3: #e0eef5;
-            --text-primary: #1a1a2e;
-            --text-secondary: #4a4a5a;
-            --text-muted: #8a8a9a;
-            --accent-primary: #7b2ff7;
-            --accent-secondary: #00b4d8;
-            --accent-tertiary: #ff2d55;
-            --accent-glow: rgba(123, 47, 247, 0.3);
-            --glass-bg: rgba(255, 255, 255, 0.6);
-            --glass-border: rgba(255, 255, 255, 0.8);
-            --glass-shadow: rgba(0, 0, 0, 0.08);
-            --glass-hover-bg: rgba(255, 255, 255, 0.8);
-            --card-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-            --nav-bg: rgba(240, 242, 245, 0.8);
-            --input-bg: rgba(255, 255, 255, 0.7);
-            --input-border: rgba(0, 0, 0, 0.1);
-            --hero-overlay: rgba(240, 242, 245, 0.5);
-            --orb-1: rgba(123, 47, 247, 0.08);
-            --orb-2: rgba(0, 180, 216, 0.08);
-            --orb-3: rgba(255, 45, 85, 0.06);
+        
+        if (this.mobileMenuBtn && this.navLinks) {
+            this.setupMobileMenu();
         }
-
-        /* ========================================
-           RESET & BASE STYLES
-        ======================================== */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-        }
-
-        body {
-            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: background var(--transition-speed) ease, color var(--transition-speed) ease;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        ul {
-            list-style: none;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-        }
-
-        /* ========================================
-           UTILITY CLASSES
-        ======================================== */
-        .apex-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .apex-section {
-            padding: 6rem 0;
-            position: relative;
-        }
-
-        .apex-section-title {
-            text-align: center;
-            margin-bottom: 1rem;
-            font-size: clamp(2rem, 5vw, 3rem);
-            font-weight: 800;
-            letter-spacing: -0.02em;
-        }
-
-        .apex-section-title span {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .apex-section-subtitle {
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 1.1rem;
-            max-width: 600px;
-            margin: 0 auto 3.5rem;
-        }
-
-        /* Glass Morphism Card */
-        .apex-glass {
-            background: var(--glass-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--glass-border);
-            border-radius: 20px;
-            box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-        }
-
-        .apex-glass:hover {
-            background: var(--glass-hover-bg);
-            transform: translateY(-4px);
-            box-shadow: 0 12px 40px var(--glass-shadow);
-        }
-
-        /* Animated Background Orbs */
-        .apex-bg-orbs {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
-            overflow: hidden;
-        }
-
-        .apex-bg-orbs .orb {
-            position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            animation: apex-float 20s infinite ease-in-out;
-        }
-
-        .apex-bg-orbs .orb-1 {
-            width: 600px;
-            height: 600px;
-            background: var(--orb-1);
-            top: -10%;
-            right: -10%;
-            animation-delay: 0s;
-        }
-
-        .apex-bg-orbs .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: var(--orb-2);
-            bottom: 10%;
-            left: -10%;
-            animation-delay: -7s;
-        }
-
-        .apex-bg-orbs .orb-3 {
-            width: 400px;
-            height: 400px;
-            background: var(--orb-3);
-            top: 40%;
-            right: 20%;
-            animation-delay: -14s;
-        }
-
-        @keyframes apex-float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            25% { transform: translate(50px, -50px) scale(1.05); }
-            50% { transform: translate(-30px, 30px) scale(0.95); }
-            75% { transform: translate(40px, 20px) scale(1.02); }
-        }
-
-        /* Scroll Reveal Animation */
-        .apex-reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease, transform 0.8s ease;
-        }
-
-        .apex-reveal.revealed {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .apex-reveal-delay-1 { transition-delay: 0.1s; }
-        .apex-reveal-delay-2 { transition-delay: 0.2s; }
-        .apex-reveal-delay-3 { transition-delay: 0.3s; }
-        .apex-reveal-delay-4 { transition-delay: 0.4s; }
-
-        /* ========================================
-           NAVIGATION
-        ======================================== */
-        .apex-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            z-index: 1000;
-            padding: 1rem 0;
-            background: var(--nav-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-bottom: 1px solid var(--glass-border);
-            transition: all 0.3s ease;
-        }
-
-        .apex-nav.scrolled {
-            padding: 0.6rem 0;
-            box-shadow: 0 4px 30px var(--glass-shadow);
-        }
-
-        .apex-nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-        }
-
-        .apex-nav-logo {
-            font-size: 1.6rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .apex-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-        }
-
-        .apex-nav-links a {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            transition: color 0.3s ease;
-            position: relative;
-        }
-
-        .apex-nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background: var(--accent-primary);
-            transition: width 0.3s ease;
-        }
-
-        .apex-nav-links a:hover {
-            color: var(--accent-primary);
-        }
-
-        .apex-nav-links a:hover::after {
-            width: 100%;
-        }
-
-        /* Theme Toggle */
-        .apex-theme-toggle {
-            position: relative;
-            width: 52px;
-            height: 28px;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 14px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            display: flex;
-            align-items: center;
-            padding: 0 4px;
-        }
-
-        .apex-theme-toggle:hover {
-            border-color: var(--accent-primary);
-        }
-
-        .apex-theme-toggle-circle {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 11px;
-        }
-
-        [data-theme="light"] .apex-theme-toggle-circle {
-            transform: translateX(24px);
-        }
-
-        /* Mobile Menu Toggle */
-        .apex-mobile-toggle {
-            display: none;
-            flex-direction: column;
-            gap: 5px;
-            cursor: pointer;
-            background: none;
-            border: none;
-            padding: 4px;
-        }
-
-        .apex-mobile-toggle span {
-            width: 24px;
-            height: 2px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-            border-radius: 2px;
-        }
-
-        .apex-mobile-toggle.active span:nth-child(1) {
-            transform: rotate(45deg) translate(5px, 5px);
-        }
-
-        .apex-mobile-toggle.active span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .apex-mobile-toggle.active span:nth-child(3) {
-            transform: rotate(-45deg) translate(5px, -5px);
-        }
-
-        @media (max-width: 768px) {
-            .apex-mobile-toggle {
-                display: flex;
+    },
+    
+    setupScrollEffect() {
+        const handleScroll = () => {
+            if (window.scrollY > 50) {
+                this.navbar.classList.add('scrolled');
+            } else {
+                this.navbar.classList.remove('scrolled');
             }
-
-            .apex-nav-links {
-                position: fixed;
-                top: 0;
-                right: -100%;
-                width: 280px;
-                height: 100vh;
-                flex-direction: column;
-                background: var(--bg-secondary);
-                backdrop-filter: blur(30px);
-                -webkit-backdrop-filter: blur(30px);
-                padding: 5rem 2rem 2rem;
-                gap: 1.5rem;
-                transition: right 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-                border-left: 1px solid var(--glass-border);
-                box-shadow: -10px 0 40px rgba(0, 0, 0, 0.2);
-                z-index: 1001;
+        };
+        
+        window.addEventListener('scroll', handleScroll, { passive: true });
+        handleScroll(); // Initial check
+    },
+    
+    setupMobileMenu() {
+        this.mobileMenuBtn.addEventListener('click', () => {
+            this.mobileMenuBtn.classList.toggle('active');
+            this.navLinks.classList.toggle('active');
+            document.body.style.overflow = this.navLinks.classList.contains('active') ? 'hidden' : '';
+        });
+        
+        // Close menu when clicking a link
+        this.navLinks.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                this.mobileMenuBtn.classList.remove('active');
+                this.navLinks.classList.remove('active');
+                document.body.style.overflow = '';
+            });
+        });
+        
+        // Close menu when clicking outside
+        document.addEventListener('click', (e) => {
+            if (!this.navLinks.contains(e.target) && !this.mobileMenuBtn.contains(e.target)) {
+                this.mobileMenuBtn.classList.remove('active');
+                this.navLinks.classList.remove('active');
+                document.body.style.overflow = '';
             }
+        });
+    }
+};
 
-            .apex-nav-links.open {
-                right: 0;
+/* =====================================================
+   SMOOTH SCROLL
+   Handles smooth scrolling for navigation links
+   ===================================================== */
+const SmoothScroll = {
+    init() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', (e) => this.handleClick(e));
+        });
+    },
+    
+    handleClick(e) {
+        const href = e.currentTarget.getAttribute('href');
+        
+        // Skip if it's just "#"
+        if (href === '#') return;
+        
+        const target = document.querySelector(href);
+        if (target) {
+            e.preventDefault();
+            
+            const navHeight = document.querySelector('.navbar').offsetHeight;
+            const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight;
+            
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }
+};
+
+/* =====================================================
+   MENU FILTER
+   Filters menu items by category tabs
+   ===================================================== */
+const MenuFilter = {
+    init() {
+        this.tabs = document.querySelectorAll('.menu-tab');
+        this.cards = document.querySelectorAll('.menu-card');
+        
+        if (this.tabs.length > 0 && this.cards.length > 0) {
+            this.setupTabs();
+        }
+    },
+    
+    setupTabs() {
+        this.tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Update active tab
+                this.tabs.forEach(t => t.classList.remove('active'));
+                tab.classList.add('active');
+                
+                // Filter cards
+                const category = tab.dataset.category;
+                this.filterCards(category);
+            });
+        });
+    },
+    
+    filterCards(category) {
+        this.cards.forEach(card => {
+            if (card.dataset.category === category) {
+                card.classList.remove('hidden');
+                card.style.animation = 'fadeInUp 0.5s ease forwards';
+            } else {
+                card.classList.add('hidden');
+            }
+        });
+    }
+};
+
+/* =====================================================
+   TESTIMONIAL CAROUSEL
+   Handles testimonial slider navigation
+   ===================================================== */
+const TestimonialCarousel = {
+    init() {
+        this.track = document.querySelector('.testimonial-track');
+        this.cards = document.querySelectorAll('.testimonial-card');
+        this.dots = document.querySelectorAll('.dot');
+        this.prevBtn = document.querySelector('.testimonial-btn.prev');
+        this.nextBtn = document.querySelector('.testimonial-btn.next');
+        
+        if (this.track && this.cards.length > 0) {
+            this.currentIndex = 0;
+            this.totalSlides = this.cards.length;
+            
+            this.setupNavigation();
+            this.setupKeyboardNav();
+            this.autoPlay();
+        }
+    },
+    
+    setupNavigation() {
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => this.prev());
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => this.next());
+        }
+        
+        this.dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => this.goTo(index));
+        });
+    },
+    
+    setupKeyboardNav() {
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowLeft') this.prev();
+            if (e.key === 'ArrowRight') this.next();
+        });
+    },
+    
+    prev() {
+        this.currentIndex = this.currentIndex > 0 ? this.currentIndex - 1 : this.totalSlides - 1;
+        this.updateCarousel();
+    },
+    
+    next() {
+        this.currentIndex = this.currentIndex < this.totalSlides - 1 ? this.currentIndex + 1 : 0;
+        this.updateCarousel();
+    },
+    
+    goTo(index) {
+        this.currentIndex = index;
+        this.updateCarousel();
+    },
+    
+    updateCarousel() {
+        // Move track
+        this.track.style.transform = `translateX(-${this.currentIndex * 100}%)`;
+        
+        // Update dots
+        this.dots.forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentIndex);
+        });
+    },
+    
+    autoPlay() {
+        // Pause on hover
+        this.track.addEventListener('mouseenter', () => clearInterval(this.interval));
+        this.track.addEventListener('mouseleave', () => {
+            this.interval = setInterval(() => this.next(), 5000);
+        });
+        
+        // Start auto play
+        this.interval = setInterval(() => this.next(), 5000);
+    }
+};
+
+/* =====================================================
+   CONTACT FORM
+   Handles form validation and submission
+   ===================================================== */
+const ContactForm = {
+    init() {
+        this.form = document.getElementById('contactForm');
+        this.successMessage = document.getElementById('formSuccess');
+        
+        if (this.form) {
+            this.setupValidation();
+            this.setupSubmission();
+        }
+    },
+    
+    setupValidation() {
+        // Real-time validation
+        const inputs = this.form.querySelectorAll('input, select, textarea');
+        
+        inputs.forEach(input => {
+            input.addEventListener('blur', () => this.validateField(input));
+            input.addEventListener('input', () => {
+                if (input.parentElement.classList.contains('error')) {
+                    this.validateField(input);
+                }
+            });
+        });
+    },
+    
+    validateField(field) {
+        const parent = field.parentElement;
+        const errorElement = parent.querySelector('.error-message');
+        let isValid = true;
+        let message = '';
+        
+        // Required check
+        if (field.hasAttribute('required') && !field.value.trim()) {
+            isValid = false;
+            message = 'This field is required';
+        }
+        
+        // Email validation
+        if (field.type === 'email' && field.value.trim()) {
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(field.value)) {
+                isValid = false;
+                message = 'Please enter a valid email address';
             }
         }
-
-        /* ========================================
-           HERO SECTION
-        ======================================== */
-        .apex-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-            padding: 8rem 1.5rem 4rem;
+        
+        // Phone validation (optional but if provided, must be valid)
+        if (field.type === 'tel' && field.value.trim()) {
+            const phoneRegex = /^[\d\s\-+()]{10,}$/;
+            if (!phoneRegex.test(field.value)) {
+                isValid = false;
+                message = 'Please enter a valid phone number';
+            }
         }
+        
+        // Min length for message
+        if (field.id === 'message' && field.value.trim().length < 10) {
+            isValid = false;
+            message = 'Message must be at least 10 characters';
+        }
+        
+        // Update UI
+        if (isValid) {
+            parent.classList.remove('error');
+            errorElement.textContent = '';
+        } else {
+            parent.classList.add('error');
+            errorElement.textContent = message;
+        }
+        
+        return isValid;
+    },
+    
+    validateForm() {
+        const fields = this.form.querySelectorAll('[required]');
+        let isFormValid = true;
+        
+        fields.forEach(field => {
+            if (!this.validateField(field)) {
+                isFormValid = false;
+            }
+        });
+        
+        return isFormValid;
+    },
+    
+    setupSubmission() {
+        this.form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            if (this.validateForm()) {
+                this.submitForm();
+            }
+        });
+    },
+    
+    submitForm() {
+        const submitBtn = this.form.querySelector('.btn-submit');
+        const originalText = submitBtn.innerHTML;
+        
+        // Show loading state
+        submitBtn.innerHTML = '<span>Sending...</span>';
+        submitBtn.disabled = true;
+        
+        // Simulate API call
+        setTimeout(() => {
+            // Reset form
+            this.form.reset();
+            
+            // Show success message
+            if (this.successMessage) {
+                this.successMessage.classList.add('show');
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    this.successMessage.classList.remove('show');
+                }, 5000);
+            }
+            
+            // Reset button
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+        }, 1500);
+    }
+};
 
-        .apex-hero-bg {
+/* =====================================================
+   SCROLL ANIMATIONS
+   Adds animation classes when elements scroll into view
+   ===================================================== */
+const ScrollAnimations = {
+    init() {
+        this.elements = document.querySelectorAll('.about-content, .about-image, .menu-grid, .gallery-grid, .testimonials-carousel, .contact-grid');
+        
+        if ('IntersectionObserver' in window) {
+            this.setupObserver();
+        } else {
+            // Fallback: show all elements immediately
+            this.elements.forEach(el => el.classList.add('animated'));
+        }
+    },
+    
+    setupObserver() {
+        const options = {
+            root: null,
+            rootMargin: '0px 0px -100px 0px',
+            threshold: 0.1
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-on-scroll', 'animated');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+        
+        this.elements.forEach(el => {
+            el.classList.add('animate-on-scroll');
+            observer.observe(el);
+        });
+    }
+};
+
+/* =====================================================
+   STATS COUNTER
+   Animates the statistics numbers on scroll
+   ===================================================== */
+const StatsCounter = {
+    init() {
+        this.counters = document.querySelectorAll('.stat-number');
+        
+        if (this.counters.length > 0 && 'IntersectionObserver' in window) {
+            this.setupObserver();
+        }
+    },
+    
+    setupObserver() {
+        const options = {
+            root: null,
+            threshold: 0.5
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    this.animateCounter(entry.target);
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, options);
+        
+        this.counters.forEach(counter => {
+            observer.observe(counter);
+        });
+    },
+    
+    animateCounter(element) {
+        const target = parseInt(element.dataset.target);
+        const duration = 2000; // 2 seconds
+        const step = target / (duration / 16); // 60fps
+        let current = 0;
+        
+        const updateCounter = () => {
+            current += step;
+            if (current < target) {
+                element.textContent = Math.floor(current).toLocaleString();
+                requestAnimationFrame(updateCounter);
+            } else {
+                element.textContent = target.toLocaleString() + '+';
+            }
+        };
+        
+        updateCounter();
+    }
+};
+
+/* =====================================================
+   ADD TO CART (Menu)
+   Handles add button click animations
+   ===================================================== */
+document.querySelectorAll('.add-btn').forEach(btn => {
+    btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        
+        // Add pulse animation
+        this.style.transform = 'scale(0.9)';
+        setTimeout(() => {
+            this.style.transform = '';
+        }, 150);
+        
+        // Show brief notification (could be expanded to cart system)
+        const notification = document.createElement('div');
+        notification.className = 'add-notification';
+        notification.textContent = 'Added!';
+        notification.style.cssText = `
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(ellipse at 20% 50%, var(--orb-1) 0%, transparent 60%),
-                radial-gradient(ellipse at 80% 20%, var(--orb-2) 0%, transparent 50%),
-                radial-gradient(ellipse at 60% 80%, var(--orb-3) 0%, transparent 50%);
-            z-index: 0;
-        }
-
-        /* Animated grid lines */
-        .apex-hero-grid {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                linear-gradient(var(--glass-border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--glass-border) 1px, transparent 1px);
-            background-size: 60px 60px;
-            opacity: 0.3;
-            z-index: 0;
-            animation: apex-grid-move 30s linear infinite;
-        }
-
-        @keyframes apex-grid-move {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(60px, 60px); }
-        }
-
-        .apex-hero-content {
-            text-align: center;
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-        }
-
-        .apex-hero-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 1.2rem;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            border-radius: 50px;
-            font-size: 0.85rem;
-            color: var(--accent-primary);
-            margin-bottom: 2rem;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            animation: apex-pulse-border 3s ease-in-out infinite;
-        }
-
-        @keyframes apex-pulse-border {
-            0%, 100% { border-color: var(--glass-border); }
-            50% { border-color: var(--accent-primary); }
-        }
-
-        .apex-hero-badge-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--accent-primary);
-            animation: apex-pulse 2s infinite;
-        }
-
-        @keyframes apex-pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(1.3); }
-        }
-
-        .apex-hero-title {
-            font-size: clamp(2.5rem, 7vw, 5rem);
-            font-weight: 900;
-            line-height: 1.1;
-            margin-bottom: 1.5rem;
-            letter-spacing: -0.03em;
-        }
-
-        .apex-hero-title .highlight {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary), var(--accent-tertiary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            background-size: 200% 200%;
-            animation: apex-gradient-shift 4s ease infinite;
-        }
-
-        @keyframes apex-gradient-shift {
-            0%, 100% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-        }
-
-        .apex-hero-subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            color: var(--text-secondary);
-            margin-bottom: 2.5rem;
-            max-width: 550px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .apex-hero-cta-group {
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-
-        /* Buttons */
-        .apex-btn {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.9rem 2rem;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            border: none;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .apex-btn-primary {
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: #fff;
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .apex-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        .apex-btn-primary::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: left 0.5s ease;
-        }
-
-        .apex-btn-primary:hover::before {
-            left: 100%;
-        }
-
-        .apex-btn-outline {
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .apex-btn-outline:hover {
-            border-color: var(--accent-primary);
-            color: var(--accent-primary);
-            transform: translateY(-2px);
-        }
-
-        /* Hero Stats */
-        .apex-hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .apex-hero-stat {
-            text-align: center;
-        }
-
-        .apex-hero-stat-number {
-            font-size: 2.2rem;
-            font-weight: 900;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .apex-hero-stat-label {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        /* ========================================
-           ABOUT SECTION
-        ======================================== */
-        .apex-about {
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-        }
-
-        .apex-about-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .apex-about-card {
-            padding: 2.5rem 2rem;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .apex-about-card-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 1.5rem;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            box-shadow: 0 4px 20px var(--accent-glow);
-            transition: transform 0.3s ease;
-        }
-
-        .apex-about-card:hover .apex-about-card-icon {
-            transform: scale(1.1) rotate(5deg);
-        }
-
-        .apex-about-card-title {
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-        }
-
-        .apex-about-card-text {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            line-height: 1.7;
-        }
-
-        .apex-about-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, var(--accent-primary), var(--accent-secondary));
-            transform: scaleX(0);
-            transition: transform 0.4s ease;
-            transform-origin: left;
-        }
-
-        .apex-about-card:hover::before {
-            transform: scaleX(1);
-        }
-
-        /* ========================================
-           SERVICES / PROGRAMS
-        ======================================== */
-        .apex-services-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .apex-service-card {
-            padding: 2rem;
-            position: relative;
-            overflow: hidden;
-            cursor: pointer;
-            group: true;
-        }
-
-        .apex-service-card-image {
-            width: 100%;
-            height: 180px;
-            border-radius: 12px;
-            overflow: hidden;
-            margin-bottom: 1.5rem;
-            position: relative;
-        }
-
-        .apex-service-card-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .apex-service-card:hover .apex-service-card-image img {
-            transform: scale(1.1);
-        }
-
-        .apex-service-card-image-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.5));
-            z-index: 1;
-        }
-
-        .apex-service-card-emoji {
-            font-size: 2.5rem;
-            margin-bottom: 1rem;
-            display: block;
-        }
-
-        .apex-service-card-title {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
-        }
-
-        .apex-service-card-text {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .apex-service-card-link {
-            color: var(--accent-primary);
-            font-weight: 600;
-            font-size: 0.9rem;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            transition: gap 0.3s ease;
-        }
-
-        .apex-service-card:hover .apex-service-card-link {
-            gap: 0.6rem;
-        }
-
-        /* ========================================
-           PRICING SECTION
-        ======================================== */
-        .apex-pricing {
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-        }
-
-        .apex-pricing-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 1.5rem;
-            align-items: center;
-        }
-
-        .apex-pricing-card {
-            padding: 2.5rem 2rem;
-            text-align: center;
-            position: relative;
-        }
-
-        .apex-pricing-card.popular {
-            transform: scale(1.05);
-            border-color: var(--accent-primary);
-            box-shadow: 0 8px 40px var(--accent-glow);
-        }
-
-        .apex-pricing-card.popular::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: 20px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            opacity: 0.05;
-            pointer-events: none;
-        }
-
-        .apex-pricing-popular-badge {
-            position: absolute;
-            top: -12px;
+            top: 50%;
             left: 50%;
-            transform: translateX(-50%);
-            padding: 0.35rem 1.2rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            color: #fff;
-            font-size: 0.75rem;
-            font-weight: 700;
-            border-radius: 50px;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-        }
-
-        .apex-pricing-plan {
-            font-size: 0.9rem;
-            text-transform: uppercase;
-            letter-spacing: 0.15em;
-            color: var(--text-muted);
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-
-        .apex-pricing-price {
-            font-size: 3.5rem;
-            font-weight: 900;
-            margin-bottom: 0.25rem;
-            line-height: 1;
-        }
-
-        .apex-pricing-price-currency {
-            font-size: 1.5rem;
-            vertical-align: super;
-            font-weight: 700;
-        }
-
-        .apex-pricing-period {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            margin-bottom: 2rem;
-        }
-
-        .apex-pricing-features {
-            text-align: left;
-            margin-bottom: 2rem;
-        }
-
-        .apex-pricing-features li {
-            padding: 0.5rem 0;
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-        }
-
-        .apex-pricing-features li .check {
-            color: var(--accent-primary);
-            font-weight: bold;
-            font-size: 1rem;
-        }
-
-        .apex-pricing-features li .cross {
-            color: var(--text-muted);
-            font-size: 1rem;
-        }
-
-        .apex-pricing-card .apex-btn {
-            width: 100%;
-            justify-content: center;
-        }
-
-        /* ========================================
-           TRAINERS SECTION
-        ======================================== */
-        .apex-trainers-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 1.5rem;
-        }
-
-        .apex-trainer-card {
-            padding: 2rem;
-            text-align: center;
-        }
-
-        .apex-trainer-avatar {
-            width: 120px;
-            height: 120px;
-            border-radius: 50%;
-            margin: 0 auto 1.5rem;
-            overflow: hidden;
-            border: 3px solid var(--glass-border);
-            position: relative;
-            transition: border-color 0.3s ease;
-        }
-
-        .apex-trainer-card:hover .apex-trainer-avatar {
-            border-color: var(--accent-primary);
-        }
-
-        .apex-trainer-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .apex-trainer-avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 3rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        }
-
-        .apex-trainer-name {
-            font-size: 1.2rem;
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .apex-trainer-specialty {
-            color: var(--accent-primary);
-            font-size: 0.9rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
-        }
-
-        .apex-trainer-bio {
-            color: var(--text-secondary);
-            font-size: 0.9rem;
-            margin-bottom: 1rem;
-        }
-
-        .apex-trainer-socials {
-            display: flex;
-            justify-content: center;
-            gap: 0.75rem;
-        }
-
-        .apex-trainer-social-link {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transform: translate(-50%, -50%);
+            background: #4CAF50;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
             font-size: 0.85rem;
-            transition: all 0.3s ease;
-        }
+            animation: fadeInUp 0.3s ease;
+            pointer-events: none;
+            z-index: 10;
+        `;
+        
+        this.parentElement.style.position = 'relative';
+        this.parentElement.appendChild(notification);
+        
+        setTimeout(() => {
+            notification.remove();
+        }, 1000);
+    });
+});
 
-        .apex-trainer-social-link:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: #fff;
-            transform: translateY(-2px);
-        }
-
-        /* ========================================
-           TESTIMONIALS SECTION
-        ======================================== */
-        .apex-testimonials {
-            background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-primary) 100%);
-        }
-
-        .apex-testimonial-slider {
-            position: relative;
-            max-width: 700px;
-            margin: 0 auto;
-            overflow: hidden;
-        }
-
-        .apex-testimonial-track {
-            display: flex;
-            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-        }
-
-        .apex-testimonial-slide {
-            min-width: 100%;
-            padding: 0 1rem;
-        }
-
-        .apex-testimonial-card {
-            padding: 2.5rem;
-            text-align: center;
-        }
-
-        .apex-testimonial-stars {
-            color: #ffd700;
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.2em;
-        }
-
-        .apex-testimonial-quote {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: var(--text-secondary);
-            margin-bottom: 2rem;
-            font-style: italic;
-            position: relative;
-        }
-
-        .apex-testimonial-quote::before {
-            content: '"';
-            font-size: 4rem;
-            position: absolute;
-            top: -1.5rem;
-            left: 50%;
-            transform: translateX(-50%);
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            font-style: normal;
-            line-height: 1;
-            opacity: 0.4;
-        }
-
-        .apex-testimonial-author {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-        }
-
-        .apex-testimonial-author-avatar {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 2px solid var(--accent-primary);
-        }
-
-        .apex-testimonial-author-avatar-placeholder {
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-        }
-
-        .apex-testimonial-author-info {
-            text-align: left;
-        }
-
-        .apex-testimonial-author-name {
-            font-weight: 700;
-            font-size: 1rem;
-        }
-
-        .apex-testimonial-author-title {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-        }
-
-        .apex-testimonial-controls {
-            display: flex;
-            justify-content: center;
-            gap: 1rem;
-            margin-top: 2rem;
-            align-items: center;
-        }
-
-        .apex-testimonial-btn {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            color: var(--text-primary);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .apex-testimonial-btn:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: #fff;
-        }
-
-        .apex-testimonial-dots {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .apex-testimonial-dot {
-            width: 10px;
-            height: 10px;
-            border-radius: 50%;
-            background: var(--glass-border);
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .apex-testimonial-dot.active {
-            background: var(--accent-primary);
-            box-shadow: 0 0 10px var(--accent-glow);
-            transform: scale(1.2);
-        }
-
-        /* ========================================
-           CONTACT SECTION
-        ======================================== */
-        .apex-contact-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 2rem;
-        }
-
-        @media (max-width: 768px) {
-            .apex-contact-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        .apex-contact-form {
-            padding: 2.5rem;
-        }
-
-        .apex-form-group {
-            margin-bottom: 1.5rem;
-        }
-
-        .apex-form-label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--text-secondary);
-        }
-
-        .apex-form-input,
-        .apex-form-textarea {
-            width: 100%;
-            padding: 0.9rem 1.2rem;
-            background: var(--input-bg);
-            border: 1px solid var(--input-border);
-            border-radius: 12px;
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-family: inherit;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-        }
-
-        .apex-form-input:focus,
-        .apex-form-textarea:focus {
-            outline: none;
-            border-color: var(--accent-primary);
-            box-shadow: 0 0 20px var(--accent-glow);
-        }
-
-        .apex-form-textarea {
-            min-height: 140px;
-            resize: vertical;
-        }
-
-        .apex-contact-info {
-            padding: 2.5rem;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-        }
-
-        .apex-contact-info-item {
-            display: flex;
-            gap: 1rem;
-            align-items: flex-start;
-        }
-
-        .apex-contact-info-icon {
-            width: 48px;
-            height: 48px;
-            min-width: 48px;
-            border-radius: 14px;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3rem;
-        }
-
-        .apex-contact-info-title {
-            font-weight: 700;
-            margin-bottom: 0.25rem;
-        }
-
-        .apex-contact-info-text {
-            color: var(--text-secondary);
-            font-size: 0.95rem;
-        }
-
-        .apex-contact-hours {
-            margin-top: auto;
-            padding: 1.5rem;
-            background: var(--glass-bg);
-            border-radius: 14px;
-            border: 1px solid var(--glass-border);
-        }
-
-        .apex-contact-hours-title {
-            font-weight: 700;
-            margin-bottom: 0.75rem;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .apex-contact-hours-row {
-            display: flex;
-            justify-content: space-between;
-            padding: 0.4rem 0;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        /* ========================================
-           FOOTER
-        ======================================== */
-        .apex-footer {
-            border-top: 1px solid var(--glass-border);
-            padding: 3rem 0 2rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .apex-footer-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 1.5rem;
-        }
-
-        .apex-footer-logo {
-            font-size: 1.4rem;
-            font-weight: 900;
-            letter-spacing: 0.1em;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .apex-footer-copyright {
-            color: var(--text-muted);
-            font-size: 0.85rem;
-        }
-
-        .apex-footer-socials {
-            display: flex;
-            gap: 0.75rem;
-        }
-
-        .apex-footer-social {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background: var(--glass-bg);
-            border: 1px solid var(--glass-border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1rem;
-            transition: all 0.3s ease;
-            cursor: pointer;
-        }
-
-        .apex-footer-social:hover {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            transform: translateY(-3px);
-            box-shadow: 0 4px 15px var(--accent-glow);
-        }
-
-        /* ========================================
-           SCROLL TO TOP BUTTON
-        ======================================== */
-        .apex-scroll-top {
+/* =====================================================
+   GALLERY LIGHTBOX (Simple version)
+   Opens gallery images in full view
+   ===================================================== */
+document.querySelectorAll('.gallery-item').forEach(item => {
+    item.addEventListener('click', function() {
+        const overlay = document.createElement('div');
+        overlay.style.cssText = `
             position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            width: 48px;
-            height: 48px;
-            border-radius: 50%;
-            background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
-            border: none;
-            color: #fff;
-            font-size: 1.3rem;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            opacity: 0;
-            visibility: hidden;
-            transform: translateY(20px);
-            transition: all 0.4s ease;
-            z-index: 999;
-            box-shadow: 0 4px 20px var(--accent-glow);
-        }
-
-        .apex-scroll-top.visible {
-            opacity: 1;
-            visibility: visible;
-            transform: translateY(0);
-        }
-
-        .apex-scroll-top:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 30px var(--accent-glow);
-        }
-
-        /* ========================================
-           FORM SUCCESS ANIMATION
-        ======================================== */
-        .apex-form-success {
-            display: none;
-            text-align: center;
-            padding: 2rem;
-        }
-
-        .apex-form-success.show {
-            display: block;
-            animation: apex-fade-in 0.5s ease;
-        }
-
-        .apex-form-success-icon {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            animation: apex-bounce 0.6s ease;
-        }
-
-        @keyframes apex-bounce {
-            0% { transform: scale(0); }
-            50% { transform: scale(1.2); }
-            100% { transform: scale(1); }
-        }
-
-        @keyframes apex-fade-in {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* ========================================
-           RESPONSIVE
-        ======================================== */
-        @media (max-width: 768px) {
-            .apex-section {
-                padding: 4rem 0;
-            }
-
-            .apex-hero {
-                padding: 6rem 1rem 3rem;
-            }
-
-            .apex-hero-stats {
-                gap: 2rem;
-            }
-
-            .apex-pricing-card.popular {
-                transform: scale(1);
-            }
-
-            .apex-pricing-grid {
-                gap: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .apex-hero-title {
-                font-size: 2.2rem;
-            }
-
-            .apex-hero-cta-group {
-                flex-direction: column;
-                align-items: center;
-            }
-
-            .apex-btn {
-                width: 100%;
-                justify-content: center;
-            }
-        }
-
-        /* ========================================
-           LOADING ANIMATION
-        ======================================== */
-        .apex-loader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--bg-primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 10000;
-            transition: opacity 0.6s ease, visibility 0.6s ease;
-        }
-
-        .apex-loader.hidden {
-            opacity: 0;
-            visibility: hidden;
-        }
-
-        .apex-loader-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid var(--glass-border);
-            border-top-color: var(--accent-primary);
-            border-radius: 50%;
-            animation: apex-spin 0.8s linear infinite;
-        }
-
-        @keyframes apex-spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Counter animation */
-        .apex-counter {
-            display: inline-block;
-        }
-    </style>
-</head>
-<body>
-
-    <!-- Loading Screen -->
-    <div class="apex-loader" id="apexLoader">
-        <div class="apex-loader-spinner"></div>
-    </div>
-
-    <!-- Animated Background Orbs -->
-    <div class="apex-bg-orbs">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
-    </div>
-
-    <!-- ========================================
-         NAVIGATION
-    ======================================== -->
-    <nav class="apex-nav" id="apexNav">
-        <div class="apex-nav-inner">
-            <a href="#" class="apex-nav-logo">APEX</a>
-
-            <div class="apex-nav-links" id="apexNavLinks">
-                <a href="#apex-about">About</a>
-                <a href="#apex-services">Programs</a>
-                <a href="#apex-pricing">Pricing</a>
-                <a href="#apex-trainers">Trainers</a>
-                <a href="#apex-testimonials">Reviews</a>
-                <a href="#apex-contact">Contact</a>
-                <div class="apex-theme-toggle" id="apexThemeToggle" title="Toggle theme" role="button" tabindex="0" aria-label="Toggle light/dark mode">
-                    <div class="apex-theme-toggle-circle" id="apexThemeCircle">🌙</div>
-                </div>
+        `;
+        
+        const content = this.querySelector('.gallery-overlay span')?.textContent || 'Gallery Image';
+        overlay.innerHTML = `
+            <div style="text-align: center; color: white;">
+                <p style="font-size: 1.5rem; margin-bottom: 1rem;">${content}</p>
+                <p style="opacity: 0.7;">Click anywhere to close</p>
             </div>
+        `;
+        
+        document.body.appendChild(overlay);
+        
+        overlay.addEventListener('click', () => {
+            overlay.remove();
+        });
+    });
+});
 
-            <button class="apex-mobile-toggle" id="apexMobileToggle" aria-label="Toggle menu">
-                <span></span>
-                <span></span>
-                <span></span>
-            </button>
-        </div>
+/* Add fadeIn animation for lightbox */
+const style = document.createElement('style');
+style.textContent = `
+    @keyframes fadeIn {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+`;
+document.head.appendChild(style);</script>
+<style>/* =====================================================
+   THE VELVET BEAN - Modern Café Website
+   Glassmorphism UI with Light/Dark Mode Support
+   ===================================================== */
+
+/* =====================================================
+   CSS CUSTOM PROPERTIES (Theme Variables)
+   ===================================================== */
+:root {
+    /* Light Mode Colors (Default) */
+    --bg-primary: #faf8f5;
+    --bg-secondary: #f5f0e8;
+    --bg-card: rgba(255, 255, 255, 0.7);
+    --bg-card-hover: rgba(255, 255, 255, 0.9);
+    --bg-glass: rgba(255, 255, 255, 0.25);
+    
+    --text-primary: #2d2a26;
+    --text-secondary: #5c5650;
+    --text-muted: #8a8279;
+    
+    --accent-primary: #b8956e;
+    --accent-secondary: #d4a574;
+    --accent-tertiary: #e8c9a0;
+    
+    --border-color: rgba(45, 42, 38, 0.1);
+    --border-light: rgba(255, 255, 255, 0.3);
+    
+    --shadow-soft: 0 8px 32px rgba(45, 42, 38, 0.08);
+    --shadow-medium: 0 12px 40px rgba(45, 42, 38, 0.12);
+    --shadow-strong: 0 20px 60px rgba(45, 42, 38, 0.15);
+    
+    --gradient-primary: linear-gradient(135deg, #b8956e 0%, #d4a574 100%);
+    --gradient-bg: linear-gradient(135deg, #faf8f5 0%, #f5f0e8 50%, #efe6d5 100%);
+    
+    --glass-blur: blur(20px);
+    --glass-border: 1px solid var(--border-light);
+    
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    --space-3xl: 4rem;
+    
+    /* Border Radius */
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 20px;
+    --radius-xl: 28px;
+    --radius-full: 9999px;
+    
+    /* Transitions */
+    --transition-fast: 0.2s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s ease;
+}
+
+/* Dark Mode Variables */
+[data-theme="dark"] {
+    --bg-primary: #1a1917;
+    --bg-secondary: #252320;
+    --bg-card: rgba(45, 42, 38, 0.7);
+    --bg-card-hover: rgba(55, 52, 48, 0.9);
+    --bg-glass: rgba(45, 42, 38, 0.4);
+    
+    --text-primary: #f5f0e8;
+    --text-secondary: #c9c4bc;
+    --text-muted: #8a8279;
+    
+    --accent-primary: #d4a574;
+    --accent-secondary: #e8c9a0;
+    --accent-tertiary: #b8956e;
+    
+    --border-color: rgba(255, 255, 255, 0.08);
+    --border-light: rgba(255, 255, 255, 0.1);
+    
+    --shadow-soft: 0 8px 32px rgba(0, 0, 0, 0.3);
+    --shadow-medium: 0 12px 40px rgba(0, 0, 0, 0.4);
+    --shadow-strong: 0 20px 60px rgba(0, 0, 0, 0.5);
+    
+    --gradient-primary: linear-gradient(135deg, #d4a574 0%, #e8c9a0 100%);
+    --gradient-bg: linear-gradient(135deg, #1a1917 0%, #252320 50%, #2d2a26 100%);
+}
+
+/* =====================================================
+   BASE STYLES
+   ===================================================== */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+}
+
+body {
+    font-family: 'Poppins', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--gradient-bg);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+    transition: background var(--transition-slow), color var(--transition-base);
+}
+
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--bg-primary);
+    z-index: -2;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-weight: 600;
+    line-height: 1.2;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+    transition: color var(--transition-fast);
+}
+
+button {
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+ul {
+    list-style: none;
+}
+
+img {
+    max-width: 100%;
+    display: block;
+}
+
+/* =====================================================
+   BACKGROUND EFFECTS
+   ===================================================== */
+.bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: var(--gradient-bg);
+    z-index: -2;
+    transition: background var(--transition-slow);
+}
+
+.bg-blob {
+    position: fixed;
+    border-radius: 50%;
+    filter: blur(80px);
+    opacity: 0.5;
+    z-index: -1;
+    transition: all var(--transition-slow);
+}
+
+.blob-1 {
+    width: 600px;
+    height: 600px;
+    background: var(--accent-tertiary);
+    top: -200px;
+    right: -100px;
+    animation: float 20s ease-in-out infinite;
+}
+
+.blob-2 {
+    width: 500px;
+    height: 500px;
+    background: var(--accent-primary);
+    bottom: -150px;
+    left: -150px;
+    animation: float 25s ease-in-out infinite reverse;
+}
+
+.blob-3 {
+    width: 400px;
+    height: 400px;
+    background: var(--accent-secondary);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    animation: pulse 15s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% { transform: translate(0, 0) rotate(0deg); }
+    33% { transform: translate(30px, -30px) rotate(120deg); }
+    66% { transform: translate(-20px, 20px) rotate(240deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+/* =====================================================
+   CONTAINER & SECTION STYLES
+   ===================================================== */
+.container {
+    width: 100%;
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+}
+
+section {
+    padding: var(--space-3xl) 0;
+    position: relative;
+}
+
+.section-header {
+    text-align: center;
+    margin-bottom: var(--space-2xl);
+}
+
+.section-tag {
+    display: inline-block;
+    padding: var(--space-xs) var(--space-md);
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-md);
+    letter-spacing: 0.05em;
+}
+
+.section-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    color: var(--text-primary);
+    margin-bottom: var(--space-md);
+}
+
+.section-title .highlight {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.section-description {
+    max-width: 600px;
+    margin: 0 auto;
+    color: var(--text-secondary);
+}
+
+/* =====================================================
+   NAVBAR
+   ===================================================== */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+    padding: var(--space-md) 0;
+    transition: all var(--transition-base);
+}
+
+.navbar.scrolled {
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    box-shadow: var(--shadow-soft);
+}
+
+.nav-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 var(--space-lg);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.nav-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+}
+
+.logo-icon {
+    font-size: 1.8rem;
+}
+
+.logo-text {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.nav-links {
+    display: flex;
+    gap: var(--space-xl);
+}
+
+.nav-link {
+    position: relative;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--text-secondary);
+    padding: var(--space-sm) 0;
+    transition: color var(--transition-fast);
+}
+
+.nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: var(--gradient-primary);
+    transition: width var(--transition-base);
+}
+
+.nav-link:hover,
+.nav-link.active {
+    color: var(--accent-primary);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+    width: 100%;
+}
+
+/* Theme Toggle */
+.theme-toggle {
+    position: relative;
+    width: 48px;
+    height: 48px;
+    border-radius: var(--radius-full);
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+    overflow: hidden;
+}
+
+.theme-toggle:hover {
+    background: var(--bg-card-hover);
+    transform: scale(1.05);
+}
+
+.theme-icon {
+    position: absolute;
+    font-size: 1.2rem;
+    transition: all var(--transition-base);
+}
+
+.theme-icon.sun {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+
+.theme-icon.moon {
+    opacity: 0;
+    transform: translateY(20px) rotate(-90deg);
+}
+
+[data-theme="dark"] .theme-icon.sun {
+    opacity: 0;
+    transform: translateY(-20px) rotate(90deg);
+}
+
+[data-theme="dark"] .theme-icon.moon {
+    opacity: 1;
+    transform: translateY(0) rotate(0deg);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    padding: var(--space-sm);
+}
+
+.hamburger-line {
+    width: 24px;
+    height: 2px;
+    background: var(--text-primary);
+    border-radius: 2px;
+    transition: all var(--transition-fast);
+}
+
+/* =====================================================
+   HERO SECTION
+   ===================================================== */
+.hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding-top: 100px;
+    position: relative;
+    overflow: hidden;
+}
+
+.hero-content {
+    flex: 1;
+    max-width: 600px;
+    animation: fadeInUp 1s ease-out;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: var(--space-sm) var(--space-md);
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-full);
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-primary);
+    margin-bottom: var(--space-lg);
+    letter-spacing: 0.1em;
+}
+
+.hero-title {
+    font-size: clamp(3rem, 8vw, 5rem);
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+
+.hero-title .highlight {
+    background: var(--gradient-primary);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-secondary);
+    margin-bottom: var(--space-xl);
+    line-height: 1.8;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: var(--space-md);
+    flex-wrap: wrap;
+}
+
+/* Buttons */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-sm);
+    padding: var(--space-md) var(--space-xl);
+    border-radius: var(--radius-full);
+    font-weight: 500;
+    font-size: 1rem;
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary {
+    background: var(--gradient-primary);
+    color: #fff;
+    box-shadow: 0 4px 20px rgba(184, 149, 110, 0.4);
+}
+
+.btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(184, 149, 110, 0.5);
+}
+
+.btn-secondary {
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-2px);
+}
+
+/* Hero Visual */
+.hero-visual {
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 400px;
+    height: 400px;
+    animation: fadeInUp 1s ease-out 0.3s backwards;
+}
+
+.coffee-cup {
+    width: 200px;
+    height: 200px;
+    background: var(--gradient-primary);
+    border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+    position: relative;
+    margin: 0 auto;
+    box-shadow: var(--shadow-strong),
+                inset 0 -20px 40px rgba(0, 0, 0, 0.1);
+}
+
+.coffee-cup::before {
+    content: '';
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 80px;
+    border: 8px solid var(--accent-secondary);
+    border-left: none;
+    border-radius: 0 50% 50% 0;
+}
+
+/* Steam Animation */
+.steam {
+    position: absolute;
+    width: 8px;
+    height: 80px;
+    background: linear-gradient(to top, var(--accent-tertiary), transparent);
+    border-radius: var(--radius-full);
+    opacity: 0;
+    animation: steam 2s ease-in-out infinite;
+}
+
+.steam-1 {
+    left: 30%;
+    animation-delay: 0s;
+}
+
+.steam-2 {
+    left: 50%;
+    animation-delay: 0.5s;
+}
+
+.steam-3 {
+    left: 70%;
+    animation-delay: 1s;
+}
+
+@keyframes steam {
+    0% {
+        opacity: 0;
+        transform: translateY(0) scaleX(1);
+    }
+    50% {
+        opacity: 0.6;
+    }
+    100% {
+        opacity: 0;
+        transform: translateY(-100px) scaleX(2);
+    }
+}
+
+/* Scroll Indicator */
+.scroll-indicator {
+    position: absolute;
+    bottom: var(--space-xl);
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-sm);
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+.scroll-arrow {
+    width: 24px;
+    height: 24px;
+    border-right: 2px solid var(--text-muted);
+    border-bottom: 2px solid var(--text-muted);
+    transform: rotate(45deg);
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(-50%) translateY(0); }
+    50% { transform: translateX(-50%) translateY(10px); }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* =====================================================
+   ABOUT SECTION
+   ===================================================== */
+.about {
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-3xl);
+    align-items: center;
+}
+
+.about-image {
+    position: relative;
+}
+
+.image-frame {
+    aspect-ratio: 4/5;
+    border-radius: var(--radius-xl);
+    overflow: hidden;
+    box-shadow: var(--shadow-medium);
+}
+
+.image-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+    color: var(--text-muted);
+}
+
+.image-placeholder span {
+    font-size: 4rem;
+    opacity: 0.5;
+}
+
+.experience-badge {
+    position: absolute;
+    bottom: -20px;
+    right: -20px;
+    background: var(--gradient-primary);
+    padding: var(--space-lg);
+    border-radius: var(--radius-lg);
+    text-align: center;
+    box-shadow: var(--shadow-medium);
+}
+
+.badge-number {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #fff;
+    line-height: 1;
+}
+
+.badge-text {
+    font-size: 0.85rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.about-content {
+    padding: var(--space-xl) 0;
+}
+
+.about-text {
+    color: var(--text-secondary);
+    margin-bottom: var(--space-lg);
+    font-size: 1.05rem;
+    line-height: 1.8;
+}
+
+.about-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-lg);
+    margin-top: var(--space-2xl);
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+.stat-item {
+    text-align: center;
+}
+
+.stat-number {
+    display: block;
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--accent-primary);
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+/* =====================================================
+   MENU SECTION
+   ===================================================== */
+.menu-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: var(--space-xl);
+}
+
+.menu-tabs {
+    display: flex;
+    justify-content: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-2xl);
+    flex-wrap: wrap;
+}
+
+.menu-tab {
+    padding: var(--space-sm) var(--space-xl);
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-full);
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition-base);
+}
+
+.menu-tab:hover {
+    background: var(--bg-card-hover);
+}
+
+.menu-tab.active {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+}
+
+.menu-card {
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-lg);
+    transition: all var(--transition-base);
+    position: relative;
+    overflow: hidden;
+}
+
+.menu-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-medium);
+}
+
+.menu-card[data-category] {
+    display: block;
+}
+
+.menu-card.hidden {
+    display: none;
+}
+
+.menu-card-header {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+}
+
+.menu-item-tag {
+    padding: var(--space-xs) var(--space-sm);
+    background: var(--accent-primary);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    border-radius: var(--radius-sm);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.menu-item-tag.new {
+    background: #4CAF50;
+}
+
+.menu-item-image {
+    width: 80px;
+    height: 80px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: var(--space-md);
+}
+
+.menu-emoji {
+    font-size: 2.5rem;
+}
+
+.menu-item-name {
+    font-size: 1.2rem;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.menu-item-description {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: var(--space-md);
+    line-height: 1.6;
+}
+
+.menu-item-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.menu-item-price {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--accent-primary);
+}
+
+.add-btn {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--gradient-primary);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all var(--transition-base);
+}
+
+.add-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 15px rgba(184, 149, 110, 0.4);
+}
+
+/* =====================================================
+   GALLERY SECTION
+   ===================================================== */
+.gallery {
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(2, 250px);
+    gap: var(--space-md);
+}
+
+.gallery-item {
+    position: relative;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.gallery-item.large {
+    grid-column: span 2;
+    grid-row: span 2;
+}
+
+.gallery-item.wide {
+    grid-column: span 2;
+}
+
+.gallery-placeholder {
+    width: 100%;
+    height: 100%;
+    background: var(--bg-secondary);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    color: var(--text-muted);
+    transition: all var(--transition-base);
+}
+
+.gallery-placeholder span {
+    font-size: 2.5rem;
+    opacity: 0.5;
+}
+
+.gallery-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    align-items: flex-end;
+    padding: var(--space-lg);
+    opacity: 0;
+    transition: all var(--transition-base);
+}
+
+.gallery-overlay span {
+    color: #fff;
+    font-weight: 500;
+}
+
+.gallery-item:hover .gallery-overlay {
+    opacity: 1;
+}
+
+.gallery-item:hover .gallery-placeholder {
+    transform: scale(1.05);
+}
+
+/* =====================================================
+   TESTIMONIALS SECTION
+   ===================================================== */
+.testimonials-carousel {
+    position: relative;
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.testimonial-track {
+    display: flex;
+    transition: transform var(--transition-slow);
+}
+
+.testimonial-card {
+    flex: 0 0 100%;
+    padding: var(--space-2xl);
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-xl);
+    text-align: center;
+}
+
+.testimonial-rating {
+    margin-bottom: var(--space-lg);
+    font-size: 1.5rem;
+}
+
+.testimonial-text {
+    font-size: 1.15rem;
+    color: var(--text-secondary);
+    line-height: 1.8;
+    margin-bottom: var(--space-xl);
+    font-style: italic;
+}
+
+.testimonial-author {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-md);
+}
+
+.author-avatar {
+    width: 50px;
+    height: 50px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+}
+
+.author-info {
+    text-align: left;
+}
+
+.author-name {
+    display: block;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.author-role {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.testimonial-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-lg);
+    margin-top: var(--space-xl);
+}
+
+.testimonial-btn {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-primary);
+    transition: all var(--transition-base);
+}
+
+.testimonial-btn:hover {
+    background: var(--gradient-primary);
+    color: #fff;
+    border-color: transparent;
+}
+
+.testimonial-dots {
+    display: flex;
+    gap: var(--space-sm);
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--bg-secondary);
+    transition: all var(--transition-base);
+}
+
+.dot.active {
+    background: var(--accent-primary);
+    transform: scale(1.2);
+}
+
+/* =====================================================
+   CONTACT SECTION
+   ===================================================== */
+.contact {
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1.2fr;
+    gap: var(--space-3xl);
+}
+
+.contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-lg);
+}
+
+.info-card {
+    display: flex;
+    gap: var(--space-lg);
+    padding: var(--space-lg);
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-lg);
+    transition: all var(--transition-base);
+}
+
+.info-card:hover {
+    background: var(--bg-card-hover);
+    transform: translateX(5px);
+}
+
+.info-icon {
+    font-size: 2rem;
+    width: 50px;
+    height: 50px;
+    background: var(--bg-secondary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.info-content h3 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-xs);
+    color: var(--text-primary);
+}
+
+.info-content p {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    line-height: 1.6;
+}
+
+.social-links {
+    display: flex;
+    gap: var(--space-md);
+    padding: var(--space-lg) 0;
+}
+
+.social-link {
+    width: 48px;
+    height: 48px;
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    transition: all var(--transition-base);
+}
+
+.social-link:hover {
+    background: var(--gradient-primary);
+    transform: translateY(-3px);
+    border-color: transparent;
+}
+
+/* Contact Form */
+.contact-form-container {
+    background: var(--bg-card);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border: var(--glass-border);
+    border-radius: var(--radius-xl);
+    padding: var(--space-2xl);
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: var(--space-xl);
+}
+
+.form-header h3 {
+    font-size: 1.5rem;
+    margin-bottom: var(--space-xs);
+}
+
+.form-header p {
+    color: var(--text-muted);
+}
+
+.form-group {
+    margin-bottom: var(--space-lg);
+    position: relative;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    font-weight: 500;
+    margin-bottom: var(--space-sm);
+    color: var(--text-primary);
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: var(--space-md) var(--space-lg);
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 1rem;
+    color: var(--text-primary);
+    transition: all var(--transition-fast);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+    color: var(--text-muted);
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--accent-primary);
+    box-shadow: 0 0 0 3px rgba(184, 149, 110, 0.2);
+}
+
+.form-group textarea {
+    resize: vertical;
+    min-height: 120px;
+}
+
+.form-group select {
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='%235c5650' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+    padding-right: 48px;
+}
+
+.error-message {
+    display: block;
+    font-size: 0.8rem;
+    color: #e74c3c;
+    margin-top: var(--space-xs);
+    min-height: 1.2em;
+}
+
+.form-group.error input,
+.form-group.error select,
+.form-group.error textarea {
+    border-color: #e74c3c;
+}
+
+.form-group.error .error-message {
+    color: #e74c3c;
+}
+
+.btn-submit {
+    width: 100%;
+    justify-content: center;
+    padding: var(--space-md) var(--space-2xl);
+}
+
+.form-success {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-sm);
+    padding: var(--space-md);
+    background: rgba(76, 175, 80, 0.1);
+    border: 1px solid rgba(76, 175, 80, 0.3);
+    border-radius: var(--radius-md);
+    color: #4CAF50;
+    margin-top: var(--space-lg);
+}
+
+.form-success.show {
+    display: flex;
+    animation: fadeInUp 0.5s ease;
+}
+
+.success-icon {
+    width: 24px;
+    height: 24px;
+    background: #4CAF50;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+}
+
+/* =====================================================
+   FOOTER
+   ===================================================== */
+.footer {
+    padding: var(--space-3xl) 0 var(--space-xl);
+    background: var(--bg-glass);
+    backdrop-filter: var(--glass-blur);
+    -webkit-backdrop-filter: var(--glass-blur);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+    display: grid;
+    grid-template-columns: 1.5fr 2fr;
+    gap: var(--space-3xl);
+    margin-bottom: var(--space-2xl);
+}
+
+.footer-logo {
+    display: flex;
+    align-items: center;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-lg);
+}
+
+.footer-tagline {
+    color: var(--text-secondary);
+    line-height: 1.8;
+}
+
+.footer-links {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-xl);
+}
+
+.footer-column h4 {
+    font-family: 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: var(--space-lg);
+    color: var(--text-primary);
+}
+
+.footer-column ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-sm);
+}
+
+.footer-column a {
+    color: var(--text-secondary);
+    transition: all var(--transition-fast);
+}
+
+.footer-column a:hover {
+    color: var(--accent-primary);
+    padding-left: var(--space-sm);
+}
+
+.footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: var(--space-xl);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-bottom p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.footer-social {
+    display: flex;
+    gap: var(--space-md);
+}
+
+.footer-social a {
+    color: var(--text-muted);
+    font-size: 1.2rem;
+    transition: all var(--transition-fast);
+}
+
+.footer-social a:hover {
+    color: var(--accent-primary);
+    transform: translateY(-2px);
+}
+
+/* =====================================================
+   SCROLL ANIMATIONS
+   ===================================================== */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease-out;
+}
+
+.animate-on-scroll.animated {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* =====================================================
+   RESPONSIVE STYLES
+   ===================================================== */
+@media (max-width: 1024px) {
+    .about-grid {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+    }
+    
+    .about-image {
+        max-width: 400px;
+        margin: 0 auto;
+    }
+    
+    .contact-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: var(--space-2xl);
+    }
+    
+    .gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(3, 200px);
+    }
+    
+    .gallery-item.large {
+        grid-column: span 2;
+        grid-row: span 1;
+    }
+    
+    .gallery-item.wide {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 80%;
+        max-width: 300px;
+        height: 100vh;
+        background: var(--bg-primary);
+        flex-direction: column;
+        padding: 100px var(--space-xl);
+        gap: var(--space-lg);
+        transition: right var(--transition-base);
+        box-shadow: var(--shadow-strong);
+    }
+    
+    .nav-links.active {
+        right: 0;
+    }
+    
+    .nav-link {
+        font-size: 1.1rem;
+    }
+    
+    .mobile-menu-btn {
+        display: flex;
+        z-index: 1001;
+    }
+    
+    .mobile-menu-btn.active .hamburger-line:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+    }
+    
+    .mobile-menu-btn.active .hamburger-line:nth-child(2) {
+        opacity: 0;
+    }
+    
+    .mobile-menu-btn.active .hamburger-line:nth-child(3) {
+        transform: rotate(-45deg) translate(5px, -5px);
+    }
+    
+    .hero {
+        text-align: center;
+        padding-top: 120px;
+    }
+    
+    .hero-content {
+        max-width: 100%;
+    }
+    
+    .hero-buttons {
+        justify-content: center;
+    }
+    
+    .hero-visual {
+        display: none;
+    }
+    
+    .scroll-indicator {
+        display: none;
+    }
+    
+    .about-stats {
+        grid-template-columns: 1fr;
+        gap: var(--space-lg);
+    }
+    
+    .gallery-grid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto;
+    }
+    
+    .gallery-item,
+    .gallery-item.large,
+    .gallery-item.wide {
+        grid-column: span 1;
+        grid-row: span 1;
+        aspect-ratio: 16/9;
+    }
+    
+    .footer-links {
+        grid-template-columns: 1fr;
+        gap: var(--space-xl);
+    }
+    
+    .footer-bottom {
+        flex-direction: column;
+        gap: var(--space-lg);
+        text-align: center;
+    }
+    
+    .testimonial-card {
+        padding: var(--space-lg);
+    }
+    
+    .testimonial-text {
+        font-size: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    :root {
+        --space-lg: 1rem;
+        --space-xl: 1.5rem;
+        --space-2xl: 2rem;
+        --space-3xl: 3rem;
+    }
+    
+    .menu-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .hero-buttons {
+        flex-direction: column;
+    }
+}
+
+/* =====================================================
+   UTILITY CLASSES
+   ===================================================== */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Focus visible for accessibility */
+:focus-visible {
+    outline: 2px solid var(--accent-primary);
+    outline-offset: 2px;
+}
+
+/* Smooth scrolling for users without motion preferences */
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+    
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}</style>
+    <!-- Background Effects -->
+    <div class="bg-gradient"></div>
+    <div class="bg-blob blob-1"></div>
+    <div class="bg-blob blob-2"></div>
+    <div class="bg-blob blob-3"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar">
+      <div class="nav-container">
+        <a href="#" class="nav-logo">
+          <span class="logo-icon">☕</span>
+          <span class="logo-text">The Velvet Bean</span>
+        </a>
+
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+
+        <ul class="nav-links">
+          <li><a href="#home" class="nav-link active">Home</a></li>
+          <li><a href="#about" class="nav-link">About</a></li>
+          <li><a href="#menu" class="nav-link">Menu</a></li>
+          <li><a href="#gallery" class="nav-link">Gallery</a></li>
+          <li><a href="#testimonials" class="nav-link">Reviews</a></li>
+          <li><a href="#contact" class="nav-link">Contact</a></li>
+        </ul>
+
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <span class="theme-icon sun">☀️</span>
+          <span class="theme-icon moon">🌙</span>
+        </button>
+      </div>
     </nav>
 
-    <!-- ========================================
-         HERO SECTION
-    ======================================== -->
-    <section class="apex-hero" id="apex-hero">
-        <div class="apex-hero-bg"></div>
-        <div class="apex-hero-grid"></div>
-
-        <div class="apex-hero-content">
-            <div class="apex-hero-badge apex-reveal">
-                <span class="apex-hero-badge-dot"></span>
-                Now Open — Limited Founding Member Spots
-            </div>
-
-            <h1 class="apex-hero-title apex-reveal apex-reveal-delay-1">
-                Build Your<br><span class="highlight">Strongest Self</span>
-            </h1>
-
-            <p class="apex-hero-subtitle apex-reveal apex-reveal-delay-2">
-                Transform your body and mind with world-class training, cutting-edge equipment, and a community that pushes you beyond limits.
-            </p>
-
-            <div class="apex-hero-cta-group apex-reveal apex-reveal-delay-3">
-                <a href="#apex-pricing" class="apex-btn apex-btn-primary">
-                    Join Now →
-                </a>
-                <a href="#apex-about" class="apex-btn apex-btn-outline">
-                    Explore More
-                </a>
-            </div>
-
-            <div class="apex-hero-stats apex-reveal apex-reveal-delay-4">
-                <div class="apex-hero-stat">
-                    <div class="apex-hero-stat-number"><span class="apex-counter" data-target="5000">0</span>+</div>
-                    <div class="apex-hero-stat-label">Members</div>
-                </div>
-                <div class="apex-hero-stat">
-                    <div class="apex-hero-stat-number"><span class="apex-counter" data-target="50">0</span>+</div>
-                    <div class="apex-hero-stat-label">Classes Weekly</div>
-                </div>
-                <div class="apex-hero-stat">
-                    <div class="apex-hero-stat-number"><span class="apex-counter" data-target="15">0</span>+</div>
-                    <div class="apex-hero-stat-label">Expert Trainers</div>
-                </div>
-                <div class="apex-hero-stat">
-                    <div class="apex-hero-stat-number"><span class="apex-counter" data-target="98">0</span>%</div>
-                    <div class="apex-hero-stat-label">Satisfaction</div>
-                </div>
-            </div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+      <div class="hero-content">
+        <span class="hero-badge">Est. 2018 • Artisan Coffee</span>
+        <h1 class="hero-title">
+          The <span class="highlight">Velvet</span> Bean
+        </h1>
+        <p class="hero-subtitle">
+          Where every cup tells a story. Experience the art of coffee craftsmanship in a warm, inviting atmosphere.
+        </p>
+        <div class="hero-buttons">
+          <a href="#menu" class="btn btn-primary">
+            <span>View Our Menu</span>
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M5 12h14M12 5l7 7-7 7" />
+            </svg>
+          </a>
+          <a href="#contact" class="btn btn-secondary">Book a Table</a>
         </div>
+      </div>
+      <div class="hero-visual">
+        <div class="coffee-cup">
+          <div class="steam steam-1"></div>
+          <div class="steam steam-2"></div>
+          <div class="steam steam-3"></div>
+        </div>
+      </div>
+      <div class="scroll-indicator">
+        <span>Scroll to explore</span>
+        <div class="scroll-arrow"></div>
+      </div>
     </section>
 
-    <!-- ========================================
-         ABOUT SECTION
-    ======================================== -->
-    <section class="apex-section apex-about" id="apex-about">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">Why Choose <span>APEX</span>?</h2>
-            <p class="apex-section-subtitle apex-reveal">
-                More than a gym — we're a movement. Built for those who refuse to settle for average.
+    <!-- About Section -->
+    <section id="about" class="about">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Our Story</span>
+          <h2 class="section-title">A Passion for <span class="highlight">Perfect Coffee</span></h2>
+        </div>
+
+        <div class="about-grid">
+          <div class="about-image">
+            <div class="image-frame">
+              <div class="image-placeholder">
+                <span>📷</span>
+                <p>Café Interior</p>
+              </div>
+            </div>
+            <div class="experience-badge">
+              <span class="badge-number">6+</span>
+              <span class="badge-text">Years of Excellence</span>
+            </div>
+          </div>
+
+          <div class="about-content">
+            <p class="about-text">
+              Founded in 2018 by coffee enthusiasts Maria and James Chen, The Velvet Bean began as a small dream to
+              bring specialty coffee to our neighborhood. What started as a single espresso machine and a handful of
+              regulars has blossomed into a beloved community gathering place.
+            </p>
+            <p class="about-text">
+              We source our beans directly from sustainable farms across Colombia, Ethiopia, and Guatemala. Each batch
+              is carefully roasted in-house to bring out unique flavor profiles that tell the story of their origin.
             </p>
 
-            <div class="apex-about-grid">
-                <div class="apex-glass apex-about-card apex-reveal apex-reveal-delay-1">
-                    <div class="apex-about-card-icon">💪</div>
-                    <h3 class="apex-about-card-title">Strength</h3>
-                    <p class="apex-about-card-text">
-                        State-of-the-art equipment and proven methodologies to help you build real, functional strength that translates to everyday life.
-                    </p>
-                </div>
-
-                <div class="apex-glass apex-about-card apex-reveal apex-reveal-delay-2">
-                    <div class="apex-about-card-icon">🤝</div>
-                    <h3 class="apex-about-card-title">Community</h3>
-                    <p class="apex-about-card-text">
-                        Join a tribe of like-minded individuals who motivate, support, and celebrate each other's victories — big and small.
-                    </p>
-                </div>
-
-                <div class="apex-glass apex-about-card apex-reveal apex-reveal-delay-3">
-                    <div class="apex-about-card-icon">🏆</div>
-                    <h3 class="apex-about-card-title">Results</h3>
-                    <p class="apex-about-card-text">
-                        Data-driven training programs and personalized nutrition guidance that deliver measurable, lasting transformation.
-                    </p>
-                </div>
+            <div class="about-stats">
+              <div class="stat-item">
+                <span class="stat-number" data-target="50">0</span>
+                <span class="stat-label">Coffee Varietals</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" data-target="15">0</span>
+                <span class="stat-label">Dedicated Staff</span>
+              </div>
+              <div class="stat-item">
+                <span class="stat-number" data-target="10000">0</span>
+                <span class="stat-label">Cups Served Monthly</span>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
 
-    <!-- ========================================
-         SERVICES / PROGRAMS SECTION
-    ======================================== -->
-    <section class="apex-section" id="apex-services">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">Our <span>Programs</span></h2>
-            <p class="apex-section-subtitle apex-reveal">
-                From one-on-one coaching to high-energy group sessions, we have the perfect program for every fitness level.
+    <!-- Menu Section -->
+    <section id="menu" class="menu">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Explore</span>
+          <h2 class="section-title">Our <span class="highlight">Signature</span> Menu</h2>
+          <p class="section-description">
+            Crafted with love, served with pride. Discover our carefully curated selection of coffee drinks, teas, and
+            freshly baked pastries.
+          </p>
+        </div>
+
+        <div class="menu-tabs">
+          <button class="menu-tab active" data-category="coffee">Coffee</button>
+          <button class="menu-tab" data-category="specialty">Specialty</button>
+          <button class="menu-tab" data-category="pastries">Pastries</button>
+          <button class="menu-tab" data-category="tea">Tea</button>
+        </div>
+
+        <div class="menu-grid">
+          <!-- Coffee Items -->
+          <div class="menu-card" data-category="coffee">
+            <div class="menu-card-header">
+              <span class="menu-item-tag">Popular</span>
+            </div>
+            <div class="menu-item-image">
+              <span class="menu-emoji">☕</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Classic Espresso</h3>
+              <p class="menu-item-description">Rich, bold shot of our signature house blend with notes of dark chocolate
+                and caramel.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$3.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="coffee">
+            <div class="menu-card-header">
+              <span class="menu-item-tag">Bestseller</span>
+            </div>
+            <div class="menu-item-image">
+              <span class="menu-emoji">🥛</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Velvet Latte</h3>
+              <p class="menu-item-description">Silky smooth espresso with velvety steamed milk and our house vanilla
+                syrup.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$5.00</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="coffee">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🧊</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Iced Americano</h3>
+              <p class="menu-item-description">Bold espresso over ice with cold filtered water for a crisp, refreshing
+                experience.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$4.00</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specialty Items -->
+          <div class="menu-card" data-category="specialty">
+            <div class="menu-card-header">
+              <span class="menu-item-tag new">New</span>
+            </div>
+            <div class="menu-item-image">
+              <span class="menu-emoji">🍯</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Honey Lavender Latte</h3>
+              <p class="menu-item-description">Delicate lavender infusion with local honey and our smooth espresso
+                blend.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$6.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="specialty">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🍫</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Mocha Royale</h3>
+              <p class="menu-item-description">Decadent blend of Belgian chocolate, espresso, and whipped cream heaven.
+              </p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$6.00</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="specialty">
+            <div class="menu-card-header">
+              <span class="menu-item-tag">Chef's Pick</span>
+            </div>
+            <div class="menu-item-image">
+              <span class="menu-emoji">🥜</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Hazelnut Macchiato</h3>
+              <p class="menu-item-description">Rich espresso marked with a touch of steamed milk and roasted hazelnut.
+              </p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$5.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pastry Items -->
+          <div class="menu-card" data-category="pastries">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🥐</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Butter Croissant</h3>
+              <p class="menu-item-description">Flaky, golden layers of French butter pastry, baked fresh every morning.
+              </p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$4.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="pastries">
+            <div class="menu-card-header">
+              <span class="menu-item-tag">Popular</span>
+            </div>
+            <div class="menu-item-image">
+              <span class="menu-emoji">🍰</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Tiramisu Slice</h3>
+              <p class="menu-item-description">Classic Italian delight with espresso-soaked layers and mascarpone cream.
+              </p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$7.00</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="pastries">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🧇</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Belgian Waffles</h3>
+              <p class="menu-item-description">Crispy on the outside, fluffy inside. Served with maple syrup and
+                berries.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$8.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Tea Items -->
+          <div class="menu-card" data-category="tea">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🍵</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Earl Grey Classic</h3>
+              <p class="menu-item-description">Premium bergamot-infused black tea, perfectly steeped and served with
+                lemon.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$3.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="tea">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🌿</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Matcha Latte</h3>
+              <p class="menu-item-description">Ceremonial-grade Japanese matcha whisked with your choice of milk.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$5.50</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="menu-card" data-category="tea">
+            <div class="menu-item-image">
+              <span class="menu-emoji">🌸</span>
+            </div>
+            <div class="menu-item-content">
+              <h3 class="menu-item-name">Chamomile Dreams</h3>
+              <p class="menu-item-description">Soothing organic chamomile with hints of honey and lavender petals.</p>
+              <div class="menu-item-footer">
+                <span class="menu-item-price">$4.00</span>
+                <button class="add-btn" aria-label="Add to cart">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M12 5v14M5 12h14" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery Section -->
+    <section id="gallery" class="gallery">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Gallery</span>
+          <h2 class="section-title">A Glimpse Inside <span class="highlight">Our Space</span></h2>
+        </div>
+
+        <div class="gallery-grid">
+          <div class="gallery-item large">
+            <div class="gallery-placeholder">
+              <span>📷</span>
+              <p>Our Cozy Interior</p>
+            </div>
+            <div class="gallery-overlay">
+              <span>☕ The Main Space</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-placeholder">
+              <span>📷</span>
+              <p>Barista at Work</p>
+            </div>
+            <div class="gallery-overlay">
+              <span>☕ Coffee Crafting</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-placeholder">
+              <span>📷</span>
+              <p>Fresh Pastries</p>
+            </div>
+            <div class="gallery-overlay">
+              <span>☕ Daily Fresh</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <div class="gallery-placeholder">
+              <span>📷</span>
+              <p>Outdoor Seating</p>
+            </div>
+            <div class="gallery-overlay">
+              <span>☕ Garden Terrace</span>
+            </div>
+          </div>
+          <div class="gallery-item wide">
+            <div class="gallery-placeholder">
+              <span>📷</span>
+              <p>Coffee Beans Selection</p>
+            </div>
+            <div class="gallery-overlay">
+              <span>☕ Single Origin Collection</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials Section -->
+    <section id="testimonials" class="testimonials">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Testimonials</span>
+          <h2 class="section-title">What Our <span class="highlight">Guests</span> Say</h2>
+        </div>
+
+        <div class="testimonials-carousel">
+          <div class="testimonial-track">
+            <div class="testimonial-card">
+              <div class="testimonial-rating">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+              </div>
+              <p class="testimonial-text">
+                "The best coffee I've ever had! The Velvet Latte is absolutely divine, and the atmosphere is so warm and
+                inviting. It's become my favorite workspace."
+              </p>
+              <div class="testimonial-author">
+                <div class="author-avatar">👩‍💼</div>
+                <div class="author-info">
+                  <span class="author-name">Sarah Mitchell</span>
+                  <span class="author-role">Regular Customer</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="testimonial-rating">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+              </div>
+              <p class="testimonial-text">
+                "I hosted my book club here and everyone was impressed. The staff is incredibly welcoming, the pastries
+                are fresh, and the ambiance is perfect for conversations."
+              </p>
+              <div class="testimonial-author">
+                <div class="author-avatar">👨‍🎨</div>
+                <div class="author-info">
+                  <span class="author-name">David Thompson</span>
+                  <span class="author-role">Community Member</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="testimonial-rating">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+              </div>
+              <p class="testimonial-text">
+                "As a coffee snob, I'm picky about my brews. The Velvet Bean exceeded every expectation. Their Ethiopian
+                single-origin pour-over is out of this world!"
+              </p>
+              <div class="testimonial-author">
+                <div class="author-avatar">👨‍💻</div>
+                <div class="author-info">
+                  <span class="author-name">Marcus Chen</span>
+                  <span class="author-role">Coffee Enthusiast</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="testimonial-card">
+              <div class="testimonial-rating">
+                <span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span><span>⭐</span>
+              </div>
+              <p class="testimonial-text">
+                "Perfect date night spot! The ambient lighting, great music selection, and incredible mocha made it an
+                unforgettable evening."
+              </p>
+              <div class="testimonial-author">
+                <div class="author-avatar">👩‍🔬</div>
+                <div class="author-info">
+                  <span class="author-name">Emily Rodriguez</span>
+                  <span class="author-role">Food Blogger</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="testimonial-nav">
+            <button class="testimonial-btn prev" aria-label="Previous review">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 18l-6-6 6-6" />
+              </svg>
+            </button>
+            <div class="testimonial-dots">
+              <button class="dot active" data-index="0"></button>
+              <button class="dot" data-index="1"></button>
+              <button class="dot" data-index="2"></button>
+              <button class="dot" data-index="3"></button>
+            </div>
+            <button class="testimonial-btn next" aria-label="Next review">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M9 18l6-6-6-6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="contact">
+      <div class="container">
+        <div class="section-header">
+          <span class="section-tag">Contact</span>
+          <h2 class="section-title">Get in <span class="highlight">Touch</span></h2>
+          <p class="section-description">
+            Have questions or want to book a table? We'd love to hear from you. Drop by anytime or fill out the form
+            below.
+          </p>
+        </div>
+
+        <div class="contact-grid">
+          <div class="contact-info">
+            <div class="info-card">
+              <div class="info-icon">📍</div>
+              <div class="info-content">
+                <h3>Visit Us</h3>
+                <p>247 Coffee Lane<br>Brewtown, CA 94102</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">⏰</div>
+              <div class="info-content">
+                <h3>Opening Hours</h3>
+                <p>Mon - Fri: 7:00 AM - 9:00 PM<br>Sat - Sun: 8:00 AM - 10:00 PM</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">📞</div>
+              <div class="info-content">
+                <h3>Call Us</h3>
+                <p>+1 (555) 867-5309</p>
+              </div>
+            </div>
+
+            <div class="info-card">
+              <div class="info-icon">✉️</div>
+              <div class="info-content">
+                <h3>Email Us</h3>
+                <p>hello@thevelvetbean.com</p>
+              </div>
+            </div>
+
+            <div class="social-links">
+              <a href="#" class="social-link" aria-label="Facebook">📘</a>
+              <a href="#" class="social-link" aria-label="Instagram">📷</a>
+              <a href="#" class="social-link" aria-label="Twitter">🐦</a>
+              <a href="#" class="social-link" aria-label="Pinterest">📌</a>
+            </div>
+          </div>
+
+          <div class="contact-form-container">
+            <form class="contact-form" id="contactForm" novalidate>
+              <div class="form-header">
+                <h3>Send us a Message</h3>
+                <p>We'll get back to you within 24 hours</p>
+              </div>
+
+              <div class="form-group">
+                <label for="name">Your Name</label>
+                <input type="text" id="name" name="name" placeholder="Enter your full name" required>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email Address</label>
+                <input type="email" id="email" name="email" placeholder="you@example.com" required>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="phone">Phone Number (Optional)</label>
+                <input type="tel" id="phone" name="phone" placeholder="+1 (555) 000-0000">
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="subject">Subject</label>
+                <select id="subject" name="subject" required>
+                  <option value="">Select a topic...</option>
+                  <option value="reservation">Table Reservation</option>
+                  <option value="catering">Event Catering</option>
+                  <option value="feedback">Feedback</option>
+                  <option value="partnership">Business Partnership</option>
+                  <option value="other">Other</option>
+                </select>
+                <span class="error-message"></span>
+              </div>
+
+              <div class="form-group">
+                <label for="message">Your Message</label>
+                <textarea id="message" name="message" rows="5" placeholder="Tell us how we can help you..."
+                  required></textarea>
+                <span class="error-message"></span>
+              </div>
+
+              <button type="submit" class="btn btn-primary btn-submit">
+                <span>Send Message</span>
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z" />
+                </svg>
+              </button>
+
+              <div class="form-success" id="formSuccess">
+                <span class="success-icon">✓</span>
+                <span>Thank you! Your message has been sent.</span>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-brand">
+            <a href="#" class="footer-logo">
+              <span class="logo-icon">☕</span>
+              <span class="logo-text">The Velvet Bean</span>
+            </a>
+            <p class="footer-tagline">
+              Crafting moments, one cup at a time. Join us for an unforgettable coffee experience.
             </p>
+          </div>
 
-            <div class="apex-services-grid">
-                <div class="apex-glass apex-service-card apex-reveal apex-reveal-delay-1">
-                    <span class="apex-service-card-emoji">🎯</span>
-                    <h3 class="apex-service-card-title">Personal Training</h3>
-                    <p class="apex-service-card-text">
-                        One-on-one sessions with certified trainers who customize every workout to your goals, body type, and fitness level.
-                    </p>
-                    <span class="apex-service-card-link">Learn more →</span>
-                </div>
-
-                <div class="apex-glass apex-service-card apex-reveal apex-reveal-delay-2">
-                    <span class="apex-service-card-emoji">🔥</span>
-                    <h3 class="apex-service-card-title">Group Classes</h3>
-                    <p class="apex-service-card-text">
-                        High-energy sessions including HIIT, yoga, spin, boxing, and more. The group energy will push you further than ever.
-                    </p>
-                    <span class="apex-service-card-link">Learn more →</span>
-                </div>
-
-                <div class="apex-glass apex-service-card apex-reveal apex-reveal-delay-3">
-                    <span class="apex-service-card-emoji">❤️</span>
-                    <h3 class="apex-service-card-title">Cardio Zone</h3>
-                    <p class="apex-service-card-text">
-                        Premium cardio equipment with integrated screens, heart rate monitoring, and virtual trails from around the world.
-                    </p>
-                    <span class="apex-service-card-link">Learn more →</span>
-                </div>
-
-                <div class="apex-glass apex-service-card apex-reveal apex-reveal-delay-4">
-                    <span class="apex-service-card-emoji">🏋️</span>
-                    <h3 class="apex-service-card-title">Strength Training</h3>
-                    <p class="apex-service-card-text">
-                        Olympic platforms, free weights, and machines covering every muscle group. Designed for beginners to advanced lifters.
-                    </p>
-                    <span class="apex-service-card-link">Learn more →</span>
-                </div>
+          <div class="footer-links">
+            <div class="footer-column">
+              <h4>Quick Links</h4>
+              <ul>
+                <li><a href="#home">Home</a></li>
+                <li><a href="#about">About Us</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+              </ul>
             </div>
-        </div>
-    </section>
 
-    <!-- ========================================
-         PRICING SECTION
-    ======================================== -->
-    <section class="apex-section apex-pricing" id="apex-pricing">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">Simple <span>Pricing</span></h2>
-            <p class="apex-section-subtitle apex-reveal">
-                No hidden fees. No contracts. Just honest pricing for an extraordinary fitness experience.
-            </p>
-
-            <div class="apex-pricing-grid">
-                <!-- Basic -->
-                <div class="apex-glass apex-pricing-card apex-reveal apex-reveal-delay-1">
-                    <p class="apex-pricing-plan">Basic</p>
-                    <p class="apex-pricing-price">
-                        <span class="apex-pricing-price-currency">$</span>29
-                    </p>
-                    <p class="apex-pricing-period">per month</p>
-                    <ul class="apex-pricing-features">
-                        <li><span class="check">✓</span> Gym floor access</li>
-                        <li><span class="check">✓</span> Cardio equipment</li>
-                        <li><span class="check">✓</span> Locker room access</li>
-                        <li><span class="check">✓</span> Free Wi-Fi</li>
-                        <li><span class="cross">✗</span> <span style="color:var(--text-muted)">Group classes</span></li>
-                        <li><span class="cross">✗</span> <span style="color:var(--text-muted)">Personal training</span></li>
-                    </ul>
-                    <button class="apex-btn apex-btn-outline">Get Started</button>
-                </div>
-
-                <!-- Pro (Popular) -->
-                <div class="apex-glass apex-pricing-card popular apex-reveal apex-reveal-delay-2">
-                    <div class="apex-pricing-popular-badge">Most Popular</div>
-                    <p class="apex-pricing-plan">Pro</p>
-                    <p class="apex-pricing-price">
-                        <span class="apex-pricing-price-currency">$</span>59
-                    </p>
-                    <p class="apex-pricing-period">per month</p>
-                    <ul class="apex-pricing-features">
-                        <li><span class="check">✓</span> Everything in Basic</li>
-                        <li><span class="check">✓</span> All group classes</li>
-                        <li><span class="check">✓</span> Sauna & steam room</li>
-                        <li><span class="check">✓</span> 1 PT session/month</li>
-                        <li><span class="check">✓</span> Nutrition guide</li>
-                        <li><span class="cross">✗</span> <span style="color:var(--text-muted)">Unlimited PT</span></li>
-                    </ul>
-                    <button class="apex-btn apex-btn-primary">Get Started</button>
-                </div>
-
-                <!-- Elite -->
-                <div class="apex-glass apex-pricing-card apex-reveal apex-reveal-delay-3">
-                    <p class="apex-pricing-plan">Elite</p>
-                    <p class="apex-pricing-price">
-                        <span class="apex-pricing-price-currency">$</span>99
-                    </p>
-                    <p class="apex-pricing-period">per month</p>
-                    <ul class="apex-pricing-features">
-                        <li><span class="check">✓</span> Everything in Pro</li>
-                        <li><span class="check">✓</span> Unlimited PT sessions</li>
-                        <li><span class="check">✓</span> Custom meal plans</li>
-                        <li><span class="check">✓</span> Recovery lounge</li>
-                        <li><span class="check">✓</span> Priority booking</li>
-                        <li><span class="check">✓</span> Guest passes (2/mo)</li>
-                    </ul>
-                    <button class="apex-btn apex-btn-outline">Get Started</button>
-                </div>
+            <div class="footer-column">
+              <h4>Services</h4>
+              <ul>
+                <li><a href="#contact">Reservations</a></li>
+                <li><a href="#contact">Catering</a></li>
+                <li><a href="#contact">Gift Cards</a></li>
+                <li><a href="#contact">Loyalty Program</a></li>
+              </ul>
             </div>
-        </div>
-    </section>
 
-    <!-- ========================================
-         TRAINERS SECTION
-    ======================================== -->
-    <section class="apex-section" id="apex-trainers">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">Meet Our <span>Trainers</span></h2>
-            <p class="apex-section-subtitle apex-reveal">
-                Our certified professionals bring passion, expertise, and years of experience to every session.
-            </p>
-
-            <div class="apex-trainers-grid">
-                <div class="apex-glass apex-trainer-card apex-reveal apex-reveal-delay-1">
-                    <div class="apex-trainer-avatar">
-                        <div class="apex-trainer-avatar-placeholder">👨‍🦱</div>
-                    </div>
-                    <h3 class="apex-trainer-name">Marcus Rivera</h3>
-                    <p class="apex-trainer-specialty">Strength & Conditioning</p>
-                    <p class="apex-trainer-bio">
-                        Former collegiate athlete with 10+ years of coaching. Specializes in powerlifting and athletic performance.
-                    </p>
-                    <div class="apex-trainer-socials">
-                        <a href="#" class="apex-trainer-social-link" aria-label="Instagram">📷</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="Twitter">🐦</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="LinkedIn">💼</a>
-                    </div>
-                </div>
-
-                <div class="apex-glass apex-trainer-card apex-reveal apex-reveal-delay-2">
-                    <div class="apex-trainer-avatar">
-                        <div class="apex-trainer-avatar-placeholder">👩</div>
-                    </div>
-                    <h3 class="apex-trainer-name">Sarah Chen</h3>
-                    <p class="apex-trainer-specialty">HIIT & Nutrition</p>
-                    <p class="apex-trainer-bio">
-                        Certified nutritionist and HIIT specialist. Helped 500+ clients achieve their body transformation goals.
-                    </p>
-                    <div class="apex-trainer-socials">
-                        <a href="#" class="apex-trainer-social-link" aria-label="Instagram">📷</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="Twitter">🐦</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="LinkedIn">💼</a>
-                    </div>
-                </div>
-
-                <div class="apex-glass apex-trainer-card apex-reveal apex-reveal-delay-3">
-                    <div class="apex-trainer-avatar">
-                        <div class="apex-trainer-avatar-placeholder">👨</div>
-                    </div>
-                    <h3 class="apex-trainer-name">James Okafor</h3>
-                    <p class="apex-trainer-specialty">Yoga & Mobility</p>
-                    <p class="apex-trainer-bio">
-                        200-hour certified yoga instructor with a background in physical therapy. Master of flexibility and recovery.
-                    </p>
-                    <div class="apex-trainer-socials">
-                        <a href="#" class="apex-trainer-social-link" aria-label="Instagram">📷</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="Twitter">🐦</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="LinkedIn">💼</a>
-                    </div>
-                </div>
-
-                <div class="apex-glass apex-trainer-card apex-reveal apex-reveal-delay-4">
-                    <div class="apex-trainer-avatar">
-                        <div class="apex-trainer-avatar-placeholder">👩‍🦰</div>
-                    </div>
-                    <h3 class="apex-trainer-name">Elena Volkov</h3>
-                    <p class="apex-trainer-specialty">Boxing & Cardio</p>
-                    <p class="apex-trainer-bio">
-                        Former competitive boxer turned trainer. Her high-energy sessions are the most popular classes at APEX.
-                    </p>
-                    <div class="apex-trainer-socials">
-                        <a href="#" class="apex-trainer-social-link" aria-label="Instagram">📷</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="Twitter">🐦</a>
-                        <a href="#" class="apex-trainer-social-link" aria-label="LinkedIn">💼</a>
-                    </div>
-                </div>
+            <div class="footer-column">
+              <h4>Support</h4>
+              <ul>
+                <li><a href="#contact">Contact Us</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+              </ul>
             </div>
+          </div>
         </div>
-    </section>
 
-    <!-- ========================================
-         TESTIMONIALS SECTION
-    ======================================== -->
-    <section class="apex-section apex-testimonials" id="apex-testimonials">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">What Members <span>Say</span></h2>
-            <p class="apex-section-subtitle apex-reveal">
-                Don't just take our word for it — hear from real APEX members who transformed their lives.
-            </p>
-
-            <div class="apex-testimonial-slider apex-reveal">
-                <div class="apex-testimonial-track" id="apexTestimonialTrack">
-                    <!-- Slide 1 -->
-                    <div class="apex-testimonial-slide">
-                        <div class="apex-glass apex-testimonial-card">
-                            <div class="apex-testimonial-stars">★★★★★</div>
-                            <p class="apex-testimonial-quote">
-                                APEX completely changed my relationship with fitness. The trainers are incredible, the community is supportive, and I've never felt stronger. Down 30 lbs and counting!
-                            </p>
-                            <div class="apex-testimonial-author">
-                                <div class="apex-testimonial-author-avatar">
-                                    <div class="apex-testimonial-author-avatar-placeholder">👩‍💼</div>
-                                </div>
-                                <div class="apex-testimonial-author-info">
-                                    <div class="apex-testimonial-author-name">Amanda Torres</div>
-                                    <div class="apex-testimonial-author-title">Member for 8 months</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 2 -->
-                    <div class="apex-testimonial-slide">
-                        <div class="apex-glass apex-testimonial-card">
-                            <div class="apex-testimonial-stars">★★★★★</div>
-                            <p class="apex-testimonial-quote">
-                                As someone who was intimidated by gyms, APEX made me feel welcome from day one. The personal training sessions are worth every penny. I've gained confidence I never thought possible.
-                            </p>
-                            <div class="apex-testimonial-author">
-                                <div class="apex-testimonial-author-avatar">
-                                    <div class="apex-testimonial-author-avatar-placeholder">👨‍💻</div>
-                                </div>
-                                <div class="apex-testimonial-author-info">
-                                    <div class="apex-testimonial-author-name">David Kim</div>
-                                    <div class="apex-testimonial-author-title">Member for 1 year</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 3 -->
-                    <div class="apex-testimonial-slide">
-                        <div class="apex-glass apex-testimonial-card">
-                            <div class="apex-testimonial-stars">★★★★★</div>
-                            <p class="apex-testimonial-quote">
-                                The group classes are ADDICTIVE. Elena's boxing sessions and Sarah's HIIT workouts are the highlights of my week. This isn't just a gym — it's a lifestyle upgrade.
-                            </p>
-                            <div class="apex-testimonial-author">
-                                <div class="apex-testimonial-author-avatar">
-                                    <div class="apex-testimonial-author-avatar-placeholder">👩‍🎤</div>
-                                </div>
-                                <div class="apex-testimonial-author-info">
-                                    <div class="apex-testimonial-author-name">Rachel Nguyen</div>
-                                    <div class="apex-testimonial-author-title">Member for 6 months</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Slide 4 -->
-                    <div class="apex-testimonial-slide">
-                        <div class="apex-glass apex-testimonial-card">
-                            <div class="apex-testimonial-stars">★★★★★</div>
-                            <p class="apex-testimonial-quote">
-                                I've been to dozens of gyms over the years. APEX is in a completely different league. The equipment is top-tier, the facility is immaculate, and the results speak for themselves.
-                            </p>
-                            <div class="apex-testimonial-author">
-                                <div class="apex-testimonial-author-avatar">
-                                    <div class="apex-testimonial-author-avatar-placeholder">🧔</div>
-                                </div>
-                                <div class="apex-testimonial-author-info">
-                                    <div class="apex-testimonial-author-name">Michael Brooks</div>
-                                    <div class="apex-testimonial-author-title">Member for 2 years</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="apex-testimonial-controls">
-                    <button class="apex-testimonial-btn" id="apexTestimonialPrev" aria-label="Previous testimonial">←</button>
-                    <div class="apex-testimonial-dots" id="apexTestimonialDots">
-                        <span class="apex-testimonial-dot active" data-slide="0"></span>
-                        <span class="apex-testimonial-dot" data-slide="1"></span>
-                        <span class="apex-testimonial-dot" data-slide="2"></span>
-                        <span class="apex-testimonial-dot" data-slide="3"></span>
-                    </div>
-                    <button class="apex-testimonial-btn" id="apexTestimonialNext" aria-label="Next testimonial">→</button>
-                </div>
-            </div>
+        <div class="footer-bottom">
+          <p>&copy; 2024 The Velvet Bean. All rights reserved.</p>
+          <div class="footer-social">
+            <a href="#" aria-label="Facebook">📘</a>
+            <a href="#" aria-label="Instagram">📷</a>
+            <a href="#" aria-label="Twitter">🐦</a>
+          </div>
         </div>
-    </section>
-
-    <!-- ========================================
-         CONTACT SECTION
-    ======================================== -->
-    <section class="apex-section" id="apex-contact">
-        <div class="apex-container">
-            <h2 class="apex-section-title apex-reveal">Get In <span>Touch</span></h2>
-            <p class="apex-section-subtitle apex-reveal">
-                Ready to start your journey? Drop us a message or swing by the gym for a free tour.
-            </p>
-
-            <div class="apex-contact-grid">
-                <!-- Contact Form -->
-                <div class="apex-glass apex-contact-form apex-reveal apex-reveal-delay-1">
-                    <form id="apexContactForm">
-                        <div class="apex-form-group">
-                            <label class="apex-form-label" for="apexFormName">Full Name</label>
-                            <input type="text" class="apex-form-input" id="apexFormName" placeholder="John Doe" required>
-                        </div>
-                        <div class="apex-form-group">
-                            <label class="apex-form-label" for="apexFormEmail">Email Address</label>
-                            <input type="email" class="apex-form-input" id="apexFormEmail" placeholder="john@example.com" required>
-                        </div>
-                        <div class="apex-form-group">
-                            <label class="apex-form-label" for="apexFormMessage">Message</label>
-                            <textarea class="apex-form-textarea" id="apexFormMessage" placeholder="Tell us about your fitness goals..." required></textarea>
-                        </div>
-                        <button type="submit" class="apex-btn apex-btn-primary" style="width:100%;justify-content:center;">
-                            Send Message →
-                        </button>
-                    </form>
-
-                    <div class="apex-form-success" id="apexFormSuccess">
-                        <div class="apex-form-success-icon">✅</div>
-                        <h3>Message Sent!</h3>
-                        <p style="color:var(--text-secondary);margin-top:0.5rem;">We'll get back to you within 24 hours.</p>
-                    </div>
-                </div>
-
-                <!-- Contact Info -->
-                <div class="apex-glass apex-contact-info apex-reveal apex-reveal-delay-2">
-                    <div class="apex-contact-info-item">
-                        <div class="apex-contact-info-icon">📍</div>
-                        <div>
-                            <p class="apex-contact-info-title">Location</p>
-                            <p class="apex-contact-info-text">123 Fitness Avenue, Downtown District<br>New York, NY 10001</p>
-                        </div>
-                    </div>
-
-                    <div class="apex-contact-info-item">
-                        <div class="apex-contact-info-icon">📧</div>
-                        <div>
-                            <p class="apex-contact-info-title">Email</p>
-                            <p class="apex-contact-info-text">hello@apexfitness.com</p>
-                        </div>
-                    </div>
-
-                    <div class="apex-contact-info-item">
-                        <div class="apex-contact-info-icon">📱</div>
-                        <div>
-                            <p class="apex-contact-info-title">Phone</p>
-                            <p class="apex-contact-info-text">+1 (555) 123-4567</p>
-                        </div>
-                    </div>
-
-                    <div class="apex-contact-hours">
-                        <p class="apex-contact-hours-title">🕐 Opening Hours</p>
-                        <div class="apex-contact-hours-row">
-                            <span>Monday — Friday</span>
-                            <span>5:00 AM — 11:00 PM</span>
-                        </div>
-                        <div class="apex-contact-hours-row">
-                            <span>Saturday</span>
-                            <span>6:00 AM — 10:00 PM</span>
-                        </div>
-                        <div class="apex-contact-hours-row">
-                            <span>Sunday</span>
-                            <span>7:00 AM — 9:00 PM</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- ========================================
-         FOOTER
-    ======================================== -->
-    <footer class="apex-footer">
-        <div class="apex-container">
-            <div class="apex-footer-inner">
-                <div>
-                    <div class="apex-footer-logo">APEX</div>
-                    <p class="apex-footer-copyright">© 2025 Apex Fitness. All rights reserved.</p>
-                </div>
-
-                <div class="apex-footer-socials">
-                    <a href="#" class="apex-footer-social" aria-label="Instagram">📷</a>
-                    <a href="#" class="apex-footer-social" aria-label="Twitter">🐦</a>
-                    <a href="#" class="apex-footer-social" aria-label="Facebook">📘</a>
-                    <a href="#" class="apex-footer-social" aria-label="YouTube">▶️</a>
-                    <a href="#" class="apex-footer-social" aria-label="TikTok">🎵</a>
-                </div>
-            </div>
-        </div>
+      </div>
     </footer>
 
-    <!-- Scroll to Top Button -->
-    <button class="apex-scroll-top" id="apexScrollTop" aria-label="Scroll to top">↑</button>
-
-    <!-- ========================================
-         JAVASCRIPT
-    ======================================== -->
-    <script>
-        // ========================================
-        // LOADING SCREEN
-        // ========================================
-        window.addEventListener('load', () => {
-            const loader = document.getElementById('apexLoader');
-            setTimeout(() => {
-                loader.classList.add('hidden');
-            }, 600);
-        });
-
-        // ========================================
-        // THEME TOGGLE (Dark/Light Mode)
-        // ========================================
-        const themeToggle = document.getElementById('apexThemeToggle');
-        const themeCircle = document.getElementById('apexThemeCircle');
-        const html = document.documentElement;
-
-        // Load saved theme from localStorage
-        const savedTheme = localStorage.getItem('apex-theme') || 'dark';
-        html.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme);
-
-        themeToggle.addEventListener('click', () => {
-            const currentTheme = html.getAttribute('data-theme');
-            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-            html.setAttribute('data-theme', newTheme);
-            localStorage.setItem('apex-theme', newTheme);
-            updateThemeIcon(newTheme);
-        });
-
-        // Keyboard accessibility for theme toggle
-        themeToggle.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-                e.preventDefault();
-                themeToggle.click();
-            }
-        });
-
-        function updateThemeIcon(theme) {
-            themeCircle.textContent = theme === 'dark' ? '🌙' : '☀️';
-        }
-
-        // ========================================
-        // MOBILE NAVIGATION
-        // ========================================
-        const mobileToggle = document.getElementById('apexMobileToggle');
-        const navLinks = document.getElementById('apexNavLinks');
-
-        mobileToggle.addEventListener('click', () => {
-            mobileToggle.classList.toggle('active');
-            navLinks.classList.toggle('open');
-        });
-
-        // Close mobile nav when clicking a link
-        navLinks.querySelectorAll('a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileToggle.classList.remove('active');
-                navLinks.classList.remove('open');
-            });
-        });
-
-        // Close mobile nav when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!navLinks.contains(e.target) && !mobileToggle.contains(e.target)) {
-                mobileToggle.classList.remove('active');
-                navLinks.classList.remove('open');
-            }
-        });
-
-        // ========================================
-        // NAVBAR SCROLL EFFECT
-        // ========================================
-        const nav = document.getElementById('apexNav');
-        let lastScrollY = 0;
-
-        window.addEventListener('scroll', () => {
-            const currentScrollY = window.scrollY;
-
-            if (currentScrollY > 50) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-
-            lastScrollY = currentScrollY;
-        });
-
-        // ========================================
-        // SCROLL REVEAL ANIMATIONS (Intersection Observer)
-        // ========================================
-        const revealElements = document.querySelectorAll('.apex-reveal');
-
-        const revealObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('revealed');
-                    // Don't unobserve — allows re-triggering if needed
-                    // But for performance, let's unobserve after reveal
-                    revealObserver.unobserve(entry.target);
-                }
-            });
-        }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
-        });
-
-        revealElements.forEach(el => revealObserver.observe(el));
-
-        // ========================================
-        // COUNTER ANIMATION
-        // ========================================
-        const counters = document.querySelectorAll('.apex-counter');
-        let countersAnimated = false;
-
-        const counterObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && !countersAnimated) {
-                    countersAnimated = true;
-                    counters.forEach(counter => {
-                        const target = parseInt(counter.getAttribute('data-target'));
-                        const duration = 2000;
-                        const startTime = performance.now();
-
-                        function updateCounter(currentTime) {
-                            const elapsed = currentTime - startTime;
-                            const progress = Math.min(elapsed / duration, 1);
-                            // Ease out cubic
-                            const eased = 1 - Math.pow(1 - progress, 3);
-                            const current = Math.floor(eased * target);
-                            counter.textContent = current.toLocaleString();
-
-                            if (progress < 1) {
-                                requestAnimationFrame(updateCounter);
-                            } else {
-                                counter.textContent = target.toLocaleString();
-                            }
-                        }
-
-                        requestAnimationFrame(updateCounter);
-                    });
-                }
-            });
-        }, { threshold: 0.5 });
-
-        // Observe the stats container
-        const statsContainer = document.querySelector('.apex-hero-stats');
-        if (statsContainer) {
-            counterObserver.observe(statsContainer);
-        }
-
-        // ========================================
-        // TESTIMONIAL SLIDER
-        // ========================================
-        const testimonialTrack = document.getElementById('apexTestimonialTrack');
-        const testimonialDots = document.querySelectorAll('.apex-testimonial-dot');
-        const prevBtn = document.getElementById('apexTestimonialPrev');
-        const nextBtn = document.getElementById('apexTestimonialNext');
-        let currentSlide = 0;
-        const totalSlides = testimonialDots.length;
-        let autoSlideInterval;
-
-        function goToSlide(index) {
-            if (index < 0) index = totalSlides - 1;
-            if (index >= totalSlides) index = 0;
-            currentSlide = index;
-
-            testimonialTrack.style.transform = `translateX(-${currentSlide * 100}%)`;
-
-            // Update dots
-            testimonialDots.forEach((dot, i) => {
-                dot.classList.toggle('active', i === currentSlide);
-            });
-        }
-
-        prevBtn.addEventListener('click', () => {
-            goToSlide(currentSlide - 1);
-            resetAutoSlide();
-        });
-
-        nextBtn.addEventListener('click', () => {
-            goToSlide(currentSlide + 1);
-            resetAutoSlide();
-        });
-
-        testimonialDots.forEach(dot => {
-            dot.addEventListener('click', () => {
-                goToSlide(parseInt(dot.getAttribute('data-slide')));
-                resetAutoSlide();
-            });
-        });
-
-        // Auto-slide
-        function startAutoSlide() {
-            autoSlideInterval = setInterval(() => {
-                goToSlide(currentSlide + 1);
-            }, 5000);
-        }
-
-        function resetAutoSlide() {
-            clearInterval(autoSlideInterval);
-            startAutoSlide();
-        }
-
-        startAutoSlide();
-
-        // Touch/Swipe support for testimonials
-        let touchStartX = 0;
-        let touchEndX = 0;
-
-        testimonialTrack.addEventListener('touchstart', (e) => {
-            touchStartX = e.changedTouches[0].screenX;
-        }, { passive: true });
-
-        testimonialTrack.addEventListener('touchend', (e) => {
-            touchEndX = e.changedTouches[0].screenX;
-            const diff = touchStartX - touchEndX;
-            if (Math.abs(diff) > 50) {
-                if (diff > 0) {
-                    goToSlide(currentSlide + 1);
-                } else {
-                    goToSlide(currentSlide - 1);
-                }
-                resetAutoSlide();
-            }
-        }, { passive: true });
-
-        // ========================================
-        // CONTACT FORM
-        // ========================================
-        const contactForm = document.getElementById('apexContactForm');
-        const formSuccess = document.getElementById('apexFormSuccess');
-
-        contactForm.addEventListener('submit', (e) => {
-            e.preventDefault();
-
-            // Simulate form submission
-            const submitBtn = contactForm.querySelector('button[type="submit"]');
-            submitBtn.textContent = 'Sending...';
-            submitBtn.disabled = true;
-
-            setTimeout(() => {
-                contactForm.style.display = 'none';
-                formSuccess.classList.add('show');
-            }, 1500);
-        });
-
-        // ========================================
-        // SCROLL TO TOP BUTTON
-        // ========================================
-        const scrollTopBtn = document.getElementById('apexScrollTop');
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 500) {
-                scrollTopBtn.classList.add('visible');
-            } else {
-                scrollTopBtn.classList.remove('visible');
-            }
-        });
-
-        scrollTopBtn.addEventListener('click', () => {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-
-        // ========================================
-        // PARALLAX EFFECT ON BACKGROUND ORBS
-        // ========================================
-        const orbs = document.querySelectorAll('.apex-bg-orbs .orb');
-
-        window.addEventListener('scroll', () => {
-            const scrollY = window.scrollY;
-            orbs.forEach((orb, i) => {
-                const speed = (i + 1) * 0.03;
-                orb.style.transform = `translateY(${scrollY * speed}px)`;
-            });
-        }, { passive: true });
-
-        // ========================================
-        // MOUSE PARALLAX ON HERO (Desktop only)
-        // ========================================
-        const heroContent = document.querySelector('.apex-hero-content');
-
-        if (window.matchMedia('(min-width: 769px)').matches) {
-            document.querySelector('.apex-hero').addEventListener('mousemove', (e) => {
-                const rect = e.currentTarget.getBoundingClientRect();
-                const x = (e.clientX - rect.left - rect.width / 2) / rect.width;
-                const y = (e.clientY - rect.top - rect.height / 2) / rect.height;
-
-                heroContent.style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-            });
-
-            document.querySelector('.apex-hero').addEventListener('mouseleave', () => {
-                heroContent.style.transform = 'translate(0, 0)';
-                heroContent.style.transition = 'transform 0.5s ease';
-                setTimeout(() => {
-                    heroContent.style.transition = '';
-                }, 500);
-            });
-        }
-
-        // ========================================
-        // ACTIVE NAV LINK HIGHLIGHT ON SCROLL
-        // ========================================
-        const sections = document.querySelectorAll('section[id]');
-
-        const navHighlightObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    const id = entry.target.getAttribute('id');
-                    document.querySelectorAll('.apex-nav-links a').forEach(link => {
-                        link.style.color = '';
-                        if (link.getAttribute('href') === `#${id}`) {
-                            link.style.color = 'var(--accent-primary)';
-                        }
-                    });
-                }
-            });
-        }, {
-            threshold: 0.3,
-            rootMargin: '-80px 0px -50% 0px'
-        });
-
-        sections.forEach(section => navHighlightObserver.observe(section));
-    </script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

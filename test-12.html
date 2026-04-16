@@ -1,1972 +1,2072 @@
 <!DOCTYPE html>
-<html lang="sv"><head>
+<html lang="sv">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nexavolt — Digital Infrastructure</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&amp;family=Instrument+Serif:ital@0;1&amp;display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&amp;family=Instrument+Serif:ital@0;1&amp;display=swap"
+      rel="stylesheet">
     <style>
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            CSS CUSTOM PROPERTIES / THEME
            ═══════════════════════════════════════ */
-        :root {
-            /* Light theme */
-            --bg-primary: #F4F1EC;
-            --bg-secondary: #EAE6DF;
-            --bg-card: #FFFFFF;
-            --bg-card-hover: #FAFAF8;
-            --text-primary: #1A1A1A;
-            --text-secondary: #5A5650;
-            --text-tertiary: #8A8580;
-            --accent: #C8FF00;
-            --accent-dark: #A8D600;
-            --accent-subtle: rgba(200, 255, 0, 0.15);
-            --border: rgba(26, 26, 26, 0.08);
-            --border-strong: rgba(26, 26, 26, 0.15);
-            --overlay: rgba(26, 26, 26, 0.85);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.06);
-            --shadow-lg: 0 20px 60px rgba(0,0,0,0.08);
-            --nav-bg: rgba(244, 241, 236, 0.85);
-            --grain-opacity: 0.3;
-            --invert: 0;
-        }
+      :root {
+        /* Light theme */
+        --bg-primary: #F4F1EC;
+        --bg-secondary: #EAE6DF;
+        --bg-card: #FFFFFF;
+        --bg-card-hover: #FAFAF8;
+        --text-primary: #1A1A1A;
+        --text-secondary: #5A5650;
+        --text-tertiary: #8A8580;
+        --accent: #C8FF00;
+        --accent-dark: #A8D600;
+        --accent-subtle: rgba(200, 255, 0, 0.15);
+        --border: rgba(26, 26, 26, 0.08);
+        --border-strong: rgba(26, 26, 26, 0.15);
+        --overlay: rgba(26, 26, 26, 0.85);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.04);
+        --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.06);
+        --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.08);
+        --nav-bg: rgba(244, 241, 236, 0.85);
+        --grain-opacity: 0.3;
+        --invert: 0;
+      }
 
-        [data-theme="dark"] {
-            --bg-primary: #0E0E0E;
-            --bg-secondary: #161616;
-            --bg-card: #1C1C1C;
-            --bg-card-hover: #242424;
-            --text-primary: #F0EDE8;
-            --text-secondary: #A09A92;
-            --text-tertiary: #6A645E;
-            --accent: #C8FF00;
-            --accent-dark: #A8D600;
-            --accent-subtle: rgba(200, 255, 0, 0.08);
-            --border: rgba(255, 255, 255, 0.06);
-            --border-strong: rgba(255, 255, 255, 0.12);
-            --overlay: rgba(0, 0, 0, 0.88);
-            --shadow-sm: 0 1px 3px rgba(0,0,0,0.2);
-            --shadow-md: 0 8px 30px rgba(0,0,0,0.3);
-            --shadow-lg: 0 20px 60px rgba(0,0,0,0.4);
-            --nav-bg: rgba(14, 14, 14, 0.88);
-            --grain-opacity: 0.15;
-            --invert: 1;
-        }
+      [data-theme="dark"] {
+        --bg-primary: #0E0E0E;
+        --bg-secondary: #161616;
+        --bg-card: #1C1C1C;
+        --bg-card-hover: #242424;
+        --text-primary: #F0EDE8;
+        --text-secondary: #A09A92;
+        --text-tertiary: #6A645E;
+        --accent: #C8FF00;
+        --accent-dark: #A8D600;
+        --accent-subtle: rgba(200, 255, 0, 0.08);
+        --border: rgba(255, 255, 255, 0.06);
+        --border-strong: rgba(255, 255, 255, 0.12);
+        --overlay: rgba(0, 0, 0, 0.88);
+        --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+        --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.3);
+        --shadow-lg: 0 20px 60px rgba(0, 0, 0, 0.4);
+        --nav-bg: rgba(14, 14, 14, 0.88);
+        --grain-opacity: 0.15;
+        --invert: 1;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            RESET & BASE
            ═══════════════════════════════════════ */
-        *, *::before, *::after {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
 
-        html {
-            scroll-behavior: smooth;
-            font-size: 16px;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+      html {
+        scroll-behavior: smooth;
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
 
-        body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg-primary);
-            color: var(--text-primary);
-            line-height: 1.6;
-            overflow-x: hidden;
-            transition: background 0.5s ease, color 0.5s ease;
-        }
+      body {
+        font-family: 'DM Sans', sans-serif;
+        background: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.6;
+        overflow-x: hidden;
+        transition: background 0.5s ease, color 0.5s ease;
+      }
 
-        /* Grain overlay */
-        body::after {
-            content: '';
-            position: fixed;
-            inset: 0;
-            pointer-events: none;
-            z-index: 10000;
-            opacity: var(--grain-opacity);
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
-            background-repeat: repeat;
-            background-size: 200px 200px;
-        }
+      /* Grain overlay */
+      body::after {
+        content: '';
+        position: fixed;
+        inset: 0;
+        pointer-events: none;
+        z-index: 10000;
+        opacity: var(--grain-opacity);
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+        background-repeat: repeat;
+        background-size: 200px 200px;
+      }
 
-        ::selection {
-            background: var(--accent);
-            color: #1A1A1A;
-        }
+      ::selection {
+        background: var(--accent);
+        color: #1A1A1A;
+      }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
 
-        img {
-            max-width: 100%;
-            display: block;
-        }
+      img {
+        max-width: 100%;
+        display: block;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            TYPOGRAPHY
            ═══════════════════════════════════════ */
-        .font-serif {
-            font-family: 'Instrument Serif', serif;
-        }
+      .font-serif {
+        font-family: 'Instrument Serif', serif;
+      }
 
-        h1, h2, h3, h4 {
-            font-weight: 400;
-            line-height: 1.1;
-        }
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-weight: 400;
+        line-height: 1.1;
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            UTILITY
            ═══════════════════════════════════════ */
-        .nexavolt-container {
-            max-width: 1320px;
-            margin: 0 auto;
-            padding: 0 clamp(20px, 4vw, 60px);
-        }
+      .nexavolt-container {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 0 clamp(20px, 4vw, 60px);
+      }
 
-        .nexavolt-eyebrow {
-            font-size: 0.7rem;
-            letter-spacing: 0.2em;
-            text-transform: uppercase;
-            color: var(--text-tertiary);
-            font-weight: 500;
-            display: flex;
-            align-items: center;
-            gap: 12px;
-        }
+      .nexavolt-eyebrow {
+        font-size: 0.7rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--text-tertiary);
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
 
-        .nexavolt-eyebrow::before {
-            content: '';
-            width: 24px;
-            height: 1px;
-            background: var(--accent);
-        }
+      .nexavolt-eyebrow::before {
+        content: '';
+        width: 24px;
+        height: 1px;
+        background: var(--accent);
+      }
 
-        /* Reveal animation */
-        .nexavolt-reveal {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                        transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
+      /* Reveal animation */
+      .nexavolt-reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+          transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+      }
 
-        .nexavolt-reveal.is-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+      .nexavolt-reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
 
-        .nexavolt-reveal-delay-1 { transition-delay: 0.1s; }
-        .nexavolt-reveal-delay-2 { transition-delay: 0.2s; }
-        .nexavolt-reveal-delay-3 { transition-delay: 0.3s; }
-        .nexavolt-reveal-delay-4 { transition-delay: 0.4s; }
+      .nexavolt-reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
 
-        /* ═══════════════════════════════════════
+      .nexavolt-reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+
+      .nexavolt-reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+
+      .nexavolt-reveal-delay-4 {
+        transition-delay: 0.4s;
+      }
+
+      /* ═══════════════════════════════════════
            NAVIGATION
            ═══════════════════════════════════════ */
-        .nexavolt-nav {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 9999;
-            padding: 20px 0;
-            background: var(--nav-bg);
-            backdrop-filter: blur(30px) saturate(1.2);
-            -webkit-backdrop-filter: blur(30px) saturate(1.2);
-            border-bottom: 1px solid var(--border);
-            transition: all 0.4s ease;
+      .nexavolt-nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 9999;
+        padding: 20px 0;
+        background: var(--nav-bg);
+        backdrop-filter: blur(30px) saturate(1.2);
+        -webkit-backdrop-filter: blur(30px) saturate(1.2);
+        border-bottom: 1px solid var(--border);
+        transition: all 0.4s ease;
+      }
+
+      .nexavolt-nav.scrolled {
+        padding: 14px 0;
+      }
+
+      .nexavolt-nav-inner {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .nexavolt-logo {
+        font-family: 'DM Sans', sans-serif;
+        font-size: 1.25rem;
+        font-weight: 700;
+        letter-spacing: -0.03em;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nexavolt-logo-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 50%;
+        display: inline-block;
+        animation: nexavolt-pulse 2s ease-in-out infinite;
+      }
+
+      @keyframes nexavolt-pulse {
+
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
         }
 
-        .nexavolt-nav.scrolled {
-            padding: 14px 0;
+        50% {
+          opacity: 0.5;
+          transform: scale(0.8);
         }
+      }
 
-        .nexavolt-nav-inner {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-        }
+      .nexavolt-nav-links {
+        display: flex;
+        align-items: center;
+        gap: 36px;
+        list-style: none;
+      }
 
-        .nexavolt-logo {
-            font-family: 'DM Sans', sans-serif;
-            font-size: 1.25rem;
-            font-weight: 700;
-            letter-spacing: -0.03em;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
+      .nexavolt-nav-links a {
+        font-size: 0.82rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        letter-spacing: 0.01em;
+        position: relative;
+        transition: color 0.3s ease;
+      }
 
-        .nexavolt-logo-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 50%;
-            display: inline-block;
-            animation: nexavolt-pulse 2s ease-in-out infinite;
-        }
+      .nexavolt-nav-links a:hover {
+        color: var(--text-primary);
+      }
 
-        @keyframes nexavolt-pulse {
-            0%, 100% { opacity: 1; transform: scale(1); }
-            50% { opacity: 0.5; transform: scale(0.8); }
-        }
+      .nexavolt-nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        width: 0;
+        height: 1px;
+        background: var(--accent);
+        transition: width 0.3s ease;
+      }
 
-        .nexavolt-nav-links {
-            display: flex;
-            align-items: center;
-            gap: 36px;
-            list-style: none;
-        }
+      .nexavolt-nav-links a:hover::after {
+        width: 100%;
+      }
 
-        .nexavolt-nav-links a {
-            font-size: 0.82rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            letter-spacing: 0.01em;
-            position: relative;
-            transition: color 0.3s ease;
-        }
+      .nexavolt-nav-actions {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
 
-        .nexavolt-nav-links a:hover {
-            color: var(--text-primary);
-        }
+      /* Theme toggle */
+      .nexavolt-theme-toggle {
+        width: 44px;
+        height: 24px;
+        border-radius: 12px;
+        background: var(--border-strong);
+        border: none;
+        cursor: pointer;
+        position: relative;
+        transition: background 0.3s ease;
+      }
 
-        .nexavolt-nav-links a::after {
-            content: '';
-            position: absolute;
-            bottom: -4px;
-            left: 0;
-            width: 0;
-            height: 1px;
-            background: var(--accent);
-            transition: width 0.3s ease;
-        }
+      .nexavolt-theme-toggle::after {
+        content: '';
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        width: 18px;
+        height: 18px;
+        border-radius: 50%;
+        background: var(--accent);
+        transition: transform 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+      }
 
-        .nexavolt-nav-links a:hover::after {
-            width: 100%;
-        }
+      [data-theme="dark"] .nexavolt-theme-toggle::after {
+        transform: translateX(20px);
+      }
 
-        .nexavolt-nav-actions {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-        }
+      .nexavolt-theme-toggle-label {
+        font-size: 0.7rem;
+        color: var(--text-tertiary);
+        display: none;
+      }
 
-        /* Theme toggle */
-        .nexavolt-theme-toggle {
-            width: 44px;
-            height: 24px;
-            border-radius: 12px;
-            background: var(--border-strong);
-            border: none;
-            cursor: pointer;
-            position: relative;
-            transition: background 0.3s ease;
-        }
+      /* Hamburger */
+      .nexavolt-hamburger {
+        display: none;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+        background: none;
+        border: 1px solid var(--border-strong);
+        border-radius: 8px;
+        cursor: pointer;
+        gap: 5px;
+        transition: border-color 0.3s ease;
+      }
 
-        .nexavolt-theme-toggle::after {
-            content: '';
-            position: absolute;
-            top: 3px;
-            left: 3px;
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            background: var(--accent);
-            transition: transform 0.3s cubic-bezier(0.68, -0.6, 0.32, 1.6);
-            box-shadow: 0 1px 4px rgba(0,0,0,0.2);
-        }
+      .nexavolt-hamburger:hover {
+        border-color: var(--accent);
+      }
 
-        [data-theme="dark"] .nexavolt-theme-toggle::after {
-            transform: translateX(20px);
-        }
+      .nexavolt-hamburger span {
+        display: block;
+        width: 18px;
+        height: 1.5px;
+        background: var(--text-primary);
+        transition: all 0.3s ease;
+        transform-origin: center;
+      }
 
-        .nexavolt-theme-toggle-label {
-            font-size: 0.7rem;
-            color: var(--text-tertiary);
-            display: none;
-        }
+      .nexavolt-hamburger.is-active span:nth-child(1) {
+        transform: rotate(45deg) translate(4.5px, 4.5px);
+      }
 
-        /* Hamburger */
-        .nexavolt-hamburger {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            width: 40px;
-            height: 40px;
-            background: none;
-            border: 1px solid var(--border-strong);
-            border-radius: 8px;
-            cursor: pointer;
-            gap: 5px;
-            transition: border-color 0.3s ease;
-        }
+      .nexavolt-hamburger.is-active span:nth-child(2) {
+        opacity: 0;
+      }
 
-        .nexavolt-hamburger:hover {
-            border-color: var(--accent);
-        }
+      .nexavolt-hamburger.is-active span:nth-child(3) {
+        transform: rotate(-45deg) translate(4.5px, -4.5px);
+      }
 
-        .nexavolt-hamburger span {
-            display: block;
-            width: 18px;
-            height: 1.5px;
-            background: var(--text-primary);
-            transition: all 0.3s ease;
-            transform-origin: center;
-        }
+      /* Mobile menu */
+      .nexavolt-mobile-menu {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 100%;
+        height: 100vh;
+        background: var(--bg-primary);
+        z-index: 9998;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+      }
 
-        .nexavolt-hamburger.is-active span:nth-child(1) {
-            transform: rotate(45deg) translate(4.5px, 4.5px);
-        }
+      .nexavolt-mobile-menu.is-open {
+        right: 0;
+      }
 
-        .nexavolt-hamburger.is-active span:nth-child(2) {
-            opacity: 0;
-        }
+      .nexavolt-mobile-menu a {
+        font-family: 'Instrument Serif', serif;
+        font-size: 2.5rem;
+        color: var(--text-primary);
+        transition: color 0.3s ease;
+      }
 
-        .nexavolt-hamburger.is-active span:nth-child(3) {
-            transform: rotate(-45deg) translate(4.5px, -4.5px);
-        }
+      .nexavolt-mobile-menu a:hover {
+        color: var(--accent);
+      }
 
-        /* Mobile menu */
-        .nexavolt-mobile-menu {
-            position: fixed;
-            top: 0;
-            right: -100%;
-            width: 100%;
-            height: 100vh;
-            background: var(--bg-primary);
-            z-index: 9998;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 32px;
-            transition: right 0.5s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .nexavolt-mobile-menu.is-open {
-            right: 0;
-        }
-
-        .nexavolt-mobile-menu a {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
-            color: var(--text-primary);
-            transition: color 0.3s ease;
-        }
-
-        .nexavolt-mobile-menu a:hover {
-            color: var(--accent);
-        }
-
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            HERO
            ═══════════════════════════════════════ */
-        .nexavolt-hero {
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            position: relative;
-            overflow: hidden;
-            padding-top: 80px;
+      .nexavolt-hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding-top: 80px;
+      }
+
+      .nexavolt-hero-bg {
+        position: absolute;
+        inset: 0;
+        z-index: 0;
+      }
+
+      .nexavolt-hero-gradient {
+        position: absolute;
+        width: 600px;
+        height: 600px;
+        border-radius: 50%;
+        filter: blur(120px);
+        opacity: 0.4;
+        animation: nexavolt-float 20s ease-in-out infinite;
+      }
+
+      .nexavolt-hero-gradient-1 {
+        top: -10%;
+        right: -5%;
+        background: var(--accent);
+        opacity: 0.15;
+      }
+
+      .nexavolt-hero-gradient-2 {
+        bottom: -20%;
+        left: -10%;
+        background: var(--accent);
+        opacity: 0.08;
+        animation-delay: -10s;
+      }
+
+      @keyframes nexavolt-float {
+
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
         }
 
-        .nexavolt-hero-bg {
-            position: absolute;
-            inset: 0;
-            z-index: 0;
+        33% {
+          transform: translate(30px, -30px) scale(1.05);
         }
 
-        .nexavolt-hero-gradient {
-            position: absolute;
-            width: 600px;
-            height: 600px;
-            border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            animation: nexavolt-float 20s ease-in-out infinite;
+        66% {
+          transform: translate(-20px, 20px) scale(0.95);
+        }
+      }
+
+      .nexavolt-hero-grid-pattern {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(var(--border) 1px, transparent 1px),
+          linear-gradient(90deg, var(--border) 1px, transparent 1px);
+        background-size: 80px 80px;
+        mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black, transparent);
+        -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black, transparent);
+      }
+
+      .nexavolt-hero-content {
+        position: relative;
+        z-index: 1;
+        max-width: 900px;
+      }
+
+      .nexavolt-hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        background: var(--accent-subtle);
+        border: 1px solid rgba(200, 255, 0, 0.2);
+        border-radius: 100px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        letter-spacing: 0.05em;
+        color: var(--text-secondary);
+        margin-bottom: 32px;
+        opacity: 0;
+        animation: nexavolt-slideUp 0.8s 0.2s forwards;
+      }
+
+      .nexavolt-hero-tag-dot {
+        width: 6px;
+        height: 6px;
+        background: var(--accent);
+        border-radius: 50%;
+      }
+
+      .nexavolt-hero h1 {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(3rem, 7.5vw, 6.5rem);
+        line-height: 0.95;
+        letter-spacing: -0.03em;
+        margin-bottom: 28px;
+        opacity: 0;
+        animation: nexavolt-slideUp 0.8s 0.35s forwards;
+      }
+
+      .nexavolt-hero h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .nexavolt-hero-desc {
+        font-size: clamp(1rem, 1.5vw, 1.15rem);
+        color: var(--text-secondary);
+        max-width: 520px;
+        line-height: 1.7;
+        margin-bottom: 44px;
+        opacity: 0;
+        animation: nexavolt-slideUp 0.8s 0.5s forwards;
+      }
+
+      .nexavolt-hero-actions {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        flex-wrap: wrap;
+        opacity: 0;
+        animation: nexavolt-slideUp 0.8s 0.65s forwards;
+      }
+
+      @keyframes nexavolt-slideUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
         }
 
-        .nexavolt-hero-gradient-1 {
-            top: -10%;
-            right: -5%;
-            background: var(--accent);
-            opacity: 0.15;
+        to {
+          opacity: 1;
+          transform: translateY(0);
         }
+      }
 
-        .nexavolt-hero-gradient-2 {
-            bottom: -20%;
-            left: -10%;
-            background: var(--accent);
-            opacity: 0.08;
-            animation-delay: -10s;
-        }
+      /* Buttons */
+      .nexavolt-btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 36px;
+        background: var(--accent);
+        color: #1A1A1A;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 600;
+        letter-spacing: 0.02em;
+        border: none;
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+      }
 
-        @keyframes nexavolt-float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.05); }
-            66% { transform: translate(-20px, 20px) scale(0.95); }
-        }
+      .nexavolt-btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 40px rgba(200, 255, 0, 0.25);
+      }
 
-        .nexavolt-hero-grid-pattern {
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(var(--border) 1px, transparent 1px),
-                linear-gradient(90deg, var(--border) 1px, transparent 1px);
-            background-size: 80px 80px;
-            mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black, transparent);
-            -webkit-mask-image: radial-gradient(ellipse 70% 50% at 50% 50%, black, transparent);
-        }
+      .nexavolt-btn-primary:active {
+        transform: translateY(0);
+      }
 
-        .nexavolt-hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 900px;
-        }
+      .nexavolt-btn-primary svg {
+        transition: transform 0.3s ease;
+      }
 
-        .nexavolt-hero-tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            padding: 6px 16px;
-            background: var(--accent-subtle);
-            border: 1px solid rgba(200, 255, 0, 0.2);
-            border-radius: 100px;
-            font-size: 0.72rem;
-            font-weight: 500;
-            letter-spacing: 0.05em;
-            color: var(--text-secondary);
-            margin-bottom: 32px;
-            opacity: 0;
-            animation: nexavolt-slideUp 0.8s 0.2s forwards;
-        }
+      .nexavolt-btn-primary:hover svg {
+        transform: translateX(3px);
+      }
 
-        .nexavolt-hero-tag-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--accent);
-            border-radius: 50%;
-        }
+      .nexavolt-btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 16px 36px;
+        background: transparent;
+        color: var(--text-primary);
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 500;
+        letter-spacing: 0.02em;
+        border: 1px solid var(--border-strong);
+        border-radius: 100px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
 
-        .nexavolt-hero h1 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(3rem, 7.5vw, 6.5rem);
-            line-height: 0.95;
-            letter-spacing: -0.03em;
-            margin-bottom: 28px;
-            opacity: 0;
-            animation: nexavolt-slideUp 0.8s 0.35s forwards;
-        }
+      .nexavolt-btn-secondary:hover {
+        border-color: var(--accent);
+        background: var(--accent-subtle);
+      }
 
-        .nexavolt-hero h1 em {
-            font-style: italic;
-            color: var(--accent);
-        }
+      /* Hero stats */
+      .nexavolt-hero-stats {
+        display: flex;
+        gap: 48px;
+        margin-top: 80px;
+        padding-top: 40px;
+        border-top: 1px solid var(--border);
+        opacity: 0;
+        animation: nexavolt-slideUp 0.8s 0.85s forwards;
+      }
 
-        .nexavolt-hero-desc {
-            font-size: clamp(1rem, 1.5vw, 1.15rem);
-            color: var(--text-secondary);
-            max-width: 520px;
-            line-height: 1.7;
-            margin-bottom: 44px;
-            opacity: 0;
-            animation: nexavolt-slideUp 0.8s 0.5s forwards;
-        }
+      .nexavolt-hero-stat-value {
+        font-family: 'Instrument Serif', serif;
+        font-size: 2.5rem;
+        line-height: 1;
+        margin-bottom: 4px;
+      }
 
-        .nexavolt-hero-actions {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-            opacity: 0;
-            animation: nexavolt-slideUp 0.8s 0.65s forwards;
-        }
+      .nexavolt-hero-stat-label {
+        font-size: 0.75rem;
+        color: var(--text-tertiary);
+        letter-spacing: 0.05em;
+      }
 
-        @keyframes nexavolt-slideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* Buttons */
-        .nexavolt-btn-primary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 36px;
-            background: var(--accent);
-            color: #1A1A1A;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 600;
-            letter-spacing: 0.02em;
-            border: none;
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexavolt-btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 12px 40px rgba(200, 255, 0, 0.25);
-        }
-
-        .nexavolt-btn-primary:active {
-            transform: translateY(0);
-        }
-
-        .nexavolt-btn-primary svg {
-            transition: transform 0.3s ease;
-        }
-
-        .nexavolt-btn-primary:hover svg {
-            transform: translateX(3px);
-        }
-
-        .nexavolt-btn-secondary {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 16px 36px;
-            background: transparent;
-            color: var(--text-primary);
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.85rem;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-            border: 1px solid var(--border-strong);
-            border-radius: 100px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nexavolt-btn-secondary:hover {
-            border-color: var(--accent);
-            background: var(--accent-subtle);
-        }
-
-        /* Hero stats */
-        .nexavolt-hero-stats {
-            display: flex;
-            gap: 48px;
-            margin-top: 80px;
-            padding-top: 40px;
-            border-top: 1px solid var(--border);
-            opacity: 0;
-            animation: nexavolt-slideUp 0.8s 0.85s forwards;
-        }
-
-        .nexavolt-hero-stat-value {
-            font-family: 'Instrument Serif', serif;
-            font-size: 2.5rem;
-            line-height: 1;
-            margin-bottom: 4px;
-        }
-
-        .nexavolt-hero-stat-label {
-            font-size: 0.75rem;
-            color: var(--text-tertiary);
-            letter-spacing: 0.05em;
-        }
-
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            SERVICES
            ═══════════════════════════════════════ */
-        .nexavolt-services {
-            padding: 140px 0;
-            position: relative;
-        }
+      .nexavolt-services {
+        padding: 140px 0;
+        position: relative;
+      }
 
-        .nexavolt-section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-end;
-            margin-bottom: 72px;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
+      .nexavolt-section-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-end;
+        margin-bottom: 72px;
+        gap: 40px;
+        flex-wrap: wrap;
+      }
 
-        .nexavolt-section-header h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2.2rem, 4.5vw, 3.8rem);
-            letter-spacing: -0.02em;
-            max-width: 600px;
-        }
+      .nexavolt-section-header h2 {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(2.2rem, 4.5vw, 3.8rem);
+        letter-spacing: -0.02em;
+        max-width: 600px;
+      }
 
-        .nexavolt-section-header p {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            max-width: 380px;
-            line-height: 1.7;
-        }
+      .nexavolt-section-header p {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        max-width: 380px;
+        line-height: 1.7;
+      }
 
-        .nexavolt-services-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-        }
+      .nexavolt-services-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+      }
 
-        .nexavolt-service-card {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 36px 28px;
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative;
-            overflow: hidden;
-            cursor: default;
-        }
+      .nexavolt-service-card {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 36px 28px;
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+      }
 
-        .nexavolt-service-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--accent);
-            transform: scaleX(0);
-            transform-origin: left;
-            transition: transform 0.4s ease;
-        }
+      .nexavolt-service-card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--accent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.4s ease;
+      }
 
-        .nexavolt-service-card:hover {
-            transform: translateY(-6px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--accent);
-            background: var(--bg-card-hover);
-        }
+      .nexavolt-service-card:hover {
+        transform: translateY(-6px);
+        box-shadow: var(--shadow-lg);
+        border-color: var(--accent);
+        background: var(--bg-card-hover);
+      }
 
-        .nexavolt-service-card:hover::before {
-            transform: scaleX(1);
-        }
+      .nexavolt-service-card:hover::before {
+        transform: scaleX(1);
+      }
 
-        .nexavolt-service-icon {
-            width: 52px;
-            height: 52px;
-            border-radius: 12px;
-            background: var(--accent-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 24px;
-            transition: all 0.3s ease;
-        }
+      .nexavolt-service-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 12px;
+        background: var(--accent-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 24px;
+        transition: all 0.3s ease;
+      }
 
-        .nexavolt-service-card:hover .nexavolt-service-icon {
-            background: var(--accent);
-        }
+      .nexavolt-service-card:hover .nexavolt-service-icon {
+        background: var(--accent);
+      }
 
-        .nexavolt-service-icon svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--text-primary);
-            fill: none;
-            stroke-width: 1.5;
-            stroke-linecap: round;
-            stroke-linejoin: round;
-            transition: stroke 0.3s ease;
-        }
+      .nexavolt-service-icon svg {
+        width: 24px;
+        height: 24px;
+        stroke: var(--text-primary);
+        fill: none;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: stroke 0.3s ease;
+      }
 
-        .nexavolt-service-card:hover .nexavolt-service-icon svg {
-            stroke: #1A1A1A;
-        }
+      .nexavolt-service-card:hover .nexavolt-service-icon svg {
+        stroke: #1A1A1A;
+      }
 
-        .nexavolt-service-card h3 {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-            letter-spacing: -0.01em;
-        }
+      .nexavolt-service-card h3 {
+        font-size: 1.1rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        letter-spacing: -0.01em;
+      }
 
-        .nexavolt-service-card p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            line-height: 1.6;
-        }
+      .nexavolt-service-card p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+        line-height: 1.6;
+      }
 
-        .nexavolt-service-card-number {
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            position: absolute;
-            bottom: -10px;
-            right: 16px;
-            color: var(--border);
-            line-height: 1;
-            transition: color 0.3s ease;
-        }
+      .nexavolt-service-card-number {
+        font-family: 'Instrument Serif', serif;
+        font-size: 4rem;
+        position: absolute;
+        bottom: -10px;
+        right: 16px;
+        color: var(--border);
+        line-height: 1;
+        transition: color 0.3s ease;
+      }
 
-        .nexavolt-service-card:hover .nexavolt-service-card-number {
-            color: var(--accent-subtle);
-        }
+      .nexavolt-service-card:hover .nexavolt-service-card-number {
+        color: var(--accent-subtle);
+      }
 
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            ABOUT
            ═══════════════════════════════════════ */
-        .nexavolt-about {
-            padding: 100px 0 140px;
-            position: relative;
+      .nexavolt-about {
+        padding: 100px 0 140px;
+        position: relative;
+      }
+
+      .nexavolt-about-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: center;
+      }
+
+      .nexavolt-about-visual {
+        position: relative;
+        aspect-ratio: 4/5;
+        border-radius: 20px;
+        overflow: hidden;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+      }
+
+      .nexavolt-about-visual-inner {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .nexavolt-about-visual-shapes {
+        position: relative;
+        width: 200px;
+        height: 200px;
+      }
+
+      .nexavolt-about-shape {
+        position: absolute;
+        border-radius: 50%;
+        border: 1px solid var(--accent);
+        animation: nexavolt-orbit 15s linear infinite;
+      }
+
+      .nexavolt-about-shape-1 {
+        width: 200px;
+        height: 200px;
+        top: 0;
+        left: 0;
+      }
+
+      .nexavolt-about-shape-2 {
+        width: 160px;
+        height: 160px;
+        top: 20px;
+        left: 20px;
+        animation-delay: -5s;
+        animation-direction: reverse;
+      }
+
+      .nexavolt-about-shape-3 {
+        width: 120px;
+        height: 120px;
+        top: 40px;
+        left: 40px;
+        animation-delay: -10s;
+      }
+
+      .nexavolt-about-shape-center {
+        width: 16px;
+        height: 16px;
+        background: var(--accent);
+        top: 92px;
+        left: 92px;
+      }
+
+      @keyframes nexavolt-orbit {
+        from {
+          transform: rotate(0deg);
         }
 
-        .nexavolt-about-inner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: center;
+        to {
+          transform: rotate(360deg);
         }
+      }
 
-        .nexavolt-about-visual {
-            position: relative;
-            aspect-ratio: 4/5;
-            border-radius: 20px;
-            overflow: hidden;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-        }
+      .nexavolt-about-visual-text {
+        position: absolute;
+        bottom: 30px;
+        left: 30px;
+        right: 30px;
+      }
 
-        .nexavolt-about-visual-inner {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+      .nexavolt-about-visual-text span {
+        font-family: 'Instrument Serif', serif;
+        font-size: 6rem;
+        line-height: 0.85;
+        color: var(--text-primary);
+        opacity: 0.06;
+      }
 
-        .nexavolt-about-visual-shapes {
-            position: relative;
-            width: 200px;
-            height: 200px;
-        }
+      .nexavolt-about-content h2 {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(2rem, 3.5vw, 3.2rem);
+        letter-spacing: -0.02em;
+        margin-top: 20px;
+        margin-bottom: 28px;
+      }
 
-        .nexavolt-about-shape {
-            position: absolute;
-            border-radius: 50%;
-            border: 1px solid var(--accent);
-            animation: nexavolt-orbit 15s linear infinite;
-        }
+      .nexavolt-about-content h2 em {
+        font-style: italic;
+        color: var(--accent);
+      }
 
-        .nexavolt-about-shape-1 {
-            width: 200px;
-            height: 200px;
-            top: 0;
-            left: 0;
-        }
+      .nexavolt-about-text {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 20px;
+      }
 
-        .nexavolt-about-shape-2 {
-            width: 160px;
-            height: 160px;
-            top: 20px;
-            left: 20px;
-            animation-delay: -5s;
-            animation-direction: reverse;
-        }
+      .nexavolt-about-values {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 40px;
+      }
 
-        .nexavolt-about-shape-3 {
-            width: 120px;
-            height: 120px;
-            top: 40px;
-            left: 40px;
-            animation-delay: -10s;
-        }
+      .nexavolt-about-value {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 14px 18px;
+        background: var(--bg-secondary);
+        border-radius: 10px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        border: 1px solid var(--border);
+        transition: all 0.3s ease;
+      }
 
-        .nexavolt-about-shape-center {
-            width: 16px;
-            height: 16px;
-            background: var(--accent);
-            top: 92px;
-            left: 92px;
-        }
+      .nexavolt-about-value:hover {
+        border-color: var(--accent);
+        background: var(--accent-subtle);
+      }
 
-        @keyframes nexavolt-orbit {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
+      .nexavolt-about-value-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 2px;
+        flex-shrink: 0;
+      }
 
-        .nexavolt-about-visual-text {
-            position: absolute;
-            bottom: 30px;
-            left: 30px;
-            right: 30px;
-        }
-
-        .nexavolt-about-visual-text span {
-            font-family: 'Instrument Serif', serif;
-            font-size: 6rem;
-            line-height: 0.85;
-            color: var(--text-primary);
-            opacity: 0.06;
-        }
-
-        .nexavolt-about-content h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 3.5vw, 3.2rem);
-            letter-spacing: -0.02em;
-            margin-top: 20px;
-            margin-bottom: 28px;
-        }
-
-        .nexavolt-about-content h2 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .nexavolt-about-text {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 20px;
-        }
-
-        .nexavolt-about-values {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 16px;
-            margin-top: 40px;
-        }
-
-        .nexavolt-about-value {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            padding: 14px 18px;
-            background: var(--bg-secondary);
-            border-radius: 10px;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border: 1px solid var(--border);
-            transition: all 0.3s ease;
-        }
-
-        .nexavolt-about-value:hover {
-            border-color: var(--accent);
-            background: var(--accent-subtle);
-        }
-
-        .nexavolt-about-value-dot {
-            width: 8px;
-            height: 8px;
-            background: var(--accent);
-            border-radius: 2px;
-            flex-shrink: 0;
-        }
-
-        /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
            PROJECTS
            ═══════════════════════════════════════ */
-        .nexavolt-projects {
-            padding: 140px 0;
-            background: var(--bg-secondary);
-            position: relative;
-        }
+      .nexavolt-projects {
+        padding: 140px 0;
+        background: var(--bg-secondary);
+        position: relative;
+      }
 
-        .nexavolt-projects::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            opacity: 0.3;
+      .nexavolt-projects::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: linear-gradient(90deg, transparent, var(--accent), transparent);
+        opacity: 0.3;
+      }
+
+      .nexavolt-projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+
+      .nexavolt-project-card {
+        position: relative;
+        aspect-ratio: 4/3;
+        border-radius: 16px;
+        overflow: hidden;
+        cursor: pointer;
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      }
+
+      .nexavolt-project-card:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+      }
+
+      .nexavolt-project-card-bg {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: transform 0.6s ease;
+      }
+
+      .nexavolt-project-card:hover .nexavolt-project-card-bg {
+        transform: scale(1.05);
+      }
+
+      /* Abstract project visuals */
+      .nexavolt-project-visual {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+
+      .nexavolt-project-visual-pattern {
+        position: absolute;
+        inset: 0;
+      }
+
+      /* Project 1 — Grid pattern */
+      .nexavolt-project-p1 {
+        background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+      }
+
+      .nexavolt-project-p1 .nexavolt-project-visual-pattern {
+        background-image:
+          linear-gradient(rgba(200, 255, 0, 0.1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(200, 255, 0, 0.1) 1px, transparent 1px);
+        background-size: 30px 30px;
+      }
+
+      .nexavolt-project-p1::after {
+        content: 'E-COM';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 4rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project 2 — Radial */
+      .nexavolt-project-p2 {
+        background: linear-gradient(135deg, #0d1b0e 0%, #0a0a0a 100%);
+      }
+
+      .nexavolt-project-p2 .nexavolt-project-visual-pattern {
+        background: radial-gradient(circle at 70% 30%, rgba(200, 255, 0, 0.12) 0%, transparent 60%);
+      }
+
+      .nexavolt-project-p2::after {
+        content: 'SaaS';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 4rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project 3 — Diagonal lines */
+      .nexavolt-project-p3 {
+        background: linear-gradient(135deg, #1a1a0a 0%, #0a0a0a 100%);
+      }
+
+      .nexavolt-project-p3 .nexavolt-project-visual-pattern {
+        background: repeating-linear-gradient(-45deg,
+            transparent,
+            transparent 20px,
+            rgba(200, 255, 0, 0.04) 20px,
+            rgba(200, 255, 0, 0.04) 21px);
+      }
+
+      .nexavolt-project-p3::after {
+        content: 'AI/ML';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 4rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project 4 — Dots */
+      .nexavolt-project-p4 {
+        background: #0a0a0a;
+      }
+
+      .nexavolt-project-p4 .nexavolt-project-visual-pattern {
+        background-image: radial-gradient(rgba(200, 255, 0, 0.15) 1px, transparent 1px);
+        background-size: 16px 16px;
+      }
+
+      .nexavolt-project-p4::after {
+        content: 'FINTECH';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 3.5rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project 5 — Circles */
+      .nexavolt-project-p5 {
+        background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0a 100%);
+      }
+
+      .nexavolt-project-p5 .nexavolt-project-visual-pattern {
+        background:
+          radial-gradient(circle at 50% 50%, transparent 30%, rgba(200, 255, 0, 0.03) 31%, rgba(200, 255, 0, 0.03) 32%, transparent 33%),
+          radial-gradient(circle at 50% 50%, transparent 50%, rgba(200, 255, 0, 0.03) 51%, rgba(200, 255, 0, 0.03) 52%, transparent 53%),
+          radial-gradient(circle at 50% 50%, transparent 70%, rgba(200, 255, 0, 0.03) 71%, rgba(200, 255, 0, 0.03) 72%, transparent 73%);
+      }
+
+      .nexavolt-project-p5::after {
+        content: 'IOT';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 4rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project 6 — Mesh */
+      .nexavolt-project-p6 {
+        background: linear-gradient(135deg, #0a0f0a 0%, #0a0a0a 100%);
+      }
+
+      .nexavolt-project-p6 .nexavolt-project-visual-pattern {
+        background:
+          linear-gradient(60deg, rgba(200, 255, 0, 0.04) 25%, transparent 25%),
+          linear-gradient(-60deg, rgba(200, 255, 0, 0.04) 25%, transparent 25%),
+          linear-gradient(60deg, transparent 75%, rgba(200, 255, 0, 0.04) 75%),
+          linear-gradient(-60deg, transparent 75%, rgba(200, 255, 0, 0.04) 75%);
+        background-size: 40px 70px;
+      }
+
+      .nexavolt-project-p6::after {
+        content: 'CLOUD';
+        position: absolute;
+        bottom: 20%;
+        left: 10%;
+        font-family: 'Instrument Serif', serif;
+        font-size: 3.8rem;
+        color: rgba(200, 255, 0, 0.15);
+        font-style: italic;
+      }
+
+      /* Project overlay */
+      .nexavolt-project-overlay {
+        position: absolute;
+        inset: 0;
+        background: var(--overlay);
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+        padding: 28px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .nexavolt-project-card:hover .nexavolt-project-overlay {
+        opacity: 1;
+      }
+
+      .nexavolt-project-overlay-tag {
+        font-size: 0.68rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        color: var(--accent);
+        margin-bottom: 8px;
+        font-weight: 500;
+      }
+
+      .nexavolt-project-overlay h3 {
+        font-family: 'Instrument Serif', serif;
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+
+      .nexavolt-project-overlay p {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.5;
+      }
+
+      .nexavolt-project-overlay-arrow {
+        position: absolute;
+        top: 24px;
+        right: 24px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .nexavolt-project-card:hover .nexavolt-project-overlay-arrow {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .nexavolt-project-overlay-arrow svg {
+        width: 16px;
+        height: 16px;
+        stroke: #fff;
+        fill: none;
+        stroke-width: 2;
+        transition: stroke 0.3s ease;
+      }
+
+      .nexavolt-project-card:hover .nexavolt-project-overlay-arrow svg {
+        stroke: #1A1A1A;
+      }
+
+      /* ═══════════════════════════════════════
+           CONTACT
+           ═══════════════════════════════════════ */
+      .nexavolt-contact {
+        padding: 140px 0;
+        position: relative;
+      }
+
+      .nexavolt-contact-inner {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+
+      .nexavolt-contact-content h2 {
+        font-family: 'Instrument Serif', serif;
+        font-size: clamp(2rem, 3.5vw, 3.2rem);
+        letter-spacing: -0.02em;
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      .nexavolt-contact-content h2 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .nexavolt-contact-desc {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 40px;
+      }
+
+      .nexavolt-contact-info {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .nexavolt-contact-info-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+      }
+
+      .nexavolt-contact-info-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--accent-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+
+      .nexavolt-contact-info-icon svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--accent);
+        fill: none;
+        stroke-width: 1.5;
+      }
+
+      /* Form */
+      .nexavolt-form {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        padding: 40px;
+      }
+
+      .nexavolt-form-group {
+        margin-bottom: 20px;
+      }
+
+      .nexavolt-form-label {
+        display: block;
+        font-size: 0.78rem;
+        font-weight: 500;
+        letter-spacing: 0.03em;
+        color: var(--text-secondary);
+        margin-bottom: 8px;
+      }
+
+      .nexavolt-form-input,
+      .nexavolt-form-textarea {
+        width: 100%;
+        padding: 14px 18px;
+        background: var(--bg-secondary);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .nexavolt-form-input:focus,
+      .nexavolt-form-textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-subtle);
+      }
+
+      .nexavolt-form-input.nexavolt-input-error,
+      .nexavolt-form-textarea.nexavolt-input-error {
+        border-color: #ff4444;
+        box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
+      }
+
+      .nexavolt-form-error-msg {
+        font-size: 0.72rem;
+        color: #ff4444;
+        margin-top: 6px;
+        display: none;
+      }
+
+      .nexavolt-form-error-msg.is-visible {
+        display: block;
+      }
+
+      .nexavolt-form-textarea {
+        min-height: 130px;
+        resize: vertical;
+      }
+
+      .nexavolt-form-input::placeholder,
+      .nexavolt-form-textarea::placeholder {
+        color: var(--text-tertiary);
+      }
+
+      .nexavolt-form-submit {
+        width: 100%;
+        padding: 16px;
+        background: var(--accent);
+        color: #1A1A1A;
+        font-family: 'DM Sans', sans-serif;
+        font-size: 0.9rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .nexavolt-form-submit:hover {
+        box-shadow: 0 8px 30px rgba(200, 255, 0, 0.3);
+        transform: translateY(-1px);
+      }
+
+      .nexavolt-form-submit:active {
+        transform: translateY(0);
+      }
+
+      .nexavolt-form-success {
+        display: none;
+        text-align: center;
+        padding: 40px 20px;
+      }
+
+      .nexavolt-form-success.is-visible {
+        display: block;
+      }
+
+      .nexavolt-form-success-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: var(--accent);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 16px;
+      }
+
+      .nexavolt-form-success-icon svg {
+        width: 28px;
+        height: 28px;
+        stroke: #1A1A1A;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .nexavolt-form-success h3 {
+        font-size: 1.2rem;
+        font-weight: 600;
+        margin-bottom: 8px;
+      }
+
+      .nexavolt-form-success p {
+        font-size: 0.85rem;
+        color: var(--text-secondary);
+      }
+
+      /* ═══════════════════════════════════════
+           FOOTER
+           ═══════════════════════════════════════ */
+      .nexavolt-footer {
+        padding: 60px 0 40px;
+        border-top: 1px solid var(--border);
+        background: var(--bg-secondary);
+      }
+
+      .nexavolt-footer-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      .nexavolt-footer-left {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+      }
+
+      .nexavolt-footer-copyright {
+        font-size: 0.8rem;
+        color: var(--text-tertiary);
+      }
+
+      .nexavolt-footer-social {
+        display: flex;
+        gap: 12px;
+      }
+
+      .nexavolt-footer-social-link {
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+      }
+
+      .nexavolt-footer-social-link:hover {
+        border-color: var(--accent);
+        background: var(--accent-subtle);
+        transform: translateY(-2px);
+      }
+
+      .nexavolt-footer-social-link svg {
+        width: 18px;
+        height: 18px;
+        fill: var(--text-secondary);
+        transition: fill 0.3s ease;
+      }
+
+      .nexavolt-footer-social-link:hover svg {
+        fill: var(--accent);
+      }
+
+      .nexavolt-footer-back-top {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1px solid var(--border-strong);
+        background: transparent;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .nexavolt-footer-back-top:hover {
+        background: var(--accent);
+        border-color: var(--accent);
+      }
+
+      .nexavolt-footer-back-top svg {
+        width: 18px;
+        height: 18px;
+        stroke: var(--text-secondary);
+        fill: none;
+        stroke-width: 2;
+        transition: stroke 0.3s ease;
+      }
+
+      .nexavolt-footer-back-top:hover svg {
+        stroke: #1A1A1A;
+      }
+
+      /* ═══════════════════════════════════════
+           RESPONSIVE
+           ═══════════════════════════════════════ */
+      @media (max-width: 1024px) {
+        .nexavolt-services-grid {
+          grid-template-columns: repeat(2, 1fr);
         }
 
         .nexavolt-projects-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 24px;
+          grid-template-columns: repeat(2, 1fr);
         }
 
-        .nexavolt-project-card {
-            position: relative;
-            aspect-ratio: 4/3;
-            border-radius: 16px;
-            overflow: hidden;
-            cursor: pointer;
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        .nexavolt-about-inner {
+          gap: 48px;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nexavolt-nav-links {
+          display: none;
         }
 
-        .nexavolt-project-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-lg);
+        .nexavolt-hamburger {
+          display: flex;
         }
 
-        .nexavolt-project-card-bg {
-            position: absolute;
-            inset: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: transform 0.6s ease;
+        .nexavolt-hero h1 {
+          font-size: clamp(2.5rem, 10vw, 3.5rem);
         }
 
-        .nexavolt-project-card:hover .nexavolt-project-card-bg {
-            transform: scale(1.05);
+        .nexavolt-hero-stats {
+          flex-direction: column;
+          gap: 24px;
         }
 
-        /* Abstract project visuals */
-        .nexavolt-project-visual {
-            width: 100%;
-            height: 100%;
-            position: relative;
+        .nexavolt-services-grid {
+          grid-template-columns: 1fr;
         }
 
-        .nexavolt-project-visual-pattern {
-            position: absolute;
-            inset: 0;
+        .nexavolt-about-inner {
+          grid-template-columns: 1fr;
+          gap: 40px;
         }
 
-        /* Project 1 — Grid pattern */
-        .nexavolt-project-p1 {
-            background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+        .nexavolt-about-visual {
+          aspect-ratio: 16/10;
         }
 
-        .nexavolt-project-p1 .nexavolt-project-visual-pattern {
-            background-image:
-                linear-gradient(rgba(200, 255, 0, 0.1) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(200, 255, 0, 0.1) 1px, transparent 1px);
-            background-size: 30px 30px;
-        }
-
-        .nexavolt-project-p1::after {
-            content: 'E-COM';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project 2 — Radial */
-        .nexavolt-project-p2 {
-            background: linear-gradient(135deg, #0d1b0e 0%, #0a0a0a 100%);
-        }
-
-        .nexavolt-project-p2 .nexavolt-project-visual-pattern {
-            background: radial-gradient(circle at 70% 30%, rgba(200, 255, 0, 0.12) 0%, transparent 60%);
-        }
-
-        .nexavolt-project-p2::after {
-            content: 'SaaS';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project 3 — Diagonal lines */
-        .nexavolt-project-p3 {
-            background: linear-gradient(135deg, #1a1a0a 0%, #0a0a0a 100%);
-        }
-
-        .nexavolt-project-p3 .nexavolt-project-visual-pattern {
-            background: repeating-linear-gradient(
-                -45deg,
-                transparent,
-                transparent 20px,
-                rgba(200, 255, 0, 0.04) 20px,
-                rgba(200, 255, 0, 0.04) 21px
-            );
-        }
-
-        .nexavolt-project-p3::after {
-            content: 'AI/ML';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project 4 — Dots */
-        .nexavolt-project-p4 {
-            background: #0a0a0a;
-        }
-
-        .nexavolt-project-p4 .nexavolt-project-visual-pattern {
-            background-image: radial-gradient(rgba(200, 255, 0, 0.15) 1px, transparent 1px);
-            background-size: 16px 16px;
-        }
-
-        .nexavolt-project-p4::after {
-            content: 'FINTECH';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 3.5rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project 5 — Circles */
-        .nexavolt-project-p5 {
-            background: linear-gradient(180deg, #0a0a0a 0%, #0f0f0a 100%);
-        }
-
-        .nexavolt-project-p5 .nexavolt-project-visual-pattern {
-            background:
-                radial-gradient(circle at 50% 50%, transparent 30%, rgba(200, 255, 0, 0.03) 31%, rgba(200, 255, 0, 0.03) 32%, transparent 33%),
-                radial-gradient(circle at 50% 50%, transparent 50%, rgba(200, 255, 0, 0.03) 51%, rgba(200, 255, 0, 0.03) 52%, transparent 53%),
-                radial-gradient(circle at 50% 50%, transparent 70%, rgba(200, 255, 0, 0.03) 71%, rgba(200, 255, 0, 0.03) 72%, transparent 73%);
-        }
-
-        .nexavolt-project-p5::after {
-            content: 'IOT';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 4rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project 6 — Mesh */
-        .nexavolt-project-p6 {
-            background: linear-gradient(135deg, #0a0f0a 0%, #0a0a0a 100%);
-        }
-
-        .nexavolt-project-p6 .nexavolt-project-visual-pattern {
-            background:
-                linear-gradient(60deg, rgba(200, 255, 0, 0.04) 25%, transparent 25%),
-                linear-gradient(-60deg, rgba(200, 255, 0, 0.04) 25%, transparent 25%),
-                linear-gradient(60deg, transparent 75%, rgba(200, 255, 0, 0.04) 75%),
-                linear-gradient(-60deg, transparent 75%, rgba(200, 255, 0, 0.04) 75%);
-            background-size: 40px 70px;
-        }
-
-        .nexavolt-project-p6::after {
-            content: 'CLOUD';
-            position: absolute;
-            bottom: 20%;
-            left: 10%;
-            font-family: 'Instrument Serif', serif;
-            font-size: 3.8rem;
-            color: rgba(200, 255, 0, 0.15);
-            font-style: italic;
-        }
-
-        /* Project overlay */
-        .nexavolt-project-overlay {
-            position: absolute;
-            inset: 0;
-            background: var(--overlay);
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            padding: 28px;
-            opacity: 0;
-            transition: opacity 0.4s ease;
-        }
-
-        .nexavolt-project-card:hover .nexavolt-project-overlay {
-            opacity: 1;
-        }
-
-        .nexavolt-project-overlay-tag {
-            font-size: 0.68rem;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
-            color: var(--accent);
-            margin-bottom: 8px;
-            font-weight: 500;
-        }
-
-        .nexavolt-project-overlay h3 {
-            font-family: 'Instrument Serif', serif;
-            font-size: 1.5rem;
-            color: #fff;
-            margin-bottom: 8px;
-        }
-
-        .nexavolt-project-overlay p {
-            font-size: 0.82rem;
-            color: rgba(255,255,255,0.6);
-            line-height: 1.5;
-        }
-
-        .nexavolt-project-overlay-arrow {
-            position: absolute;
-            top: 24px;
-            right: 24px;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
-        }
-
-        .nexavolt-project-card:hover .nexavolt-project-overlay-arrow {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .nexavolt-project-overlay-arrow svg {
-            width: 16px;
-            height: 16px;
-            stroke: #fff;
-            fill: none;
-            stroke-width: 2;
-            transition: stroke 0.3s ease;
-        }
-
-        .nexavolt-project-card:hover .nexavolt-project-overlay-arrow svg {
-            stroke: #1A1A1A;
-        }
-
-        /* ═══════════════════════════════════════
-           CONTACT
-           ═══════════════════════════════════════ */
-        .nexavolt-contact {
-            padding: 140px 0;
-            position: relative;
+        .nexavolt-projects-grid {
+          grid-template-columns: 1fr;
         }
 
         .nexavolt-contact-inner {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 80px;
-            align-items: start;
+          grid-template-columns: 1fr;
+          gap: 48px;
         }
 
-        .nexavolt-contact-content h2 {
-            font-family: 'Instrument Serif', serif;
-            font-size: clamp(2rem, 3.5vw, 3.2rem);
-            letter-spacing: -0.02em;
-            margin-top: 20px;
-            margin-bottom: 20px;
-        }
-
-        .nexavolt-contact-content h2 em {
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .nexavolt-contact-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-            line-height: 1.8;
-            margin-bottom: 40px;
-        }
-
-        .nexavolt-contact-info {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .nexavolt-contact-info-item {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        }
-
-        .nexavolt-contact-info-icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: var(--accent-subtle);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        .nexavolt-contact-info-icon svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--accent);
-            fill: none;
-            stroke-width: 1.5;
-        }
-
-        /* Form */
-        .nexavolt-form {
-            background: var(--bg-card);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: 40px;
-        }
-
-        .nexavolt-form-group {
-            margin-bottom: 20px;
-        }
-
-        .nexavolt-form-label {
-            display: block;
-            font-size: 0.78rem;
-            font-weight: 500;
-            letter-spacing: 0.03em;
-            color: var(--text-secondary);
-            margin-bottom: 8px;
-        }
-
-        .nexavolt-form-input,
-        .nexavolt-form-textarea {
-            width: 100%;
-            padding: 14px 18px;
-            background: var(--bg-secondary);
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            color: var(--text-primary);
-            transition: all 0.3s ease;
-            outline: none;
-        }
-
-        .nexavolt-form-input:focus,
-        .nexavolt-form-textarea:focus {
-            border-color: var(--accent);
-            box-shadow: 0 0 0 3px var(--accent-subtle);
-        }
-
-        .nexavolt-form-input.nexavolt-input-error,
-        .nexavolt-form-textarea.nexavolt-input-error {
-            border-color: #ff4444;
-            box-shadow: 0 0 0 3px rgba(255, 68, 68, 0.1);
-        }
-
-        .nexavolt-form-error-msg {
-            font-size: 0.72rem;
-            color: #ff4444;
-            margin-top: 6px;
-            display: none;
-        }
-
-        .nexavolt-form-error-msg.is-visible {
-            display: block;
-        }
-
-        .nexavolt-form-textarea {
-            min-height: 130px;
-            resize: vertical;
-        }
-
-        .nexavolt-form-input::placeholder,
-        .nexavolt-form-textarea::placeholder {
-            color: var(--text-tertiary);
-        }
-
-        .nexavolt-form-submit {
-            width: 100%;
-            padding: 16px;
-            background: var(--accent);
-            color: #1A1A1A;
-            font-family: 'DM Sans', sans-serif;
-            font-size: 0.9rem;
-            font-weight: 600;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .nexavolt-form-submit:hover {
-            box-shadow: 0 8px 30px rgba(200, 255, 0, 0.3);
-            transform: translateY(-1px);
-        }
-
-        .nexavolt-form-submit:active {
-            transform: translateY(0);
-        }
-
-        .nexavolt-form-success {
-            display: none;
-            text-align: center;
-            padding: 40px 20px;
-        }
-
-        .nexavolt-form-success.is-visible {
-            display: block;
-        }
-
-        .nexavolt-form-success-icon {
-            width: 56px;
-            height: 56px;
-            border-radius: 50%;
-            background: var(--accent);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 16px;
-        }
-
-        .nexavolt-form-success-icon svg {
-            width: 28px;
-            height: 28px;
-            stroke: #1A1A1A;
-            fill: none;
-            stroke-width: 2.5;
-        }
-
-        .nexavolt-form-success h3 {
-            font-size: 1.2rem;
-            font-weight: 600;
-            margin-bottom: 8px;
-        }
-
-        .nexavolt-form-success p {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-        }
-
-        /* ═══════════════════════════════════════
-           FOOTER
-           ═══════════════════════════════════════ */
-        .nexavolt-footer {
-            padding: 60px 0 40px;
-            border-top: 1px solid var(--border);
-            background: var(--bg-secondary);
+        .nexavolt-section-header {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 16px;
         }
 
         .nexavolt-footer-inner {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
+          flex-direction: column;
+          text-align: center;
         }
 
         .nexavolt-footer-left {
-            display: flex;
-            align-items: center;
-            gap: 32px;
+          flex-direction: column;
+          gap: 20px;
         }
 
-        .nexavolt-footer-copyright {
-            font-size: 0.8rem;
-            color: var(--text-tertiary);
+        .nexavolt-form {
+          padding: 28px;
         }
 
-        .nexavolt-footer-social {
-            display: flex;
-            gap: 12px;
+        .nexavolt-about-values {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .nexavolt-hero-actions {
+          flex-direction: column;
+          width: 100%;
         }
 
-        .nexavolt-footer-social-link {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            border: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s ease;
+        .nexavolt-btn-primary,
+        .nexavolt-btn-secondary {
+          width: 100%;
+          justify-content: center;
         }
-
-        .nexavolt-footer-social-link:hover {
-            border-color: var(--accent);
-            background: var(--accent-subtle);
-            transform: translateY(-2px);
-        }
-
-        .nexavolt-footer-social-link svg {
-            width: 18px;
-            height: 18px;
-            fill: var(--text-secondary);
-            transition: fill 0.3s ease;
-        }
-
-        .nexavolt-footer-social-link:hover svg {
-            fill: var(--accent);
-        }
-
-        .nexavolt-footer-back-top {
-            width: 44px;
-            height: 44px;
-            border-radius: 50%;
-            border: 1px solid var(--border-strong);
-            background: transparent;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .nexavolt-footer-back-top:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-        }
-
-        .nexavolt-footer-back-top svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--text-secondary);
-            fill: none;
-            stroke-width: 2;
-            transition: stroke 0.3s ease;
-        }
-
-        .nexavolt-footer-back-top:hover svg {
-            stroke: #1A1A1A;
-        }
-
-        /* ═══════════════════════════════════════
-           RESPONSIVE
-           ═══════════════════════════════════════ */
-        @media (max-width: 1024px) {
-            .nexavolt-services-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nexavolt-projects-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-
-            .nexavolt-about-inner {
-                gap: 48px;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .nexavolt-nav-links {
-                display: none;
-            }
-
-            .nexavolt-hamburger {
-                display: flex;
-            }
-
-            .nexavolt-hero h1 {
-                font-size: clamp(2.5rem, 10vw, 3.5rem);
-            }
-
-            .nexavolt-hero-stats {
-                flex-direction: column;
-                gap: 24px;
-            }
-
-            .nexavolt-services-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nexavolt-about-inner {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-
-            .nexavolt-about-visual {
-                aspect-ratio: 16/10;
-            }
-
-            .nexavolt-projects-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .nexavolt-contact-inner {
-                grid-template-columns: 1fr;
-                gap: 48px;
-            }
-
-            .nexavolt-section-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 16px;
-            }
-
-            .nexavolt-footer-inner {
-                flex-direction: column;
-                text-align: center;
-            }
-
-            .nexavolt-footer-left {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .nexavolt-form {
-                padding: 28px;
-            }
-
-            .nexavolt-about-values {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .nexavolt-hero-actions {
-                flex-direction: column;
-                width: 100%;
-            }
-
-            .nexavolt-btn-primary,
-            .nexavolt-btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
-        }
+      }
     </style>
-</head>
-<body>
-<style>.nexavolt-about-visual-inner {
-    position: relative;
-    overflow: hidden;
-}
-
-.nexavolt-about-img {
-    position: relative;
-    z-index: 2;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-    border-radius: inherit;
-}
-
-.nexavolt-about-visual-inner .nexavolt-about-visual-shapes {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-}
-
-.nexavolt-about-visual-text {
-    z-index: 3;
-}</style>
+  </head>
+  <body>
+    
     <!-- ═══════════════════════════════════════
          NAVIGATION
          ═══════════════════════════════════════ -->
     <nav class="nexavolt-nav" id="nexavoltNav">
-        <div class="nexavolt-container nexavolt-nav-inner">
-            <a href="#" class="nexavolt-logo">
-                <span class="nexavolt-logo-dot"></span>
-                nexavolt
-            </a>
+      <div class="nexavolt-container nexavolt-nav-inner">
+        <a href="#" class="nexavolt-logo">
+          <span class="nexavolt-logo-dot"></span>
+          nexavolt
+        </a>
 
-            <ul class="nexavolt-nav-links">
-                <li><a href="#nexavolt-services">Tjänster</a></li>
-                <li><a href="#nexavolt-about">Om oss</a></li>
-                <li><a href="#nexavolt-projects">Projekt</a></li>
-                <li><a href="#nexavolt-contact">Kontakt</a></li>
-            </ul>
+        <ul class="nexavolt-nav-links">
+          <li><a href="#nexavolt-services">Tjänster</a></li>
+          <li><a href="#nexavolt-about">Om oss</a></li>
+          <li><a href="#nexavolt-projects">Projekt</a></li>
+          <li><a href="#nexavolt-contact">Kontakt</a></li>
+        </ul>
 
-            <div class="nexavolt-nav-actions">
-                <button class="nexavolt-theme-toggle" id="nexavoltThemeToggle" aria-label="Byt tema"></button>
-                <button class="nexavolt-hamburger" id="nexavoltHamburger" aria-label="Öppna meny">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </button>
-            </div>
+        <div class="nexavolt-nav-actions">
+          <button class="nexavolt-theme-toggle" id="nexavoltThemeToggle" aria-label="Byt tema"></button>
+          <button class="nexavolt-hamburger" id="nexavoltHamburger" aria-label="Öppna meny">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
         </div>
+      </div>
     </nav>
 
     <!-- Mobile menu -->
     <div class="nexavolt-mobile-menu" id="nexavoltMobileMenu">
-        <a href="#nexavolt-services" class="nexavolt-mobile-link">Tjänster</a>
-        <a href="#nexavolt-about" class="nexavolt-mobile-link">Om oss</a>
-        <a href="#nexavolt-projects" class="nexavolt-mobile-link">Projekt</a>
-        <a href="#nexavolt-contact" class="nexavolt-mobile-link">Kontakt</a>
+      <a href="#nexavolt-services" class="nexavolt-mobile-link">Tjänster</a>
+      <a href="#nexavolt-about" class="nexavolt-mobile-link">Om oss</a>
+      <a href="#nexavolt-projects" class="nexavolt-mobile-link">Projekt</a>
+      <a href="#nexavolt-contact" class="nexavolt-mobile-link">Kontakt</a>
     </div>
 
     <!-- ═══════════════════════════════════════
          HERO
          ═══════════════════════════════════════ -->
     <section class="nexavolt-hero" id="nexavolt-hero">
-        <div class="nexavolt-hero-bg">
-            <div class="nexavolt-hero-gradient nexavolt-hero-gradient-1"></div>
-            <div class="nexavolt-hero-gradient nexavolt-hero-gradient-2"></div>
-            <div class="nexavolt-hero-grid-pattern"></div>
+      <div class="nexavolt-hero-bg">
+        <div class="nexavolt-hero-gradient nexavolt-hero-gradient-1"></div>
+        <div class="nexavolt-hero-gradient nexavolt-hero-gradient-2"></div>
+        <div class="nexavolt-hero-grid-pattern"></div>
+      </div>
+
+      <div class="nexavolt-container nexavolt-hero-content">
+        <div class="nexavolt-hero-tag">
+          <span class="nexavolt-hero-tag-dot"></span>
+          IT-konsulting &amp; digital infrastruktur
         </div>
 
-        <div class="nexavolt-container nexavolt-hero-content">
-            <div class="nexavolt-hero-tag">
-                <span class="nexavolt-hero-tag-dot"></span>
-                IT-konsulting &amp; digital infrastruktur
-            </div>
+        <h1>Vi bygger <em>skalbara</em> digitala lösningar</h1>
 
-            <h1>Vi bygger <em>skalbara</em> digitala lösningar</h1>
+        <p class="nexavolt-hero-desc">
+          Från arkitektur till implementation — vi transformerar komplexa tekniska utmaningar till eleganta,
+          högpresterande system som driver er verksamhet framåt.
+        </p>
 
-            <p class="nexavolt-hero-desc">
-                Från arkitektur till implementation — vi transformerar komplexa tekniska utmaningar till eleganta, högpresterande system som driver er verksamhet framåt.
-            </p>
-
-            <div class="nexavolt-hero-actions">
-                <a href="#nexavolt-contact" class="nexavolt-btn-primary">
-                    Kom igång
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
-                </a>
-                <a href="#nexavolt-projects" class="nexavolt-btn-secondary">
-                    Se våra projekt
-                </a>
-            </div>
-
-            <div class="nexavolt-hero-stats">
-                <div>
-                    <div class="nexavolt-hero-stat-value">150+</div>
-                    <div class="nexavolt-hero-stat-label">Levererade projekt</div>
-                </div>
-                <div>
-                    <div class="nexavolt-hero-stat-value">99.9%</div>
-                    <div class="nexavolt-hero-stat-label">Uptime-garanti</div>
-                </div>
-                <div>
-                    <div class="nexavolt-hero-stat-value">12</div>
-                    <div class="nexavolt-hero-stat-label">År i branschen</div>
-                </div>
-            </div>
+        <div class="nexavolt-hero-actions">
+          <a href="#nexavolt-contact" class="nexavolt-btn-primary">
+            Kom igång
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <line x1="5" y1="12" x2="19" y2="12"></line>
+              <polyline points="12 5 19 12 12 19"></polyline>
+            </svg>
+          </a>
+          <a href="#nexavolt-projects" class="nexavolt-btn-secondary">
+            Se våra projekt
+          </a>
         </div>
+
+        <div class="nexavolt-hero-stats">
+          <div>
+            <div class="nexavolt-hero-stat-value">150+</div>
+            <div class="nexavolt-hero-stat-label">Levererade projekt</div>
+          </div>
+          <div>
+            <div class="nexavolt-hero-stat-value">99.9%</div>
+            <div class="nexavolt-hero-stat-label">Uptime-garanti</div>
+          </div>
+          <div>
+            <div class="nexavolt-hero-stat-value">12</div>
+            <div class="nexavolt-hero-stat-label">År i branschen</div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════
          SERVICES
          ═══════════════════════════════════════ -->
     <section class="nexavolt-services" id="nexavolt-services">
-        <div class="nexavolt-container">
-            <div class="nexavolt-section-header nexavolt-reveal">
-                <div>
-                    <span class="nexavolt-eyebrow">Tjänster</span>
-                    <h2>Expertis som levererar <br>verkliga resultat</h2>
-                </div>
-                <p>Vi kombinerar djup teknisk kompetens med strategisk förståelse för att bygga lösningar som skapar mätbart värde.</p>
-            </div>
-
-            <div class="nexavolt-services-grid">
-                <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-1">
-                    <div class="nexavolt-service-icon">
-                        <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
-                    </div>
-                    <h3>Systemutveckling</h3>
-                    <p>Skräddarsydda applikationer och plattformar byggda med moderna ramverk och mikrotjänstarkitektur.</p>
-                    <span class="nexavolt-service-card-number">01</span>
-                </div>
-
-                <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-2">
-                    <div class="nexavolt-service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                    </div>
-                    <h3>Cloud &amp; DevOps</h3>
-                    <p>AWS, Azure och GCP-lösningar med CI/CD-pipelines, Infrastructure as Code och container-orkestrering.</p>
-                    <span class="nexavolt-service-card-number">02</span>
-                </div>
-
-                <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-3">
-                    <div class="nexavolt-service-icon">
-                        <svg viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-                    </div>
-                    <h3>Data &amp; AI</h3>
-                    <p>Dataplattformar, ML-modeller och intelligenta automatiseringar som omvandlar data till strategiska insikter.</p>
-                    <span class="nexavolt-service-card-number">03</span>
-                </div>
-
-                <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-4">
-                    <div class="nexavolt-service-icon">
-                        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
-                    </div>
-                    <h3>Cybersäkerhet</h3>
-                    <p>Penetrationstester, säkerhetsaudits och Zero Trust-arkitektur som skyddar era kritiska digitala tillgångar.</p>
-                    <span class="nexavolt-service-card-number">04</span>
-                </div>
-            </div>
+      <div class="nexavolt-container">
+        <div class="nexavolt-section-header nexavolt-reveal">
+          <div>
+            <span class="nexavolt-eyebrow">Tjänster</span>
+            <h2>Expertis som levererar <br>verkliga resultat</h2>
+          </div>
+          <p>Vi kombinerar djup teknisk kompetens med strategisk förståelse för att bygga lösningar som skapar mätbart
+            värde.</p>
         </div>
+
+        <div class="nexavolt-services-grid">
+          <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-1">
+            <div class="nexavolt-service-icon">
+              <svg viewBox="0 0 24 24">
+                <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
+                <line x1="8" y1="21" x2="16" y2="21"></line>
+                <line x1="12" y1="17" x2="12" y2="21"></line>
+              </svg>
+            </div>
+            <h3>Systemutveckling</h3>
+            <p>Skräddarsydda applikationer och plattformar byggda med moderna ramverk och mikrotjänstarkitektur.</p>
+            <span class="nexavolt-service-card-number">01</span>
+          </div>
+
+          <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-2">
+            <div class="nexavolt-service-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+              </svg>
+            </div>
+            <h3>Cloud &amp; DevOps</h3>
+            <p>AWS, Azure och GCP-lösningar med CI/CD-pipelines, Infrastructure as Code och container-orkestrering.</p>
+            <span class="nexavolt-service-card-number">02</span>
+          </div>
+
+          <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-3">
+            <div class="nexavolt-service-icon">
+              <svg viewBox="0 0 24 24">
+                <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+                <polyline points="2 17 12 22 22 17"></polyline>
+                <polyline points="2 12 12 17 22 12"></polyline>
+              </svg>
+            </div>
+            <h3>Data &amp; AI</h3>
+            <p>Dataplattformar, ML-modeller och intelligenta automatiseringar som omvandlar data till strategiska
+              insikter.</p>
+            <span class="nexavolt-service-card-number">03</span>
+          </div>
+
+          <div class="nexavolt-service-card nexavolt-reveal nexavolt-reveal-delay-4">
+            <div class="nexavolt-service-icon">
+              <svg viewBox="0 0 24 24">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+            </div>
+            <h3>Cybersäkerhet</h3>
+            <p>Penetrationstester, säkerhetsaudits och Zero Trust-arkitektur som skyddar era kritiska digitala
+              tillgångar.</p>
+            <span class="nexavolt-service-card-number">04</span>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════
          ABOUT
          ═══════════════════════════════════════ -->
     <section class="nexavolt-about" id="nexavolt-about">
-        <div class="nexavolt-container">
-            <div class="nexavolt-about-inner">
-                <div class="nexavolt-about-visual nexavolt-reveal">
-                    <div class="nexavolt-about-visual-inner">
-                        <div class="nexavolt-about-visual-shapes">
-                            <div class="nexavolt-about-shape nexavolt-about-shape-1"></div>
-                            <div class="nexavolt-about-shape nexavolt-about-shape-2"></div>
-                            <div class="nexavolt-about-shape nexavolt-about-shape-3"></div>
-                            <div class="nexavolt-about-shape nexavolt-about-shape-center"></div>
-                        </div>
-                        <img src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Nexavolt technology and innovation" class="nexavolt-about-img">
-                    </div>
-                    <div class="nexavolt-about-visual-text">
-                        <span>NX</span>
-                    </div>
-                </div>
-
-                <div class="nexavolt-about-content">
-                    <span class="nexavolt-eyebrow nexavolt-reveal">Om oss</span>
-                    <h2 class="nexavolt-reveal nexavolt-reveal-delay-1">Teknik som driver <em>innovation</em> framåt</h2>
-
-                    <p class="nexavolt-about-text nexavolt-reveal nexavolt-reveal-delay-2">
-                        Nexavolt grundades med en enkel övertygelse: att rätt teknisk infrastruktur är grunden för varje framgångsrik digital transformation. Vi är ett team av ingenjörer, arkitekter och strateger som brinner för att lösa komplexa problem.
-                    </p>
-
-                    <p class="nexavolt-about-text nexavolt-reveal nexavolt-reveal-delay-3">
-                        Genom att kombinera djup domänkunskap med cutting-edge teknologi levererar vi lösningar som inte bara fungerar idag — utan som är byggda för att skala med er morgondag.
-                    </p>
-
-                    <div class="nexavolt-about-values nexavolt-reveal nexavolt-reveal-delay-4">
-                        <div class="nexavolt-about-value">
-                            <span class="nexavolt-about-value-dot"></span>
-                            Innovation first
-                        </div>
-                        <div class="nexavolt-about-value">
-                            <span class="nexavolt-about-value-dot"></span>
-                            Skalbar arkitektur
-                        </div>
-                        <div class="nexavolt-about-value">
-                            <span class="nexavolt-about-value-dot"></span>
-                            Resultatdriven
-                        </div>
-                        <div class="nexavolt-about-value">
-                            <span class="nexavolt-about-value-dot"></span>
-                            Agilt arbetssätt
-                        </div>
-                    </div>
-                </div>
+      <div class="nexavolt-container">
+        <div class="nexavolt-about-inner">
+          <div class="nexavolt-about-visual nexavolt-reveal">
+            <div class="nexavolt-about-visual-inner">
+              <div class="nexavolt-about-visual-shapes">
+                <div class="nexavolt-about-shape nexavolt-about-shape-1"></div>
+                <div class="nexavolt-about-shape nexavolt-about-shape-2"></div>
+                <div class="nexavolt-about-shape nexavolt-about-shape-3"></div>
+                <div class="nexavolt-about-shape nexavolt-about-shape-center"></div>
+              </div>
+              <img
+                src="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?auto=format&amp;fit=crop&amp;w=800&amp;q=80"
+                alt="Nexavolt technology and innovation" class="nexavolt-about-img">
             </div>
+            <div class="nexavolt-about-visual-text">
+              <span>NX</span>
+            </div>
+          </div>
+
+          <div class="nexavolt-about-content">
+            <span class="nexavolt-eyebrow nexavolt-reveal">Om oss</span>
+            <h2 class="nexavolt-reveal nexavolt-reveal-delay-1">Teknik som driver <em>innovation</em> framåt</h2>
+
+            <p class="nexavolt-about-text nexavolt-reveal nexavolt-reveal-delay-2">
+              Nexavolt grundades med en enkel övertygelse: att rätt teknisk infrastruktur är grunden för varje
+              framgångsrik digital transformation. Vi är ett team av ingenjörer, arkitekter och strateger som brinner
+              för att lösa komplexa problem.
+            </p>
+
+            <p class="nexavolt-about-text nexavolt-reveal nexavolt-reveal-delay-3">
+              Genom att kombinera djup domänkunskap med cutting-edge teknologi levererar vi lösningar som inte bara
+              fungerar idag — utan som är byggda för att skala med er morgondag.
+            </p>
+
+            <div class="nexavolt-about-values nexavolt-reveal nexavolt-reveal-delay-4">
+              <div class="nexavolt-about-value">
+                <span class="nexavolt-about-value-dot"></span>
+                Innovation first
+              </div>
+              <div class="nexavolt-about-value">
+                <span class="nexavolt-about-value-dot"></span>
+                Skalbar arkitektur
+              </div>
+              <div class="nexavolt-about-value">
+                <span class="nexavolt-about-value-dot"></span>
+                Resultatdriven
+              </div>
+              <div class="nexavolt-about-value">
+                <span class="nexavolt-about-value-dot"></span>
+                Agilt arbetssätt
+              </div>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════
          PROJECTS
          ═══════════════════════════════════════ -->
     <section class="nexavolt-projects" id="nexavolt-projects">
-        <div class="nexavolt-container">
-            <div class="nexavolt-section-header nexavolt-reveal">
-                <div>
-                    <span class="nexavolt-eyebrow">Projekt</span>
-                    <h2>Utvalda case som <br>talar för sig själva</h2>
-                </div>
-                <p>Varje projekt representerar en unik teknisk utmaning som vi löst med precision och kreativitet.</p>
-            </div>
-
-            <div class="nexavolt-projects-grid">
-                <!-- Project 1 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-1">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p1">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">E-handel</span>
-                        <h3>Nordic Commerce Platform</h3>
-                        <p>Headless e-handelsplattform med 10x snabbare laddtider och 340% ökad konvertering.</p>
-                    </div>
-                </div>
-
-                <!-- Project 2 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-2">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p2">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">SaaS</span>
-                        <h3>DataFlow Analytics</h3>
-                        <p>Realtidsanalys-plattform som bearbetar 2M+ datapunkter per sekund med sub-millisekund latens.</p>
-                    </div>
-                </div>
-
-                <!-- Project 3 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-3">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p3">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">AI / ML</span>
-                        <h3>Prediktiv Underhållsmotor</h3>
-                        <p>ML-driven plattform som förutsäger maskinfel 72h i förväg med 94% träffsäkerhet.</p>
-                    </div>
-                </div>
-
-                <!-- Project 4 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-1">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p4">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">Fintech</span>
-                        <h3>SecurePay Gateway</h3>
-                        <p>PCI DSS Level 1-certifierad betalningsgateway som hanterar 50K+ transaktioner dagligen.</p>
-                    </div>
-                </div>
-
-                <!-- Project 5 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-2">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p5">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">IoT</span>
-                        <h3>SmartGrid Controller</h3>
-                        <p>IoT-plattform som övervakar och optimerar energiförbrukning i realtid för 200+ byggnader.</p>
-                    </div>
-                </div>
-
-                <!-- Project 6 -->
-                <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-3">
-                    <div class="nexavolt-project-card-bg">
-                        <div class="nexavolt-project-visual nexavolt-project-p6">
-                            <div class="nexavolt-project-visual-pattern"></div>
-                        </div>
-                    </div>
-                    <div class="nexavolt-project-overlay">
-                        <div class="nexavolt-project-overlay-arrow">
-                            <svg viewBox="0 0 24 24"><line x1="7" y1="17" x2="17" y2="7"></line><polyline points="7 7 17 7 17 17"></polyline></svg>
-                        </div>
-                        <span class="nexavolt-project-overlay-tag">Cloud</span>
-                        <h3>Hybrid Cloud Migration</h3>
-                        <p>Storskalig molnmigration för enterprise-kund med zero downtime och 60% kostnadsreduktion.</p>
-                    </div>
-                </div>
-            </div>
+      <div class="nexavolt-container">
+        <div class="nexavolt-section-header nexavolt-reveal">
+          <div>
+            <span class="nexavolt-eyebrow">Projekt</span>
+            <h2>Utvalda case som <br>talar för sig själva</h2>
+          </div>
+          <p>Varje projekt representerar en unik teknisk utmaning som vi löst med precision och kreativitet.</p>
         </div>
+
+        <div class="nexavolt-projects-grid">
+          <!-- Project 1 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-1">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p1">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">E-handel</span>
+              <h3>Nordic Commerce Platform</h3>
+              <p>Headless e-handelsplattform med 10x snabbare laddtider och 340% ökad konvertering.</p>
+            </div>
+          </div>
+
+          <!-- Project 2 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-2">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p2">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">SaaS</span>
+              <h3>DataFlow Analytics</h3>
+              <p>Realtidsanalys-plattform som bearbetar 2M+ datapunkter per sekund med sub-millisekund latens.</p>
+            </div>
+          </div>
+
+          <!-- Project 3 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-3">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p3">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">AI / ML</span>
+              <h3>Prediktiv Underhållsmotor</h3>
+              <p>ML-driven plattform som förutsäger maskinfel 72h i förväg med 94% träffsäkerhet.</p>
+            </div>
+          </div>
+
+          <!-- Project 4 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-1">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p4">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">Fintech</span>
+              <h3>SecurePay Gateway</h3>
+              <p>PCI DSS Level 1-certifierad betalningsgateway som hanterar 50K+ transaktioner dagligen.</p>
+            </div>
+          </div>
+
+          <!-- Project 5 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-2">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p5">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">IoT</span>
+              <h3>SmartGrid Controller</h3>
+              <p>IoT-plattform som övervakar och optimerar energiförbrukning i realtid för 200+ byggnader.</p>
+            </div>
+          </div>
+
+          <!-- Project 6 -->
+          <div class="nexavolt-project-card nexavolt-reveal nexavolt-reveal-delay-3">
+            <div class="nexavolt-project-card-bg">
+              <div class="nexavolt-project-visual nexavolt-project-p6">
+                <div class="nexavolt-project-visual-pattern"></div>
+              </div>
+            </div>
+            <div class="nexavolt-project-overlay">
+              <div class="nexavolt-project-overlay-arrow">
+                <svg viewBox="0 0 24 24">
+                  <line x1="7" y1="17" x2="17" y2="7"></line>
+                  <polyline points="7 7 17 7 17 17"></polyline>
+                </svg>
+              </div>
+              <span class="nexavolt-project-overlay-tag">Cloud</span>
+              <h3>Hybrid Cloud Migration</h3>
+              <p>Storskalig molnmigration för enterprise-kund med zero downtime och 60% kostnadsreduktion.</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════
          CONTACT
          ═══════════════════════════════════════ -->
     <section class="nexavolt-contact" id="nexavolt-contact">
-        <div class="nexavolt-container">
-            <div class="nexavolt-contact-inner">
-                <div class="nexavolt-contact-content">
-                    <span class="nexavolt-eyebrow nexavolt-reveal">Kontakt</span>
-                    <h2 class="nexavolt-reveal nexavolt-reveal-delay-1">Låt oss bygga <em>nästa</em> steg tillsammans</h2>
-                    <p class="nexavolt-contact-desc nexavolt-reveal nexavolt-reveal-delay-2">
-                        Oavsett om ni är i startfasen av ett nytt projekt eller behöver förstärka ett befintligt team — vi finns här. Berätta om er utmaning så återkommer vi inom 24 timmar.
-                    </p>
+      <div class="nexavolt-container">
+        <div class="nexavolt-contact-inner">
+          <div class="nexavolt-contact-content">
+            <span class="nexavolt-eyebrow nexavolt-reveal">Kontakt</span>
+            <h2 class="nexavolt-reveal nexavolt-reveal-delay-1">Låt oss bygga <em>nästa</em> steg tillsammans</h2>
+            <p class="nexavolt-contact-desc nexavolt-reveal nexavolt-reveal-delay-2">
+              Oavsett om ni är i startfasen av ett nytt projekt eller behöver förstärka ett befintligt team — vi finns
+              här. Berätta om er utmaning så återkommer vi inom 24 timmar.
+            </p>
 
-                    <div class="nexavolt-contact-info nexavolt-reveal nexavolt-reveal-delay-3">
-                        <div class="nexavolt-contact-info-item">
-                            <div class="nexavolt-contact-info-icon">
-                                <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                            </div>
-                            hej@nexavolt.se
-                        </div>
-                        <div class="nexavolt-contact-info-item">
-                            <div class="nexavolt-contact-info-icon">
-                                <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
-                            </div>
-                            +46 (0)8 123 45 67
-                        </div>
-                        <div class="nexavolt-contact-info-item">
-                            <div class="nexavolt-contact-info-icon">
-                                <svg viewBox="0 0 24 24"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
-                            </div>
-                            Strandvägen 7, Stockholm
-                        </div>
-                    </div>
+            <div class="nexavolt-contact-info nexavolt-reveal nexavolt-reveal-delay-3">
+              <div class="nexavolt-contact-info-item">
+                <div class="nexavolt-contact-info-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                    <polyline points="22,6 12,13 2,6"></polyline>
+                  </svg>
                 </div>
-
-                <div class="nexavolt-reveal nexavolt-reveal-delay-2">
-                    <form class="nexavolt-form" id="nexavoltContactForm" novalidate="">
-                        <div class="nexavolt-form-group">
-                            <label class="nexavolt-form-label" for="nexavoltName">Namn</label>
-                            <input type="text" class="nexavolt-form-input" id="nexavoltName" placeholder="Ert fullständiga namn" required="">
-                            <div class="nexavolt-form-error-msg" id="nexavoltNameError">Vänligen ange ert namn</div>
-                        </div>
-
-                        <div class="nexavolt-form-group">
-                            <label class="nexavolt-form-label" for="nexavoltEmail">E-post</label>
-                            <input type="email" class="nexavolt-form-input" id="nexavoltEmail" placeholder="namn@foretag.se" required="">
-                            <div class="nexavolt-form-error-msg" id="nexavoltEmailError">Vänligen ange en giltig e-postadress</div>
-                        </div>
-
-                        <div class="nexavolt-form-group">
-                            <label class="nexavolt-form-label" for="nexavoltMessage">Meddelande</label>
-                            <textarea class="nexavolt-form-textarea" id="nexavoltMessage" placeholder="Berätta kort om ert projekt eller utmaning..." required=""></textarea>
-                            <div class="nexavolt-form-error-msg" id="nexavoltMessageError">Vänligen skriv ett meddelande</div>
-                        </div>
-
-                        <button type="submit" class="nexavolt-form-submit">Skicka meddelande</button>
-                    </form>
-
-                    <div class="nexavolt-form-success" id="nexavoltFormSuccess">
-                        <div class="nexavolt-form-success-icon">
-                            <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                        </div>
-                        <h3>Tack för ert meddelande!</h3>
-                        <p>Vi återkommer inom 24 timmar.</p>
-                    </div>
+                hej@nexavolt.se
+              </div>
+              <div class="nexavolt-contact-info-item">
+                <div class="nexavolt-contact-info-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path
+                      d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z">
+                    </path>
+                  </svg>
                 </div>
+                +46 (0)8 123 45 67
+              </div>
+              <div class="nexavolt-contact-info-item">
+                <div class="nexavolt-contact-info-icon">
+                  <svg viewBox="0 0 24 24">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                </div>
+                Strandvägen 7, Stockholm
+              </div>
             </div>
+          </div>
+
+          <div class="nexavolt-reveal nexavolt-reveal-delay-2">
+            <form class="nexavolt-form" id="nexavoltContactForm" novalidate="">
+              <div class="nexavolt-form-group">
+                <label class="nexavolt-form-label" for="nexavoltName">Namn</label>
+                <input type="text" class="nexavolt-form-input" id="nexavoltName" placeholder="Ert fullständiga namn"
+                  required="">
+                <div class="nexavolt-form-error-msg" id="nexavoltNameError">Vänligen ange ert namn</div>
+              </div>
+
+              <div class="nexavolt-form-group">
+                <label class="nexavolt-form-label" for="nexavoltEmail">E-post</label>
+                <input type="email" class="nexavolt-form-input" id="nexavoltEmail" placeholder="namn@foretag.se"
+                  required="">
+                <div class="nexavolt-form-error-msg" id="nexavoltEmailError">Vänligen ange en giltig e-postadress</div>
+              </div>
+
+              <div class="nexavolt-form-group">
+                <label class="nexavolt-form-label" for="nexavoltMessage">Meddelande</label>
+                <textarea class="nexavolt-form-textarea" id="nexavoltMessage"
+                  placeholder="Berätta kort om ert projekt eller utmaning..." required=""></textarea>
+                <div class="nexavolt-form-error-msg" id="nexavoltMessageError">Vänligen skriv ett meddelande</div>
+              </div>
+
+              <button type="submit" class="nexavolt-form-submit">Skicka meddelande</button>
+            </form>
+
+            <div class="nexavolt-form-success" id="nexavoltFormSuccess">
+              <div class="nexavolt-form-success-icon">
+                <svg viewBox="0 0 24 24">
+                  <polyline points="20 6 9 17 4 12"></polyline>
+                </svg>
+              </div>
+              <h3>Tack för ert meddelande!</h3>
+              <p>Vi återkommer inom 24 timmar.</p>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
 
     <!-- ═══════════════════════════════════════
          FOOTER
          ═══════════════════════════════════════ -->
     <footer class="nexavolt-footer">
-        <div class="nexavolt-container nexavolt-footer-inner">
-            <div class="nexavolt-footer-left">
-                <a href="#" class="nexavolt-logo">
-                    <span class="nexavolt-logo-dot"></span>
-                    nexavolt
-                </a>
-                <span class="nexavolt-footer-copyright">© 2025 Nexavolt AB. Alla rättigheter förbehållna.</span>
-            </div>
-
-            <div class="nexavolt-footer-social">
-                <a href="#" class="nexavolt-footer-social-link" aria-label="LinkedIn">
-                    <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path><rect x="2" y="9" width="4" height="12"></rect><circle cx="4" cy="4" r="2"></circle></svg>
-                </a>
-                <a href="#" class="nexavolt-footer-social-link" aria-label="GitHub">
-                    <svg viewBox="0 0 24 24"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                </a>
-                <a href="#" class="nexavolt-footer-social-link" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
-                </a>
-            </div>
-
-            <button class="nexavolt-footer-back-top" id="nexavoltBackTop" aria-label="Tillbaka till toppen">
-                <svg viewBox="0 0 24 24"><line x1="12" y1="19" x2="12" y2="5"></line><polyline points="5 12 12 5 19 12"></polyline></svg>
-            </button>
+      <div class="nexavolt-container nexavolt-footer-inner">
+        <div class="nexavolt-footer-left">
+          <a href="#" class="nexavolt-logo">
+            <span class="nexavolt-logo-dot"></span>
+            nexavolt
+          </a>
+          <span class="nexavolt-footer-copyright">© 2025 Nexavolt AB. Alla rättigheter förbehållna.</span>
         </div>
+
+        <div class="nexavolt-footer-social">
+          <a href="#" class="nexavolt-footer-social-link" aria-label="LinkedIn">
+            <svg viewBox="0 0 24 24">
+              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+              <rect x="2" y="9" width="4" height="12"></rect>
+              <circle cx="4" cy="4" r="2"></circle>
+            </svg>
+          </a>
+          <a href="#" class="nexavolt-footer-social-link" aria-label="GitHub">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22">
+              </path>
+            </svg>
+          </a>
+          <a href="#" class="nexavolt-footer-social-link" aria-label="Twitter">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+              </path>
+            </svg>
+          </a>
+        </div>
+
+        <button class="nexavolt-footer-back-top" id="nexavoltBackTop" aria-label="Tillbaka till toppen">
+          <svg viewBox="0 0 24 24">
+            <line x1="12" y1="19" x2="12" y2="5"></line>
+            <polyline points="5 12 12 5 19 12"></polyline>
+          </svg>
+        </button>
+      </div>
     </footer>
 
     <!-- ═══════════════════════════════════════
          JAVASCRIPT
          ═══════════════════════════════════════ -->
     <script>
-    (function() {
+      (function() {
         'use strict';
 
         /* ───────────────────────────────────
@@ -1976,16 +2076,16 @@
         const savedTheme = localStorage.getItem('nexavolt-theme');
 
         if (savedTheme) {
-            document.documentElement.setAttribute('data-theme', savedTheme);
+          document.documentElement.setAttribute('data-theme', savedTheme);
         } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            document.documentElement.setAttribute('data-theme', 'dark');
+          document.documentElement.setAttribute('data-theme', 'dark');
         }
 
         themeToggle.addEventListener('click', function() {
-            const current = document.documentElement.getAttribute('data-theme');
-            const next = current === 'dark' ? 'light' : 'dark';
-            document.documentElement.setAttribute('data-theme', next);
-            localStorage.setItem('nexavolt-theme', next);
+          const current = document.documentElement.getAttribute('data-theme');
+          const next = current === 'dark' ? 'light' : 'dark';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('nexavolt-theme', next);
         });
 
         /* ───────────────────────────────────
@@ -1996,17 +2096,17 @@
         const mobileLinks = document.querySelectorAll('.nexavolt-mobile-link');
 
         hamburger.addEventListener('click', function() {
-            this.classList.toggle('is-active');
-            mobileMenu.classList.toggle('is-open');
-            document.body.style.overflow = mobileMenu.classList.contains('is-open') ? 'hidden' : '';
+          this.classList.toggle('is-active');
+          mobileMenu.classList.toggle('is-open');
+          document.body.style.overflow = mobileMenu.classList.contains('is-open') ? 'hidden' : '';
         });
 
         mobileLinks.forEach(function(link) {
-            link.addEventListener('click', function() {
-                hamburger.classList.remove('is-active');
-                mobileMenu.classList.remove('is-open');
-                document.body.style.overflow = '';
-            });
+          link.addEventListener('click', function() {
+            hamburger.classList.remove('is-active');
+            mobileMenu.classList.remove('is-open');
+            document.body.style.overflow = '';
+          });
         });
 
         /* ───────────────────────────────────
@@ -2016,14 +2116,16 @@
         let lastScroll = 0;
 
         window.addEventListener('scroll', function() {
-            const scrollY = window.scrollY;
-            if (scrollY > 60) {
-                nav.classList.add('scrolled');
-            } else {
-                nav.classList.remove('scrolled');
-            }
-            lastScroll = scrollY;
-        }, { passive: true });
+          const scrollY = window.scrollY;
+          if (scrollY > 60) {
+            nav.classList.add('scrolled');
+          } else {
+            nav.classList.remove('scrolled');
+          }
+          lastScroll = scrollY;
+        }, {
+          passive: true
+        });
 
         /* ───────────────────────────────────
            SCROLL REVEAL
@@ -2031,19 +2133,19 @@
         const revealElements = document.querySelectorAll('.nexavolt-reveal');
 
         const observer = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('is-visible');
-                    observer.unobserve(entry.target);
-                }
-            });
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('is-visible');
+              observer.unobserve(entry.target);
+            }
+          });
         }, {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
         });
 
         revealElements.forEach(function(el) {
-            observer.observe(el);
+          observer.observe(el);
         });
 
         /* ───────────────────────────────────
@@ -2059,60 +2161,69 @@
         const formSuccess = document.getElementById('nexavoltFormSuccess');
 
         function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
         function showError(input, errorEl) {
-            input.classList.add('nexavolt-input-error');
-            errorEl.classList.add('is-visible');
+          input.classList.add('nexavolt-input-error');
+          errorEl.classList.add('is-visible');
         }
 
         function clearError(input, errorEl) {
-            input.classList.remove('nexavolt-input-error');
-            errorEl.classList.remove('is-visible');
+          input.classList.remove('nexavolt-input-error');
+          errorEl.classList.remove('is-visible');
         }
 
         // Clear errors on input
-        nameInput.addEventListener('input', function() { clearError(nameInput, nameError); });
-        emailInput.addEventListener('input', function() { clearError(emailInput, emailError); });
-        messageInput.addEventListener('input', function() { clearError(messageInput, messageError); });
+        nameInput.addEventListener('input', function() {
+          clearError(nameInput, nameError);
+        });
+        emailInput.addEventListener('input', function() {
+          clearError(emailInput, emailError);
+        });
+        messageInput.addEventListener('input', function() {
+          clearError(messageInput, messageError);
+        });
 
         form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            let isValid = true;
+          e.preventDefault();
+          let isValid = true;
 
-            if (!nameInput.value.trim()) {
-                showError(nameInput, nameError);
-                isValid = false;
-            } else {
-                clearError(nameInput, nameError);
-            }
+          if (!nameInput.value.trim()) {
+            showError(nameInput, nameError);
+            isValid = false;
+          } else {
+            clearError(nameInput, nameError);
+          }
 
-            if (!validateEmail(emailInput.value.trim())) {
-                showError(emailInput, emailError);
-                isValid = false;
-            } else {
-                clearError(emailInput, emailError);
-            }
+          if (!validateEmail(emailInput.value.trim())) {
+            showError(emailInput, emailError);
+            isValid = false;
+          } else {
+            clearError(emailInput, emailError);
+          }
 
-            if (!messageInput.value.trim()) {
-                showError(messageInput, messageError);
-                isValid = false;
-            } else {
-                clearError(messageInput, messageError);
-            }
+          if (!messageInput.value.trim()) {
+            showError(messageInput, messageError);
+            isValid = false;
+          } else {
+            clearError(messageInput, messageError);
+          }
 
-            if (isValid) {
-                form.style.display = 'none';
-                formSuccess.classList.add('is-visible');
-            }
+          if (isValid) {
+            form.style.display = 'none';
+            formSuccess.classList.add('is-visible');
+          }
         });
 
         /* ───────────────────────────────────
            BACK TO TOP
            ─────────────────────────────────── */
         document.getElementById('nexavoltBackTop').addEventListener('click', function() {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
         });
 
         /* ───────────────────────────────────
@@ -2121,54 +2232,57 @@
         const statValues = document.querySelectorAll('.nexavolt-hero-stat-value');
 
         function animateCounter(el) {
-            const text = el.textContent;
-            const match = text.match(/^(\d+\.?\d*)/);
-            if (!match) return;
+          const text = el.textContent;
+          const match = text.match(/^(\d+\.?\d*)/);
+          if (!match) return;
 
-            const target = parseFloat(match[1]);
-            const suffix = text.replace(match[1], '');
-            const isDecimal = text.includes('.');
-            const duration = 1500;
-            const start = performance.now();
+          const target = parseFloat(match[1]);
+          const suffix = text.replace(match[1], '');
+          const isDecimal = text.includes('.');
+          const duration = 1500;
+          const start = performance.now();
 
-            function update(now) {
-                const elapsed = now - start;
-                const progress = Math.min(elapsed / duration, 1);
-                const eased = 1 - Math.pow(1 - progress, 3);
-                const current = target * eased;
+          function update(now) {
+            const elapsed = now - start;
+            const progress = Math.min(elapsed / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            const current = target * eased;
 
-                if (isDecimal) {
-                    el.textContent = current.toFixed(1) + suffix;
-                } else {
-                    el.textContent = Math.floor(current) + suffix;
-                }
-
-                if (progress < 1) {
-                    requestAnimationFrame(update);
-                } else {
-                    el.textContent = text;
-                }
+            if (isDecimal) {
+              el.textContent = current.toFixed(1) + suffix;
+            } else {
+              el.textContent = Math.floor(current) + suffix;
             }
 
-            el.textContent = (isDecimal ? '0.0' : '0') + suffix;
-            requestAnimationFrame(update);
+            if (progress < 1) {
+              requestAnimationFrame(update);
+            } else {
+              el.textContent = text;
+            }
+          }
+
+          el.textContent = (isDecimal ? '0.0' : '0') + suffix;
+          requestAnimationFrame(update);
         }
 
         const statsObserver = new IntersectionObserver(function(entries) {
-            entries.forEach(function(entry) {
-                if (entry.isIntersecting) {
-                    statValues.forEach(animateCounter);
-                    statsObserver.unobserve(entry.target);
-                }
-            });
-        }, { threshold: 0.5 });
+          entries.forEach(function(entry) {
+            if (entry.isIntersecting) {
+              statValues.forEach(animateCounter);
+              statsObserver.unobserve(entry.target);
+            }
+          });
+        }, {
+          threshold: 0.5
+        });
 
         const statsContainer = document.querySelector('.nexavolt-hero-stats');
         if (statsContainer) {
-            statsObserver.observe(statsContainer);
+          statsObserver.observe(statsContainer);
         }
 
-    })();
+      })();
     </script>
 
-</body></html>
+  </body>
+</html>

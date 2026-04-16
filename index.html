@@ -16,156 +16,6 @@
       rel="stylesheet">
   </head>
   <body>
-   
-    <nav class="nav" id="nav">
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <img src="logo.png" alt="Mob Timer" width="28" height="28">
-          <span>Mob Timer</span>
-        </a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-        </ul>
-        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
-      </div>
-
-      <!-- Mobile menu overlay -->
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-
-      <!-- Mobile menu panel -->
-      <div class="mobile-menu" id="mobile-menu">
-        <ul class="mobile-menu-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu-footer">
-          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-            Download for Mac
-          </a>
-          <div class="mobile-menu-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Free</span>
-          </div>
-        </div>
-      </div>
-    </nav>
-
-     <script>
-      // =============================================
-      //  MOBILE MENU
-      // =============================================
-
-      (function() {
-        const toggle = document.getElementById('nav-toggle');
-        const mobileMenu = document.getElementById('mobile-menu');
-        const overlay = document.getElementById('mobile-menu-overlay');
-        const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
-
-        if (!toggle || !mobileMenu || !overlay) return;
-
-        let isOpen = false;
-
-        function openMenu() {
-          isOpen = true;
-          toggle.classList.add('active');
-          toggle.setAttribute('aria-expanded', 'true');
-          mobileMenu.classList.remove('closing');
-          mobileMenu.classList.add('open');
-          overlay.classList.add('visible');
-          document.body.classList.add('mobile-menu-open');
-        }
-
-        function closeMenu() {
-          if (!isOpen) return;
-          isOpen = false;
-          toggle.classList.remove('active');
-          toggle.setAttribute('aria-expanded', 'false');
-          mobileMenu.classList.add('closing');
-          mobileMenu.classList.remove('open');
-          overlay.classList.remove('visible');
-          document.body.classList.remove('mobile-menu-open');
-
-          // After transition ends, remove closing class
-          setTimeout(() => {
-            if (!isOpen) {
-              mobileMenu.classList.remove('closing');
-            }
-          }, 350);
-        }
-
-        toggle.addEventListener('click', () => {
-          if (isOpen) {
-            closeMenu();
-          } else {
-            openMenu();
-          }
-        });
-
-        overlay.addEventListener('click', closeMenu);
-
-        // Close on link click
-        mobileLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            closeMenu();
-          });
-        });
-
-        // Close on Escape key
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape' && isOpen) {
-            closeMenu();
-          }
-        });
-
-        // Close if window resizes past breakpoint
-        window.addEventListener('resize', () => {
-          if (window.innerWidth > 900 && isOpen) {
-            closeMenu();
-          }
-        });
-
-        // Sync active link highlighting in mobile menu
-        const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
-        const sectionObserverMobile = new IntersectionObserver(
-          (entries) => {
-            entries.forEach((entry) => {
-              if (entry.isIntersecting) {
-                const id = entry.target.id;
-                mobileLinkEls.forEach((link) => {
-                  link.classList.toggle(
-                    'nav-active',
-                    link.getAttribute('href') === `#${id}`
-                  );
-                });
-              }
-            });
-          }, {
-            threshold: 0.4
-          }
-        );
-
-        document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
-      })();
-    </script>
     <style>
       /* =============================================
    HAMBURGER TOGGLE BUTTON
@@ -419,6 +269,154 @@
         }
       }
     </style>
+    <nav class="nav" id="nav">
+      <div class="nav-inner">
+        <a href="#" class="nav-logo">
+          <img src="logo.png" alt="Mob Timer" width="28" height="28">
+          <span>Mob Timer</span>
+        </a>
+        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+          <span class="hamburger-line"></span>
+        </button>
+
+        <ul class="nav-links" id="nav-links">
+          <li><a href="#mob-programming">Mob Programming</a></li>
+          <li><a href="#break-timer">Break Timer</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
+        </ul>
+        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
+      </div>
+
+      <!-- Mobile menu overlay -->
+      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
+
+      <!-- Mobile menu panel -->
+      <div class="mobile-menu" id="mobile-menu">
+        <ul class="mobile-menu-links">
+          <li><a href="#mob-programming">Mob Programming</a></li>
+          <li><a href="#break-timer">Break Timer</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#how-it-works">How it works</a></li>
+          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+        <div class="mobile-menu-footer">
+          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                stroke-linejoin="round"></path>
+            </svg>
+            Download for Mac
+          </a>
+          <div class="mobile-menu-meta">
+            <span>macOS 13+</span>
+            <span class="meta-dot">·</span>
+            <span>Free</span>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <script>
+      // =============================================
+      //  MOBILE MENU
+      // =============================================
+
+      (function() {
+        const toggle = document.getElementById('nav-toggle');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const overlay = document.getElementById('mobile-menu-overlay');
+        const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
+
+        if (!toggle || !mobileMenu || !overlay) return;
+
+        let isOpen = false;
+
+        function openMenu() {
+          isOpen = true;
+          toggle.classList.add('active');
+          toggle.setAttribute('aria-expanded', 'true');
+          mobileMenu.classList.remove('closing');
+          mobileMenu.classList.add('open');
+          overlay.classList.add('visible');
+          document.body.classList.add('mobile-menu-open');
+        }
+
+        function closeMenu() {
+          if (!isOpen) return;
+          isOpen = false;
+          toggle.classList.remove('active');
+          toggle.setAttribute('aria-expanded', 'false');
+          mobileMenu.classList.add('closing');
+          mobileMenu.classList.remove('open');
+          overlay.classList.remove('visible');
+          document.body.classList.remove('mobile-menu-open');
+
+          // After transition ends, remove closing class
+          setTimeout(() => {
+            if (!isOpen) {
+              mobileMenu.classList.remove('closing');
+            }
+          }, 350);
+        }
+
+        toggle.addEventListener('click', () => {
+          if (isOpen) {
+            closeMenu();
+          } else {
+            openMenu();
+          }
+        });
+
+        overlay.addEventListener('click', closeMenu);
+
+        // Close on link click
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            closeMenu();
+          });
+        });
+
+        // Close on Escape key
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && isOpen) {
+            closeMenu();
+          }
+        });
+
+        // Close if window resizes past breakpoint
+        window.addEventListener('resize', () => {
+          if (window.innerWidth > 900 && isOpen) {
+            closeMenu();
+          }
+        });
+
+        // Sync active link highlighting in mobile menu
+        const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
+        const sectionObserverMobile = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                const id = entry.target.id;
+                mobileLinkEls.forEach((link) => {
+                  link.classList.toggle(
+                    'nav-active',
+                    link.getAttribute('href') === `#${id}`
+                  );
+                });
+              }
+            });
+          }, {
+            threshold: 0.4
+          }
+        );
+
+        document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
+      })();
+    </script>
 
     <!-- ========== HERO ========== -->
     <section class="hero" id="hero">

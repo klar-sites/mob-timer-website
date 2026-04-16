@@ -1,1897 +1,1793 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aurelian — Fine Dining Experience</title>
-
-  <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
-
-  <style>
-    /* ===========================
-       CSS CUSTOM PROPERTIES
-       =========================== */
-    :root {
-      /* Dark mode (default) */
-      --bg-primary: #0a0a0f;
-      --bg-secondary: #12121a;
-      --text-primary: #f0ece2;
-      --text-secondary: #b8b2a6;
-      --accent: #c9a96e;
-      --accent-hover: #dbb978;
-      --glass-bg: rgba(255, 255, 255, 0.05);
-      --glass-border: rgba(255, 255, 255, 0.1);
-      --glass-shadow: rgba(0, 0, 0, 0.3);
-      --glass-blur: 20px;
-      --overlay: rgba(10, 10, 15, 0.6);
-      --input-bg: rgba(255, 255, 255, 0.05);
-      --input-border: rgba(255, 255, 255, 0.15);
-      --nav-bg: rgba(10, 10, 15, 0.8);
-      --card-hover-bg: rgba(255, 255, 255, 0.1);
-      --toggle-bg: rgba(255, 255, 255, 0.1);
-      --footer-bg: rgba(0, 0, 0, 0.3);
-    }
-
-    /* Light mode */
-    [data-theme="light"] {
-      --bg-primary: #f5f0e8;
-      --bg-secondary: #ebe5d9;
-      --text-primary: #1a1a2e;
-      --text-secondary: #555555;
-      --accent: #a07830;
-      --accent-hover: #b8923e;
-      --glass-bg: rgba(255, 255, 255, 0.45);
-      --glass-border: rgba(255, 255, 255, 0.6);
-      --glass-shadow: rgba(0, 0, 0, 0.1);
-      --glass-blur: 20px;
-      --overlay: rgba(245, 240, 232, 0.4);
-      --input-bg: rgba(255, 255, 255, 0.6);
-      --input-border: rgba(0, 0, 0, 0.1);
-      --nav-bg: rgba(245, 240, 232, 0.85);
-      --card-hover-bg: rgba(255, 255, 255, 0.65);
-      --toggle-bg: rgba(0, 0, 0, 0.08);
-      --footer-bg: rgba(0, 0, 0, 0.05);
-    }
-
-    /* ===========================
-       RESET & BASE STYLES
-       =========================== */
-    *, *::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html {
-      scroll-behavior: smooth;
-      font-size: 16px;
-    }
-
-    body {
-      font-family: 'Inter', sans-serif;
-      background-color: var(--bg-primary);
-      color: var(--text-primary);
-      overflow-x: hidden;
-      transition: background-color 0.5s ease, color 0.5s ease;
-      line-height: 1.6;
-    }
-
-    h1, h2, h3, h4 {
-      font-family: 'Playfair Display', serif;
-    }
-
-    a {
-      text-decoration: none;
-      color: inherit;
-    }
-
-    img {
-      max-width: 100%;
-      display: block;
-    }
-
-    /* ===========================
-       SCROLLBAR STYLING
-       =========================== */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: var(--bg-primary);
-    }
-    ::-webkit-scrollbar-thumb {
-      background: var(--accent);
-      border-radius: 4px;
-    }
-
-    /* ===========================
-       ANIMATED BACKGROUND GRADIENT
-       =========================== */
-    .aurelian-bg-gradient {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: -1;
-      pointer-events: none;
-      overflow: hidden;
-    }
-
-    .aurelian-bg-gradient .aurelian-orb {
-      position: absolute;
-      border-radius: 50%;
-      filter: blur(120px);
-      opacity: 0.15;
-      animation: aurelianFloat 20s ease-in-out infinite;
-    }
-
-    [data-theme="light"] .aurelian-bg-gradient .aurelian-orb {
-      opacity: 0.08;
-    }
-
-    .aurelian-orb--1 {
-      width: 600px;
-      height: 600px;
-      background: var(--accent);
-      top: -10%;
-      right: -10%;
-      animation-delay: 0s;
-    }
-
-    .aurelian-orb--2 {
-      width: 400px;
-      height: 400px;
-      background: #4a2c6e;
-      bottom: 10%;
-      left: -5%;
-      animation-delay: -7s;
-    }
-
-    .aurelian-orb--3 {
-      width: 300px;
-      height: 300px;
-      background: #2c6e5a;
-      top: 50%;
-      left: 40%;
-      animation-delay: -14s;
-    }
-
-    @keyframes aurelianFloat {
-      0%, 100% { transform: translate(0, 0) scale(1); }
-      33% { transform: translate(30px, -40px) scale(1.05); }
-      66% { transform: translate(-20px, 30px) scale(0.95); }
-    }
-
-    /* ===========================
-       NAVIGATION
-       =========================== */
-    .aurelian-nav {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      z-index: 1000;
-      padding: 1rem 2rem;
-      transition: all 0.4s ease;
-      background: transparent;
-    }
-
-    .aurelian-nav.aurelian-nav--scrolled {
-      background: var(--nav-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border-bottom: 1px solid var(--glass-border);
-      padding: 0.7rem 2rem;
-    }
-
-    .aurelian-nav__container {
-      max-width: 1300px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-    }
-
-    .aurelian-nav__logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 2px;
-    }
-
-    .aurelian-nav__links {
-      display: flex;
-      list-style: none;
-      gap: 2rem;
-      align-items: center;
-    }
-
-    .aurelian-nav__links a {
-      font-size: 0.9rem;
-      font-weight: 400;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      transition: color 0.3s ease;
-      position: relative;
-    }
-
-    .aurelian-nav__links a::after {
-      content: '';
-      position: absolute;
-      bottom: -4px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
-
-    .aurelian-nav__links a:hover {
-      color: var(--accent);
-    }
-
-    .aurelian-nav__links a:hover::after {
-      width: 100%;
-    }
-
-    /* Dark mode toggle button */
-    .aurelian-theme-toggle {
-      background: var(--toggle-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
-      padding: 0.5rem 0.65rem;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.3s ease;
-      color: var(--text-primary);
-      font-size: 1.1rem;
-    }
-
-    .aurelian-theme-toggle:hover {
-      background: var(--card-hover-bg);
-      transform: scale(1.1);
-    }
-
-    /* Mobile hamburger */
-    .aurelian-nav__hamburger {
-      display: none;
-      flex-direction: column;
-      gap: 5px;
-      cursor: pointer;
-      z-index: 1001;
-      background: none;
-      border: none;
-      padding: 5px;
-    }
-
-    .aurelian-nav__hamburger span {
-      width: 25px;
-      height: 2px;
-      background: var(--text-primary);
-      transition: all 0.3s ease;
-      display: block;
-    }
-
-    .aurelian-nav__hamburger.active span:nth-child(1) {
-      transform: rotate(45deg) translate(5px, 5px);
-    }
-    .aurelian-nav__hamburger.active span:nth-child(2) {
-      opacity: 0;
-    }
-    .aurelian-nav__hamburger.active span:nth-child(3) {
-      transform: rotate(-45deg) translate(5px, -5px);
-    }
-
-    /* ===========================
-       GLASSMORPHISM UTILITY
-       =========================== */
-    .aurelian-glass {
-      background: var(--glass-bg);
-      backdrop-filter: blur(var(--glass-blur));
-      -webkit-backdrop-filter: blur(var(--glass-blur));
-      border: 1px solid var(--glass-border);
-      border-radius: 20px;
-      box-shadow: 0 8px 32px var(--glass-shadow);
-    }
-
-    /* ===========================
-       SECTION COMMON
-       =========================== */
-    .aurelian-section {
-      padding: 6rem 2rem;
-      max-width: 1300px;
-      margin: 0 auto;
-    }
-
-    .aurelian-section__title {
-      text-align: center;
-      font-size: 2.8rem;
-      font-weight: 600;
-      margin-bottom: 0.5rem;
-      color: var(--text-primary);
-    }
-
-    .aurelian-section__subtitle {
-      text-align: center;
-      font-size: 1rem;
-      color: var(--text-secondary);
-      margin-bottom: 3.5rem;
-      font-weight: 300;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .aurelian-section__divider {
-      width: 60px;
-      height: 2px;
-      background: var(--accent);
-      margin: 0.8rem auto 1.5rem;
-      border: none;
-    }
-
-    /* Scroll reveal animation */
-    .aurelian-reveal {
-      opacity: 0;
-      transform: translateY(40px);
-      transition: opacity 0.8s ease, transform 0.8s ease;
-    }
-
-    .aurelian-reveal.aurelian-revealed {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* ===========================
-       HERO SECTION
-       =========================== */
-    .aurelian-hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      min-height: 600px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      overflow: hidden;
-    }
-
-    .aurelian-hero__bg {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background:
-        linear-gradient(180deg, rgba(10,10,15,0.3) 0%, rgba(10,10,15,0.7) 100%),
-        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80') center/cover no-repeat;
-      transform: scale(1.05);
-      animation: aurelianHeroZoom 25s ease-in-out infinite alternate;
-    }
-
-    [data-theme="light"] .aurelian-hero__bg {
-      background:
-        linear-gradient(180deg, rgba(245,240,232,0.2) 0%, rgba(245,240,232,0.6) 100%),
-        url('https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80') center/cover no-repeat;
-    }
-
-    @keyframes aurelianHeroZoom {
-      0% { transform: scale(1.05); }
-      100% { transform: scale(1.15); }
-    }
-
-    .aurelian-hero__content {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .aurelian-hero__badge {
-      display: inline-block;
-      font-size: 0.75rem;
-      letter-spacing: 4px;
-      text-transform: uppercase;
-      color: var(--accent);
-      border: 1px solid var(--accent);
-      padding: 0.5rem 1.5rem;
-      border-radius: 50px;
-      margin-bottom: 2rem;
-      font-weight: 500;
-    }
-
-    .aurelian-hero__title {
-      font-size: clamp(3rem, 8vw, 7rem);
-      font-weight: 700;
-      line-height: 1.05;
-      margin-bottom: 1rem;
-      color: #fff;
-      text-shadow: 0 2px 40px rgba(0,0,0,0.3);
-    }
-
-    [data-theme="light"] .aurelian-hero__title {
-      color: #1a1a2e;
-      text-shadow: none;
-    }
-
-    .aurelian-hero__title span {
-      color: var(--accent);
-      font-style: italic;
-    }
-
-    .aurelian-hero__tagline {
-      font-size: 1.15rem;
-      color: rgba(255,255,255,0.8);
-      font-weight: 300;
-      margin-bottom: 2.5rem;
-      letter-spacing: 1px;
-    }
-
-    [data-theme="light"] .aurelian-hero__tagline {
-      color: var(--text-secondary);
-    }
-
-    .aurelian-hero__cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.7rem;
-      padding: 1rem 2.5rem;
-      background: var(--accent);
-      color: #0a0a0f;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      border: none;
-      border-radius: 50px;
-      cursor: pointer;
-      transition: all 0.4s ease;
-      text-decoration: none;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .aurelian-hero__cta::before {
-      content: '';
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 0;
-      height: 0;
-      background: rgba(255,255,255,0.2);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      transition: width 0.6s ease, height 0.6s ease;
-    }
-
-    .aurelian-hero__cta:hover::before {
-      width: 300px;
-      height: 300px;
-    }
-
-    .aurelian-hero__cta:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 10px 40px rgba(201, 169, 110, 0.3);
-    }
-
-    .aurelian-hero__scroll {
-      position: absolute;
-      bottom: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0.5rem;
-      color: rgba(255,255,255,0.5);
-      font-size: 0.7rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      animation: aurelianBounce 2s ease-in-out infinite;
-    }
-
-    [data-theme="light"] .aurelian-hero__scroll {
-      color: var(--text-secondary);
-    }
-
-    .aurelian-hero__scroll-line {
-      width: 1px;
-      height: 40px;
-      background: linear-gradient(to bottom, var(--accent), transparent);
-    }
-
-    @keyframes aurelianBounce {
-      0%, 100% { transform: translateX(-50%) translateY(0); }
-      50% { transform: translateX(-50%) translateY(10px); }
-    }
-
-    /* ===========================
-       ABOUT SECTION
-       =========================== */
-    .aurelian-about {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 4rem;
-      align-items: center;
-    }
-
-    .aurelian-about__image-wrapper {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      aspect-ratio: 4/5;
-    }
-
-    .aurelian-about__image-wrapper img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease;
-    }
-
-    .aurelian-about__image-wrapper:hover img {
-      transform: scale(1.05);
-    }
-
-    .aurelian-about__image-overlay {
-      position: absolute;
-      bottom: 1.5rem;
-      left: 1.5rem;
-      padding: 1rem 1.5rem;
-      border-radius: 12px;
-    }
-
-    .aurelian-about__image-overlay span {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-    }
-
-    .aurelian-about__image-overlay small {
-      display: block;
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      letter-spacing: 2px;
-      text-transform: uppercase;
-    }
-
-    .aurelian-about__text h2 {
-      font-size: 2.5rem;
-      margin-bottom: 0.5rem;
-    }
-
-    .aurelian-about__text .aurelian-about__accent {
-      color: var(--accent);
-      font-style: italic;
-    }
-
-    .aurelian-about__text p {
-      color: var(--text-secondary);
-      font-size: 1rem;
-      line-height: 1.8;
-      margin-bottom: 1.5rem;
-      font-weight: 300;
-    }
-
-    .aurelian-about__stats {
-      display: flex;
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-
-    .aurelian-about__stat {
-      text-align: center;
-      padding: 1.2rem 1.5rem;
-      flex: 1;
-    }
-
-    .aurelian-about__stat-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 700;
-      color: var(--accent);
-      display: block;
-    }
-
-    .aurelian-about__stat-label {
-      font-size: 0.75rem;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      margin-top: 0.3rem;
-      display: block;
-    }
-
-    /* ===========================
-       MENU SECTION
-       =========================== */
-    .aurelian-menu__filters {
-      display: flex;
-      justify-content: center;
-      gap: 1rem;
-      margin-bottom: 3rem;
-      flex-wrap: wrap;
-    }
-
-    .aurelian-menu__filter-btn {
-      padding: 0.6rem 1.5rem;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      border-radius: 50px;
-      color: var(--text-secondary);
-      font-size: 0.85rem;
-      font-weight: 400;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Inter', sans-serif;
-    }
-
-    .aurelian-menu__filter-btn:hover,
-    .aurelian-menu__filter-btn.active {
-      background: var(--accent);
-      color: #0a0a0f;
-      border-color: var(--accent);
-    }
-
-    .aurelian-menu__grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-      gap: 2rem;
-    }
-
-    .aurelian-menu__item {
-      padding: 2rem;
-      transition: all 0.4s ease;
-      cursor: default;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .aurelian-menu__item::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: -100%;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(90deg, transparent, rgba(201,169,110,0.03), transparent);
-      transition: left 0.6s ease;
-    }
-
-    .aurelian-menu__item:hover::before {
-      left: 100%;
-    }
-
-    .aurelian-menu__item:hover {
-      background: var(--card-hover-bg);
-      transform: translateY(-4px);
-      box-shadow: 0 12px 40px var(--glass-shadow);
-    }
-
-    .aurelian-menu__item-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 0.8rem;
-    }
-
-    .aurelian-menu__item-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 600;
-      color: var(--text-primary);
-    }
-
-    .aurelian-menu__item-price {
-      font-size: 1.1rem;
-      font-weight: 600;
-      color: var(--accent);
-      white-space: nowrap;
-      margin-left: 1rem;
-    }
-
-    .aurelian-menu__item-desc {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      line-height: 1.6;
-      font-weight: 300;
-    }
-
-    .aurelian-menu__item-tags {
-      display: flex;
-      gap: 0.5rem;
-      margin-top: 1rem;
-      flex-wrap: wrap;
-    }
-
-    .aurelian-menu__item-tag {
-      font-size: 0.7rem;
-      padding: 0.25rem 0.7rem;
-      border-radius: 50px;
-      background: rgba(201, 169, 110, 0.1);
-      color: var(--accent);
-      letter-spacing: 0.5px;
-      text-transform: uppercase;
-    }
-
-    /* Hidden items (for filter) */
-    .aurelian-menu__item.aurelian-hidden {
-      display: none;
-    }
-
-    /* ===========================
-       GALLERY SECTION
-       =========================== */
-    .aurelian-gallery__grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: auto;
-      gap: 1rem;
-    }
-
-    .aurelian-gallery__item {
-      position: relative;
-      border-radius: 16px;
-      overflow: hidden;
-      cursor: pointer;
-      aspect-ratio: 1;
-    }
-
-    .aurelian-gallery__item:nth-child(1) {
-      grid-column: span 2;
-      grid-row: span 2;
-      aspect-ratio: auto;
-    }
-
-    .aurelian-gallery__item img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s ease, filter 0.6s ease;
-    }
-
-    .aurelian-gallery__item:hover img {
-      transform: scale(1.1);
-      filter: brightness(0.7);
-    }
-
-    .aurelian-gallery__item-overlay {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(10, 10, 15, 0.5);
-      opacity: 0;
-      transition: opacity 0.4s ease;
-    }
-
-    .aurelian-gallery__item:hover .aurelian-gallery__item-overlay {
-      opacity: 1;
-    }
-
-    .aurelian-gallery__item-overlay span {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      color: #fff;
-      letter-spacing: 1px;
-    }
-
-    /* ===========================
-       RESERVATIONS / CONTACT
-       =========================== */
-    .aurelian-contact {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-    }
-
-    .aurelian-contact__info {
-      padding: 3rem;
-    }
-
-    .aurelian-contact__info h3 {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-    }
-
-    .aurelian-contact__info p {
-      color: var(--text-secondary);
-      font-weight: 300;
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-
-    .aurelian-contact__detail {
-      display: flex;
-      align-items: flex-start;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .aurelian-contact__detail-icon {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      background: rgba(201, 169, 110, 0.1);
-      color: var(--accent);
-      font-size: 1.1rem;
-      flex-shrink: 0;
-    }
-
-    .aurelian-contact__detail-text strong {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 0.2rem;
-    }
-
-    .aurelian-contact__detail-text span {
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-      font-weight: 300;
-    }
-
-    .aurelian-contact__hours {
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--glass-border);
-    }
-
-    .aurelian-contact__hours h4 {
-      font-size: 1rem;
-      margin-bottom: 0.8rem;
-      color: var(--accent);
-      letter-spacing: 1px;
-    }
-
-    .aurelian-contact__hours p {
-      margin-bottom: 0.3rem;
-      font-size: 0.9rem;
-    }
-
-    /* Contact form */
-    .aurelian-contact__form {
-      padding: 3rem;
-    }
-
-    .aurelian-contact__form h3 {
-      font-size: 1.8rem;
-      margin-bottom: 2rem;
-    }
-
-    .aurelian-form__group {
-      margin-bottom: 1.5rem;
-    }
-
-    .aurelian-form__group label {
-      display: block;
-      font-size: 0.8rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      margin-bottom: 0.5rem;
-      font-weight: 500;
-    }
-
-    .aurelian-form__group input,
-    .aurelian-form__group textarea {
-      width: 100%;
-      padding: 0.9rem 1.2rem;
-      background: var(--input-bg);
-      border: 1px solid var(--input-border);
-      border-radius: 12px;
-      color: var(--text-primary);
-      font-size: 0.95rem;
-      font-family: 'Inter', sans-serif;
-      transition: all 0.3s ease;
-      outline: none;
-    }
-
-    .aurelian-form__group input:focus,
-    .aurelian-form__group textarea:focus {
-      border-color: var(--accent);
-      box-shadow: 0 0 20px rgba(201, 169, 110, 0.1);
-    }
-
-    .aurelian-form__group textarea {
-      height: 130px;
-      resize: vertical;
-    }
-
-    .aurelian-form__row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 1rem;
-    }
-
-    .aurelian-form__submit {
-      width: 100%;
-      padding: 1rem;
-      background: var(--accent);
-      color: #0a0a0f;
-      border: none;
-      border-radius: 12px;
-      font-size: 0.9rem;
-      font-weight: 600;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: 'Inter', sans-serif;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .aurelian-form__submit:hover {
-      background: var(--accent-hover);
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(201, 169, 110, 0.3);
-    }
-
-    .aurelian-form__submit.aurelian-submitted {
-      background: #2ecc71;
-      pointer-events: none;
-    }
-
-    /* ===========================
-       FOOTER
-       =========================== */
-    .aurelian-footer {
-      background: var(--footer-bg);
-      border-top: 1px solid var(--glass-border);
-      padding: 3rem 2rem;
-      margin-top: 4rem;
-    }
-
-    .aurelian-footer__container {
-      max-width: 1300px;
-      margin: 0 auto;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 2rem;
-    }
-
-    .aurelian-footer__logo {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      font-weight: 700;
-      color: var(--accent);
-      letter-spacing: 2px;
-    }
-
-    .aurelian-footer__logo small {
-      display: block;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 300;
-      color: var(--text-secondary);
-      letter-spacing: 1px;
-      margin-top: 0.2rem;
-    }
-
-    .aurelian-footer__social {
-      display: flex;
-      gap: 1rem;
-    }
-
-    .aurelian-footer__social-link {
-      width: 44px;
-      height: 44px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border-radius: 12px;
-      background: var(--glass-bg);
-      border: 1px solid var(--glass-border);
-      color: var(--text-secondary);
-      font-size: 1.1rem;
-      transition: all 0.3s ease;
-    }
-
-    .aurelian-footer__social-link:hover {
-      background: var(--accent);
-      color: #0a0a0f;
-      border-color: var(--accent);
-      transform: translateY(-3px);
-    }
-
-    .aurelian-footer__copyright {
-      width: 100%;
-      text-align: center;
-      margin-top: 2rem;
-      padding-top: 2rem;
-      border-top: 1px solid var(--glass-border);
-      color: var(--text-secondary);
-      font-size: 0.8rem;
-      font-weight: 300;
-    }
-
-    /* ===========================
-       MOBILE RESPONSIVE
-       =========================== */
-    @media (max-width: 992px) {
-      .aurelian-about {
-        grid-template-columns: 1fr;
-        gap: 2rem;
-      }
-
-      .aurelian-about__image-wrapper {
-        aspect-ratio: 16/9;
-        max-height: 400px;
-      }
-
-      .aurelian-contact {
-        grid-template-columns: 1fr;
-      }
-
-      .aurelian-gallery__grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-
-      .aurelian-gallery__item:nth-child(1) {
-        grid-column: span 2;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .aurelian-nav__links {
-        position: fixed;
-        top: 0;
-        right: -100%;
-        width: 75%;
-        max-width: 350px;
-        height: 100vh;
-        flex-direction: column;
-        justify-content: center;
-        gap: 2rem;
-        background: var(--bg-primary);
-        backdrop-filter: blur(30px);
-        -webkit-backdrop-filter: blur(30px);
-        border-left: 1px solid var(--glass-border);
-        transition: right 0.4s ease;
-        padding: 2rem;
-      }
-
-      .aurelian-nav__links.aurelian-nav--open {
-        right: 0;
-      }
-
-      .aurelian-nav__hamburger {
-        display: flex;
-      }
-
-      .aurelian-section {
-        padding: 4rem 1.5rem;
-      }
-
-      .aurelian-section__title {
-        font-size: 2rem;
-      }
-
-      .aurelian-menu__grid {
-        grid-template-columns: 1fr;
-      }
-
-      .aurelian-about__stats {
-        flex-direction: column;
-        gap: 1rem;
-      }
-
-      .aurelian-form__row {
-        grid-template-columns: 1fr;
-      }
-
-      .aurelian-gallery__grid {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .aurelian-gallery__item:nth-child(1) {
-        grid-column: span 2;
-      }
-
-      .aurelian-contact__info,
-      .aurelian-contact__form {
-        padding: 2rem;
-      }
-
-      .aurelian-footer__container {
-        flex-direction: column;
-        text-align: center;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .aurelian-hero__badge {
-        font-size: 0.65rem;
-        letter-spacing: 3px;
-      }
-
-      .aurelian-gallery__grid {
-        grid-template-columns: 1fr;
-      }
-
-      .aurelian-gallery__item:nth-child(1) {
-        grid-column: span 1;
-        grid-row: span 1;
-      }
-
-      .aurelian-gallery__item {
-        aspect-ratio: 16/10;
-      }
-    }
-
-    /* ===========================
-       LIGHTBOX OVERLAY
-       =========================== */
-    .aurelian-lightbox {
-      position: fixed;
-      inset: 0;
-      z-index: 9999;
-      background: rgba(0,0,0,0.9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.4s ease;
-    }
-
-    .aurelian-lightbox.aurelian-lightbox--active {
-      opacity: 1;
-      pointer-events: all;
-    }
-
-    .aurelian-lightbox img {
-      max-width: 90%;
-      max-height: 85vh;
-      border-radius: 12px;
-      transform: scale(0.9);
-      transition: transform 0.4s ease;
-    }
-
-    .aurelian-lightbox.aurelian-lightbox--active img {
-      transform: scale(1);
-    }
-
-    .aurelian-lightbox__close {
-      position: absolute;
-      top: 2rem;
-      right: 2rem;
-      width: 50px;
-      height: 50px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255,255,255,0.1);
-      border: 1px solid rgba(255,255,255,0.2);
-      border-radius: 50%;
-      color: #fff;
-      font-size: 1.5rem;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .aurelian-lightbox__close:hover {
-      background: rgba(255,255,255,0.2);
-      transform: rotate(90deg);
-    }
-
-    /* ===========================
-       MOBILE NAV OVERLAY
-       =========================== */
-    .aurelian-nav-overlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0.5);
-      z-index: 998;
-      opacity: 0;
-      pointer-events: none;
-      transition: opacity 0.3s ease;
-    }
-
-    .aurelian-nav-overlay.active {
-      opacity: 1;
-      pointer-events: all;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elara Clinic — Specialists in Shoulder & Hand Surgery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --color-bg: #f0f2f5;
+            --color-white: #ffffff;
+            --color-text: #1a1a2e;
+            --color-text-light: #5a5a7a;
+            --color-text-muted: #8a8aa0;
+            --color-accent: #5b8a9a;
+            --color-accent-light: #7ab0c0;
+            --color-accent-gold: #c9a96e;
+            --color-glass-bg: rgba(255, 255, 255, 0.45);
+            --color-glass-border: rgba(255, 255, 255, 0.6);
+            --color-glass-shadow: rgba(31, 38, 135, 0.08);
+            --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --transition-smooth: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-fast: all 0.25s ease;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+        }
+
+        body {
+            font-family: var(--font-primary);
+            color: var(--color-text);
+            background: var(--color-bg);
+            overflow-x: hidden;
+            line-height: 1.7;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        /* ====== Background Ambient Shapes ====== */
+        .elara-ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .elara-ambient-shape {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.5;
+            animation: elaraFloat 20s ease-in-out infinite;
+        }
+
+        .elara-ambient-shape--1 {
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(91, 138, 154, 0.3), transparent 70%);
+            top: -10%;
+            right: -10%;
+            animation-delay: 0s;
+            animation-duration: 25s;
+        }
+
+        .elara-ambient-shape--2 {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle, rgba(201, 169, 110, 0.2), transparent 70%);
+            bottom: 10%;
+            left: -5%;
+            animation-delay: -5s;
+            animation-duration: 22s;
+        }
+
+        .elara-ambient-shape--3 {
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(122, 176, 192, 0.25), transparent 70%);
+            top: 40%;
+            left: 30%;
+            animation-delay: -10s;
+            animation-duration: 28s;
+        }
+
+        .elara-ambient-shape--4 {
+            width: 350px;
+            height: 350px;
+            background: radial-gradient(circle, rgba(201, 169, 110, 0.15), transparent 70%);
+            top: 20%;
+            right: 20%;
+            animation-delay: -7s;
+            animation-duration: 30s;
+        }
+
+        .elara-ambient-shape--5 {
+            width: 450px;
+            height: 450px;
+            background: radial-gradient(circle, rgba(91, 138, 154, 0.2), transparent 70%);
+            bottom: -5%;
+            right: 25%;
+            animation-delay: -12s;
+            animation-duration: 26s;
+        }
+
+        @keyframes elaraFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(30px, -40px) scale(1.05); }
+            50% { transform: translate(-20px, 20px) scale(0.95); }
+            75% { transform: translate(15px, 35px) scale(1.02); }
+        }
+
+        /* ====== Navigation ====== */
+        .elara-nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 1000;
+            padding: 1.25rem 2rem;
+            transition: var(--transition-smooth);
+        }
+
+        .elara-nav--scrolled {
+            padding: 0.75rem 2rem;
+            background: rgba(240, 242, 245, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.04);
+        }
+
+        .elara-nav__container {
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .elara-nav__logo {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--color-text);
+            text-decoration: none;
+            letter-spacing: -0.02em;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .elara-nav__logo-accent {
+            color: var(--color-accent);
+        }
+
+        .elara-nav__logo-dot {
+            display: inline-block;
+            width: 8px;
+            height: 8px;
+            background: var(--color-accent-gold);
+            border-radius: 50%;
+            margin-left: 2px;
+        }
+
+        .elara-nav__links {
+            display: flex;
+            align-items: center;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .elara-nav__link {
+            text-decoration: none;
+            color: var(--color-text-light);
+            font-size: 0.875rem;
+            font-weight: 400;
+            letter-spacing: 0.02em;
+            transition: var(--transition-fast);
+            position: relative;
+        }
+
+        .elara-nav__link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--color-accent);
+            transition: var(--transition-smooth);
+        }
+
+        .elara-nav__link:hover {
+            color: var(--color-text);
+        }
+
+        .elara-nav__link:hover::after {
+            width: 100%;
+        }
+
+        .elara-nav__cta {
+            text-decoration: none;
+            background: var(--color-text);
+            color: var(--color-white);
+            padding: 0.625rem 1.5rem;
+            border-radius: 100px;
+            font-size: 0.825rem;
+            font-weight: 500;
+            letter-spacing: 0.02em;
+            transition: var(--transition-smooth);
+            border: none;
+            cursor: pointer;
+        }
+
+        .elara-nav__cta:hover {
+            background: var(--color-accent);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 25px rgba(91, 138, 154, 0.3);
+        }
+
+        .elara-nav__mobile-toggle {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 4px;
+            z-index: 1001;
+        }
+
+        .elara-nav__mobile-toggle span {
+            width: 24px;
+            height: 1.5px;
+            background: var(--color-text);
+            transition: var(--transition-smooth);
+            display: block;
+        }
+
+        .elara-nav__mobile-toggle--active span:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 5px);
+        }
+
+        .elara-nav__mobile-toggle--active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .elara-nav__mobile-toggle--active span:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -5px);
+        }
+
+        /* ====== Mobile Menu ====== */
+        .elara-mobile-menu {
+            position: fixed;
+            top: 0;
+            right: -100%;
+            width: 100%;
+            height: 100vh;
+            background: rgba(240, 242, 245, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 2rem;
+            transition: right 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .elara-mobile-menu--open {
+            right: 0;
+        }
+
+        .elara-mobile-menu__link {
+            text-decoration: none;
+            color: var(--color-text);
+            font-size: 1.5rem;
+            font-weight: 300;
+            letter-spacing: 0.02em;
+            transition: var(--transition-fast);
+        }
+
+        .elara-mobile-menu__link:hover {
+            color: var(--color-accent);
+        }
+
+        /* ====== Section Defaults ====== */
+        .elara-section {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem;
+        }
+
+        .elara-section__container {
+            max-width: 1180px;
+            margin: 0 auto;
+        }
+
+        .elara-section__label {
+            display: inline-block;
+            font-size: 0.7rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--color-accent);
+            margin-bottom: 1rem;
+            position: relative;
+            padding-left: 2rem;
+        }
+
+        .elara-section__label::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1.25rem;
+            height: 1px;
+            background: var(--color-accent);
+        }
+
+        .elara-section__title {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            line-height: 1.2;
+            color: var(--color-text);
+            margin-bottom: 1.25rem;
+            letter-spacing: -0.03em;
+        }
+
+        .elara-section__title strong {
+            font-weight: 600;
+        }
+
+        .elara-section__subtitle {
+            font-size: 1.05rem;
+            color: var(--color-text-light);
+            font-weight: 300;
+            line-height: 1.8;
+            max-width: 560px;
+        }
+
+        /* ====== Glass Card ====== */
+        .elara-glass {
+            background: var(--color-glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--color-glass-border);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px var(--color-glass-shadow);
+        }
+
+        /* ====== Hero ====== */
+        .elara-hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 8rem 2rem 6rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .elara-hero__content {
+            max-width: 800px;
+        }
+
+        .elara-hero__badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--color-accent);
+            margin-bottom: 2.5rem;
+            background: rgba(91, 138, 154, 0.08);
+            border: 1px solid rgba(91, 138, 154, 0.15);
+        }
+
+        .elara-hero__badge-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--color-accent-gold);
+            border-radius: 50%;
+            animation: elaraPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes elaraPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(1.3); }
+        }
+
+        .elara-hero__title {
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 200;
+            line-height: 1.1;
+            letter-spacing: -0.04em;
+            margin-bottom: 1.75rem;
+            color: var(--color-text);
+        }
+
+        .elara-hero__title strong {
+            font-weight: 600;
+            display: inline;
+        }
+
+        .elara-hero__title em {
+            font-style: normal;
+            color: var(--color-accent);
+        }
+
+        .elara-hero__description {
+            font-size: 1.15rem;
+            font-weight: 300;
+            color: var(--color-text-light);
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            max-width: 550px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .elara-hero__actions {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .elara-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+            font-family: var(--font-primary);
+            font-weight: 500;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            border: none;
+            cursor: pointer;
+            transition: var(--transition-smooth);
+            border-radius: 100px;
+        }
+
+        .elara-btn--primary {
+            background: var(--color-text);
+            color: var(--color-white);
+            padding: 1rem 2.25rem;
+            box-shadow: 0 4px 20px rgba(26, 26, 46, 0.15);
+        }
+
+        .elara-btn--primary:hover {
+            background: var(--color-accent);
+            transform: translateY(-2px);
+            box-shadow: 0 12px 35px rgba(91, 138, 154, 0.35);
+        }
+
+        .elara-btn--secondary {
+            background: transparent;
+            color: var(--color-text-light);
+            padding: 1rem 2rem;
+            border: 1px solid rgba(26, 26, 46, 0.12);
+        }
+
+        .elara-btn--secondary:hover {
+            color: var(--color-text);
+            border-color: rgba(26, 26, 46, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .elara-btn__arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .elara-btn:hover .elara-btn__arrow {
+            transform: translateX(3px);
+        }
+
+        .elara-hero__scroll-indicator {
+            position: absolute;
+            bottom: 2.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            opacity: 0.4;
+            animation: elaraBounce 2s ease-in-out infinite;
+        }
+
+        .elara-hero__scroll-line {
+            width: 1px;
+            height: 40px;
+            background: linear-gradient(to bottom, var(--color-text), transparent);
+        }
+
+        @keyframes elaraBounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
+        }
+
+        /* ====== About ====== */
+        .elara-about {
+            padding: 7rem 2rem;
+        }
+
+        .elara-about__grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .elara-about__visual {
+            position: relative;
+        }
+
+        .elara-about__image-frame {
+            padding: 2.5rem;
+            position: relative;
+        }
+
+        .elara-about__image-inner {
+            width: 100%;
+            aspect-ratio: 4/5;
+            background: linear-gradient(135deg, rgba(91, 138, 154, 0.15), rgba(201, 169, 110, 0.1));
+            border-radius: 16px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .elara-about__image-icon {
+            width: 80px;
+            height: 80px;
+            opacity: 0.2;
+        }
+
+        .elara-about__stats {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            padding: 1.5rem 2rem;
+            border-radius: 16px;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 32px rgba(31, 38, 135, 0.06);
+        }
+
+        .elara-about__stat-number {
+            font-size: 2.5rem;
+            font-weight: 600;
+            color: var(--color-text);
+            letter-spacing: -0.03em;
+            line-height: 1;
+        }
+
+        .elara-about__stat-text {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            font-weight: 400;
+            margin-top: 0.25rem;
+        }
+
+        .elara-about__content {
+            padding: 1rem 0;
+        }
+
+        .elara-about__text {
+            font-size: 1.05rem;
+            color: var(--color-text-light);
+            font-weight: 300;
+            line-height: 1.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .elara-about__highlights {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .elara-about__highlight {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .elara-about__highlight-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            background: rgba(91, 138, 154, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .elara-about__highlight-icon svg {
+            width: 18px;
+            height: 18px;
+            stroke: var(--color-accent);
+        }
+
+        .elara-about__highlight-text {
+            font-size: 0.95rem;
+            color: var(--color-text);
+            font-weight: 400;
+        }
+
+        /* ====== Services ====== */
+        .elara-services {
+            padding: 7rem 2rem;
+        }
+
+        .elara-services__header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .elara-services__header .elara-section__subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .elara-services__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .elara-service-card {
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+            cursor: default;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .elara-service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(91, 138, 154, 0.03), rgba(201, 169, 110, 0.02));
+            opacity: 0;
+            transition: var(--transition-smooth);
+            border-radius: 20px;
+        }
+
+        .elara-service-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 60px rgba(31, 38, 135, 0.1), 0 0 0 1px rgba(91, 138, 154, 0.1);
+        }
+
+        .elara-service-card:hover::before {
+            opacity: 1;
+        }
+
+        .elara-service-card__icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            background: rgba(91, 138, 154, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.75rem;
+            transition: var(--transition-smooth);
+            position: relative;
+            z-index: 1;
+        }
+
+        .elara-service-card:hover .elara-service-card__icon {
+            background: rgba(91, 138, 154, 0.12);
+        }
+
+        .elara-service-card__icon svg {
+            width: 26px;
+            height: 26px;
+            stroke: var(--color-accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .elara-service-card__title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.75rem;
+            letter-spacing: -0.01em;
+            position: relative;
+            z-index: 1;
+        }
+
+        .elara-service-card__description {
+            font-size: 0.9rem;
+            color: var(--color-text-muted);
+            font-weight: 300;
+            line-height: 1.7;
+            position: relative;
+            z-index: 1;
+        }
+
+        .elara-service-card__link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.35rem;
+            margin-top: 1.25rem;
+            font-size: 0.825rem;
+            color: var(--color-accent);
+            font-weight: 500;
+            text-decoration: none;
+            transition: var(--transition-fast);
+            position: relative;
+            z-index: 1;
+        }
+
+        .elara-service-card__link:hover {
+            gap: 0.6rem;
+        }
+
+        /* ====== Why Choose Us ====== */
+        .elara-why {
+            padding: 7rem 2rem;
+        }
+
+        .elara-why__layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5rem;
+            align-items: center;
+        }
+
+        .elara-why__points {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .elara-why-point {
+            padding: 2rem 1.75rem;
+            border-radius: 18px;
+            transition: var(--transition-smooth);
+        }
+
+        .elara-why-point:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(31, 38, 135, 0.08);
+        }
+
+        .elara-why-point__number {
+            font-size: 0.7rem;
+            font-weight: 600;
+            color: var(--color-accent-gold);
+            letter-spacing: 0.1em;
+            margin-bottom: 1rem;
+        }
+
+        .elara-why-point__title {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--color-text);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.01em;
+        }
+
+        .elara-why-point__description {
+            font-size: 0.85rem;
+            color: var(--color-text-muted);
+            font-weight: 300;
+            line-height: 1.7;
+        }
+
+        /* ====== Testimonials ====== */
+        .elara-testimonials {
+            padding: 7rem 2rem;
+        }
+
+        .elara-testimonials__header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .elara-testimonials__header .elara-section__subtitle {
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .elara-testimonials__grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .elara-testimonial-card {
+            padding: 2.5rem 2rem;
+            border-radius: 20px;
+            transition: var(--transition-smooth);
+        }
+
+        .elara-testimonial-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px rgba(31, 38, 135, 0.08);
+        }
+
+        .elara-testimonial-card__stars {
+            display: flex;
+            gap: 3px;
+            margin-bottom: 1.5rem;
+        }
+
+        .elara-testimonial-card__star {
+            width: 14px;
+            height: 14px;
+            fill: var(--color-accent-gold);
+        }
+
+        .elara-testimonial-card__quote {
+            font-size: 0.95rem;
+            color: var(--color-text-light);
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 1.75rem;
+            font-style: italic;
+        }
+
+        .elara-testimonial-card__author {
+            display: flex;
+            align-items: center;
+            gap: 0.85rem;
+        }
+
+        .elara-testimonial-card__avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, rgba(91, 138, 154, 0.15), rgba(201, 169, 110, 0.15));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--color-accent);
+        }
+
+        .elara-testimonial-card__name {
+            font-size: 0.875rem;
+            font-weight: 600;
+            color: var(--color-text);
+        }
+
+        .elara-testimonial-card__role {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            font-weight: 400;
+        }
+
+        /* ====== Contact ====== */
+        .elara-contact {
+            padding: 7rem 2rem 5rem;
+        }
+
+        .elara-contact__layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+        }
+
+        .elara-contact__info {
+            padding: 1rem 0;
+        }
+
+        .elara-contact__text {
+            font-size: 1.05rem;
+            color: var(--color-text-light);
+            font-weight: 300;
+            line-height: 1.8;
+            margin-bottom: 2.5rem;
+        }
+
+        .elara-contact__methods {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .elara-contact__method {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .elara-contact__method-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 14px;
+            background: rgba(91, 138, 154, 0.08);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .elara-contact__method-icon svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--color-accent);
+            fill: none;
+            stroke-width: 1.5;
+        }
+
+        .elara-contact__method-label {
+            font-size: 0.75rem;
+            color: var(--color-text-muted);
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-bottom: 0.15rem;
+        }
+
+        .elara-contact__method-value {
+            font-size: 0.95rem;
+            color: var(--color-text);
+            font-weight: 400;
+        }
+
+        .elara-contact__method-value a {
+            color: var(--color-text);
+            text-decoration: none;
+            transition: var(--transition-fast);
+        }
+
+        .elara-contact__method-value a:hover {
+            color: var(--color-accent);
+        }
+
+        .elara-contact__form-wrapper {
+            padding: 2.5rem;
+            border-radius: 24px;
+        }
+
+        .elara-contact__form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .elara-contact__form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.25rem;
+        }
+
+        .elara-form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+
+        .elara-form-group__label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--color-text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .elara-form-group__input,
+        .elara-form-group__textarea,
+        .elara-form-group__select {
+            width: 100%;
+            padding: 0.85rem 1.15rem;
+            border: 1px solid rgba(26, 26, 46, 0.08);
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.6);
+            font-family: var(--font-primary);
+            font-size: 0.9rem;
+            font-weight: 400;
+            color: var(--color-text);
+            transition: var(--transition-fast);
+            outline: none;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+
+        .elara-form-group__input::placeholder,
+        .elara-form-group__textarea::placeholder {
+            color: var(--color-text-muted);
+            font-weight: 300;
+        }
+
+        .elara-form-group__input:focus,
+        .elara-form-group__textarea:focus,
+        .elara-form-group__select:focus {
+            border-color: var(--color-accent);
+            background: rgba(255, 255, 255, 0.85);
+            box-shadow: 0 0 0 3px rgba(91, 138, 154, 0.08);
+        }
+
+        .elara-form-group__textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        .elara-form-group__select {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%238a8aa0' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            padding-right: 2.5rem;
+        }
+
+        .elara-contact__submit {
+            margin-top: 0.5rem;
+            width: 100%;
+            padding: 1rem;
+            border-radius: 14px;
+            font-size: 0.9rem;
+        }
+
+        /* ====== Footer ====== */
+        .elara-footer {
+            position: relative;
+            z-index: 1;
+            padding: 3rem 2rem;
+            border-top: 1px solid rgba(26, 26, 46, 0.05);
+        }
+
+        .elara-footer__container {
+            max-width: 1180px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .elara-footer__copy {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            font-weight: 300;
+        }
+
+        .elara-footer__links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .elara-footer__link {
+            font-size: 0.8rem;
+            color: var(--color-text-muted);
+            text-decoration: none;
+            font-weight: 400;
+            transition: var(--transition-fast);
+        }
+
+        .elara-footer__link:hover {
+            color: var(--color-text);
+        }
+
+        /* ====== Scroll Animations ====== */
+        .elara-fade-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94), 
+                        transform 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .elara-fade-up--visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .elara-fade-up--d1 { transition-delay: 0.1s; }
+        .elara-fade-up--d2 { transition-delay: 0.2s; }
+        .elara-fade-up--d3 { transition-delay: 0.3s; }
+        .elara-fade-up--d4 { transition-delay: 0.4s; }
+        .elara-fade-up--d5 { transition-delay: 0.5s; }
+
+        /* ====== Responsive ====== */
+        @media (max-width: 1024px) {
+            .elara-services__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .elara-testimonials__grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .elara-why__layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .elara-about__grid {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .elara-about__visual {
+                order: -1;
+                max-width: 400px;
+                margin: 0 auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .elara-nav__links {
+                display: none;
+            }
+
+            .elara-nav__mobile-toggle {
+                display: flex;
+            }
+
+            .elara-hero__title {
+                font-size: clamp(2rem, 8vw, 3rem);
+            }
+
+            .elara-hero__description {
+                font-size: 1rem;
+            }
+
+            .elara-services__grid {
+                grid-template-columns: 1fr;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .elara-testimonials__grid {
+                grid-template-columns: 1fr;
+                max-width: 420px;
+                margin: 0 auto;
+            }
+
+            .elara-why__points {
+                grid-template-columns: 1fr;
+            }
+
+            .elara-contact__layout {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .elara-contact__form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .elara-section {
+                padding: 5rem 1.25rem;
+            }
+
+            .elara-hero {
+                padding: 7rem 1.25rem 4rem;
+            }
+
+            .elara-contact__form-wrapper {
+                padding: 1.75rem;
+            }
+
+            .elara-footer__container {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .elara-hero__actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .elara-btn--primary,
+            .elara-btn--secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
 </head>
 <body>
 
-  <!-- Animated background orbs -->
-  <div class="aurelian-bg-gradient" aria-hidden="true">
-    <div class="aurelian-orb aurelian-orb--1"></div>
-    <div class="aurelian-orb aurelian-orb--2"></div>
-    <div class="aurelian-orb aurelian-orb--3"></div>
-  </div>
-
-  <!-- Mobile nav overlay -->
-  <div class="aurelian-nav-overlay" id="aurelianNavOverlay"></div>
-
-  <!-- ===========================
-       NAVIGATION
-       =========================== -->
-  <nav class="aurelian-nav" id="aurelianNav">
-    <div class="aurelian-nav__container">
-      <a href="#aurelianHero" class="aurelian-nav__logo">AURELIAN</a>
-      <ul class="aurelian-nav__links" id="aurelianNavLinks">
-        <li><a href="#aurelianAbout" class="aurelian-nav-link">About</a></li>
-        <li><a href="#aurelianMenu" class="aurelian-nav-link">Menu</a></li>
-        <li><a href="#aurelianGallery" class="aurelian-nav-link">Gallery</a></li>
-        <li><a href="#aurelianContact" class="aurelian-nav-link">Contact</a></li>
-        <li>
-          <button class="aurelian-theme-toggle" id="aurelianThemeToggle" aria-label="Toggle dark mode" title="Toggle theme">
-            ☀️
-          </button>
-        </li>
-      </ul>
-      <button class="aurelian-nav__hamburger" id="aurelianHamburger" aria-label="Toggle navigation">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
-    </div>
-  </nav>
-
-  <!-- ===========================
-       HERO SECTION
-       =========================== -->
-  <section class="aurelian-hero" id="aurelianHero">
-    <div class="aurelian-hero__bg"></div>
-    <div class="aurelian-hero__content">
-      <span class="aurelian-hero__badge">✦ Michelin Starred ✦</span>
-      <h1 class="aurelian-hero__title">
-        The Art of<br><span>Fine Dining</span>
-      </h1>
-      <p class="aurelian-hero__tagline">Where culinary mastery meets timeless elegance</p>
-      <a href="#aurelianContact" class="aurelian-hero__cta">
-        Book a Table
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-    </div>
-    <div class="aurelian-hero__scroll">
-      SCROLL
-      <div class="aurelian-hero__scroll-line"></div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       ABOUT SECTION
-       =========================== -->
-  <section class="aurelian-section" id="aurelianAbout">
-    <div class="aurelian-about">
-      <div class="aurelian-about__image-wrapper aurelian-reveal">
-        <img 
-          src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=800&q=80" 
-          alt="Aurelian restaurant interior showing elegant dining area with warm lighting"
-          loading="lazy"
-        />
-        <div class="aurelian-about__image-overlay aurelian-glass">
-          <span>25+</span>
-          <small>Years of Excellence</small>
-        </div>
-      </div>
-      <div class="aurelian-about__text aurelian-reveal">
-        <p class="aurelian-section__subtitle" style="text-align:left; margin-bottom: 0.5rem;">Our Story</p>
-        <h2>A Legacy of <span class="aurelian-about__accent">Culinary</span> Passion</h2>
-        <hr class="aurelian-section__divider" style="margin-left:0;" />
-        <p>
-          Founded in 1998 by Chef Antoine Beaumont, Aurelian has become a beacon of gastronomic excellence in the heart of the city. Our philosophy is simple — source the finest ingredients, honor traditional techniques, and create unforgettable moments at every table.
-        </p>
-        <p>
-          Every dish tells a story of heritage and innovation, crafted with precision by our award-winning culinary team. From the first amuse-bouche to the final petit four, dining at Aurelian is a journey through flavor, texture, and artistry.
-        </p>
-        <div class="aurelian-about__stats">
-          <div class="aurelian-about__stat aurelian-glass">
-            <span class="aurelian-about__stat-number" data-count="2">0</span>
-            <span class="aurelian-about__stat-label">Michelin Stars</span>
-          </div>
-          <div class="aurelian-about__stat aurelian-glass">
-            <span class="aurelian-about__stat-number" data-count="50">0</span>
-            <span class="aurelian-about__stat-label">Expert Chefs</span>
-          </div>
-          <div class="aurelian-about__stat aurelian-glass">
-            <span class="aurelian-about__stat-number" data-count="12000">0</span>
-            <span class="aurelian-about__stat-label">Guests Monthly</span>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       MENU SECTION
-       =========================== -->
-  <section class="aurelian-section" id="aurelianMenu">
-    <p class="aurelian-section__subtitle aurelian-reveal">Curated Selection</p>
-    <h2 class="aurelian-section__title aurelian-reveal">Our <span style="color:var(--accent); font-style:italic;">Menu</span></h2>
-    <hr class="aurelian-section__divider aurelian-reveal" />
-
-    <!-- Filter buttons -->
-    <div class="aurelian-menu__filters aurelian-reveal">
-      <button class="aurelian-menu__filter-btn active" data-filter="all">All</button>
-      <button class="aurelian-menu__filter-btn" data-filter="starters">Starters</button>
-      <button class="aurelian-menu__filter-btn" data-filter="mains">Mains</button>
-      <button class="aurelian-menu__filter-btn" data-filter="desserts">Desserts</button>
+    <!-- Ambient Background -->
+    <div class="elara-ambient-bg" aria-hidden="true">
+        <div class="elara-ambient-shape elara-ambient-shape--1"></div>
+        <div class="elara-ambient-shape elara-ambient-shape--2"></div>
+        <div class="elara-ambient-shape elara-ambient-shape--3"></div>
+        <div class="elara-ambient-shape elara-ambient-shape--4"></div>
+        <div class="elara-ambient-shape elara-ambient-shape--5"></div>
     </div>
 
-    <!-- Menu items grid -->
-    <div class="aurelian-menu__grid" id="aurelianMenuGrid">
-      
-      <!-- Starters -->
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Seared Foie Gras</span>
-          <span class="aurelian-menu__item-price">$38</span>
+    <!-- Navigation -->
+    <nav class="elara-nav" id="elaraNav">
+        <div class="elara-nav__container">
+            <a href="#" class="elara-nav__logo">
+                <span class="elara-nav__logo-accent">Elara</span> Clinic<span class="elara-nav__logo-dot"></span>
+            </a>
+            <ul class="elara-nav__links">
+                <li><a href="#about" class="elara-nav__link">About</a></li>
+                <li><a href="#services" class="elara-nav__link">Services</a></li>
+                <li><a href="#why" class="elara-nav__link">Why Us</a></li>
+                <li><a href="#testimonials" class="elara-nav__link">Testimonials</a></li>
+                <li><a href="#contact" class="elara-nav__cta">Book Consultation</a></li>
+            </ul>
+            <button class="elara-nav__mobile-toggle" id="elaraMobileToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-        <p class="aurelian-menu__item-desc">Pan-seared duck foie gras with caramelized fig compote, toasted brioche, and aged balsamic reduction</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Signature</span>
-          <span class="aurelian-menu__item-tag">Chef's Pick</span>
-        </div>
-      </div>
+    </nav>
 
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Truffle Velouté</span>
-          <span class="aurelian-menu__item-price">$28</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Silky black truffle soup finished with crème fraîche, chive oil, and shaved Périgord truffle</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Vegetarian</span>
-        </div>
-      </div>
-
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="starters">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Oysters Royale</span>
-          <span class="aurelian-menu__item-price">$42</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Six premium Gillardeau oysters served with champagne mignonette, lemon, and Oscietra caviar</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Seasonal</span>
-        </div>
-      </div>
-
-      <!-- Mains -->
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Wagyu Beef Tenderloin</span>
-          <span class="aurelian-menu__item-price">$85</span>
-        </div>
-        <p class="aurelian-menu__item-desc">A5 Japanese Wagyu with roasted bone marrow, pommes purée, and red wine jus infused with thyme</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Signature</span>
-          <span class="aurelian-menu__item-tag">Premium</span>
-        </div>
-      </div>
-
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Pan-Roasted Dover Sole</span>
-          <span class="aurelian-menu__item-price">$68</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Whole Dover sole meunière with brown butter, capers, lemon, parsley, and haricots verts</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Gluten Free</span>
-        </div>
-      </div>
-
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="mains">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Herb-Crusted Rack of Lamb</span>
-          <span class="aurelian-menu__item-price">$72</span>
-        </div>
-        <p class="aurelian-menu__item-desc">New Zealand lamb rack with Provençal herb crust, ratatouille, and rosemary lamb jus</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Chef's Pick</span>
-        </div>
-      </div>
-
-      <!-- Desserts -->
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Valrhona Chocolate Soufflé</span>
-          <span class="aurelian-menu__item-price">$24</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Warm dark chocolate soufflé with molten center, vanilla bean crème anglaise, and gold leaf</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Signature</span>
-          <span class="aurelian-menu__item-tag">20 Min Prep</span>
-        </div>
-      </div>
-
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Tarte Tatin</span>
-          <span class="aurelian-menu__item-price">$22</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Classic caramelized apple tart with flaky puff pastry, Calvados cream, and salted caramel</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Classic</span>
-        </div>
-      </div>
-
-      <div class="aurelian-menu__item aurelian-glass aurelian-reveal" data-category="desserts">
-        <div class="aurelian-menu__item-header">
-          <span class="aurelian-menu__item-name">Lemon Posset</span>
-          <span class="aurelian-menu__item-price">$18</span>
-        </div>
-        <p class="aurelian-menu__item-desc">Silky lemon cream with lavender shortbread, fresh berries, and elderflower syrup</p>
-        <div class="aurelian-menu__item-tags">
-          <span class="aurelian-menu__item-tag">Light</span>
-          <span class="aurelian-menu__item-tag">Vegetarian</span>
-        </div>
-      </div>
-
+    <!-- Mobile Menu -->
+    <div class="elara-mobile-menu" id="elaraMobileMenu">
+        <a href="#about" class="elara-mobile-menu__link" data-mobile-link>About</a>
+        <a href="#services" class="elara-mobile-menu__link" data-mobile-link>Services</a>
+        <a href="#why" class="elara-mobile-menu__link" data-mobile-link>Why Us</a>
+        <a href="#testimonials" class="elara-mobile-menu__link" data-mobile-link>Testimonials</a>
+        <a href="#contact" class="elara-mobile-menu__link" data-mobile-link>Book Consultation</a>
     </div>
-  </section>
 
-  <!-- ===========================
-       GALLERY SECTION
-       =========================== -->
-  <section class="aurelian-section" id="aurelianGallery">
-    <p class="aurelian-section__subtitle aurelian-reveal">Visual Journey</p>
-    <h2 class="aurelian-section__title aurelian-reveal">The <span style="color:var(--accent); font-style:italic;">Gallery</span></h2>
-    <hr class="aurelian-section__divider aurelian-reveal" />
-
-    <div class="aurelian-gallery__grid aurelian-reveal">
-      <div class="aurelian-gallery__item" data-caption="The Dining Room">
-        <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" alt="Elegant restaurant dining room with warm ambient lighting" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>The Dining Room</span></div>
-      </div>
-      <div class="aurelian-gallery__item" data-caption="Signature Plating">
-        <img src="https://images.unsplash.com/photo-1546039907-7fa05f864c02?w=600&q=80" alt="Beautifully plated fine dining dish" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>Signature Plating</span></div>
-      </div>
-      <div class="aurelian-gallery__item" data-caption="Our Cellar">
-        <img src="https://images.unsplash.com/photo-1510812431401-41d2bd2722f3?w=600&q=80" alt="Wine cellar with vintage bottles" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>Our Cellar</span></div>
-      </div>
-      <div class="aurelian-gallery__item" data-caption="Pastry Artistry">
-        <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?w=600&q=80" alt="Artisan pastry dessert creation" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>Pastry Artistry</span></div>
-      </div>
-      <div class="aurelian-gallery__item" data-caption="Fresh Ingredients">
-        <img src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?w=600&q=80" alt="Fresh seasonal ingredients arrangement" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>Fresh Ingredients</span></div>
-      </div>
-      <div class="aurelian-gallery__item" data-caption="The Bar">
-        <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=600&q=80" alt="Stylish cocktail bar area" loading="lazy" />
-        <div class="aurelian-gallery__item-overlay"><span>The Bar</span></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ===========================
-       CONTACT SECTION
-       =========================== -->
-  <section class="aurelian-section" id="aurelianContact">
-    <p class="aurelian-section__subtitle aurelian-reveal">Get in Touch</p>
-    <h2 class="aurelian-section__title aurelian-reveal">Reserve Your <span style="color:var(--accent); font-style:italic;">Experience</span></h2>
-    <hr class="aurelian-section__divider aurelian-reveal" />
-
-    <div class="aurelian-contact aurelian-reveal">
-      <!-- Info card -->
-      <div class="aurelian-contact__info aurelian-glass">
-        <h3>Visit Us</h3>
-        <p>We'd love to welcome you. For reservations of 8 or more, please contact us directly.</p>
-
-        <div class="aurelian-contact__detail">
-          <div class="aurelian-contact__detail-icon">📍</div>
-          <div class="aurelian-contact__detail-text">
-            <strong>Address</strong>
-            <span>42 Rue de Rivoli, 75001 Paris, France</span>
-          </div>
-        </div>
-
-        <div class="aurelian-contact__detail">
-          <div class="aurelian-contact__detail-icon">📞</div>
-          <div class="aurelian-contact__detail-text">
-            <strong>Phone</strong>
-            <span>+33 1 42 96 12 34</span>
-          </div>
-        </div>
-
-        <div class="aurelian-contact__detail">
-          <div class="aurelian-contact__detail-icon">✉️</div>
-          <div class="aurelian-contact__detail-text">
-            <strong>Email</strong>
-            <span>reservations@aurelian.fr</span>
-          </div>
-        </div>
-
-        <div class="aurelian-contact__hours">
-          <h4>Opening Hours</h4>
-          <p>Monday — Friday: 12:00 PM – 2:30 PM / 7:00 PM – 11:00 PM</p>
-          <p>Saturday: 7:00 PM – 11:30 PM</p>
-          <p>Sunday: Closed</p>
-        </div>
-      </div>
-
-      <!-- Contact form -->
-      <div class="aurelian-contact__form aurelian-glass">
-        <h3>Make a Reservation</h3>
-        <form id="aurelianContactForm">
-          <div class="aurelian-form__row">
-            <div class="aurelian-form__group">
-              <label for="aurelianName">Full Name</label>
-              <input type="text" id="aurelianName" placeholder="John Doe" required />
+    <!-- Hero -->
+    <section class="elara-hero" id="hero">
+        <div class="elara-hero__content">
+            <div class="elara-hero__badge elara-fade-up">
+                <span class="elara-hero__badge-dot"></span>
+                Private Specialist Clinic
             </div>
-            <div class="aurelian-form__group">
-              <label for="aurelianEmail">Email</label>
-              <input type="email" id="aurelianEmail" placeholder="john@example.com" required />
+            <h1 class="elara-hero__title elara-fade-up elara-fade-up--d1">
+                Specialists in<br><strong>Shoulder</strong> & <strong><em>Hand</em></strong> Surgery
+            </h1>
+            <p class="elara-hero__description elara-fade-up elara-fade-up--d2">
+                Exceptional surgical care delivered with precision and compassion. 
+                Restoring movement, relieving pain, and rebuilding confidence.
+            </p>
+            <div class="elara-hero__actions elara-fade-up elara-fade-up--d3">
+                <a href="#contact" class="elara-btn elara-btn--primary">
+                    Book Consultation
+                    <svg class="elara-btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                        <polyline points="12 5 19 12 12 19"></polyline>
+                    </svg>
+                </a>
+                <a href="#services" class="elara-btn elara-btn--secondary">Learn More</a>
             </div>
-          </div>
-          <div class="aurelian-form__row">
-            <div class="aurelian-form__group">
-              <label for="aurelianDate">Preferred Date</label>
-              <input type="date" id="aurelianDate" required />
+        </div>
+        <div class="elara-hero__scroll-indicator" aria-hidden="true">
+            <div class="elara-hero__scroll-line"></div>
+        </div>
+    </section>
+
+    <!-- About -->
+    <section class="elara-section elara-about" id="about">
+        <div class="elara-section__container">
+            <div class="elara-about__grid">
+                <div class="elara-about__visual elara-fade-up">
+                    <div class="elara-about__image-frame elara-glass">
+                        <div class="elara-about__image-inner">
+                            <svg class="elara-about__image-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
+                            </svg>
+                        </div>
+                        <div class="elara-about__stats">
+                            <div class="elara-about__stat-number">25+</div>
+                            <div class="elara-about__stat-text">Years of Excellence</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elara-about__content">
+                    <span class="elara-section__label elara-fade-up">About Us</span>
+                    <h2 class="elara-section__title elara-fade-up elara-fade-up--d1">
+                        Dedicated to <strong>precision</strong><br>and patient care
+                    </h2>
+                    <p class="elara-about__text elara-fade-up elara-fade-up--d2">
+                        Elara Clinic brings together leading orthopaedic surgeons specialising exclusively in 
+                        conditions of the shoulder, elbow, wrist and hand. Our consultants are recognised 
+                        internationally for their expertise, published research, and commitment to achieving 
+                        the best possible outcomes.
+                    </p>
+                    <p class="elara-about__text elara-fade-up elara-fade-up--d3">
+                        Every treatment plan is tailored to the individual — combining advanced surgical 
+                        techniques with a deeply personal approach to care.
+                    </p>
+                    <div class="elara-about__highlights elara-fade-up elara-fade-up--d4">
+                        <div class="elara-about__highlight">
+                            <div class="elara-about__highlight-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <span class="elara-about__highlight-text">Fellowship-trained specialist surgeons</span>
+                        </div>
+                        <div class="elara-about__highlight">
+                            <div class="elara-about__highlight-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <span class="elara-about__highlight-text">State-of-the-art surgical facilities</span>
+                        </div>
+                        <div class="elara-about__highlight">
+                            <div class="elara-about__highlight-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                                </svg>
+                            </div>
+                            <span class="elara-about__highlight-text">Over 15,000 successful procedures</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="aurelian-form__group">
-              <label for="aurelianGuests">Guests</label>
-              <input type="number" id="aurelianGuests" placeholder="2" min="1" max="20" required />
+        </div>
+    </section>
+
+    <!-- Services -->
+    <section class="elara-section elara-services" id="services">
+        <div class="elara-section__container">
+            <div class="elara-services__header">
+                <span class="elara-section__label elara-fade-up">Our Specialties</span>
+                <h2 class="elara-section__title elara-fade-up elara-fade-up--d1">
+                    Expert care for <strong>every condition</strong>
+                </h2>
+                <p class="elara-section__subtitle elara-fade-up elara-fade-up--d2">
+                    From complex reconstructive surgery to minimally invasive procedures, 
+                    we offer comprehensive treatment across our specialist areas.
+                </p>
             </div>
-          </div>
-          <div class="aurelian-form__group">
-            <label for="aurelianMessage">Special Requests</label>
-            <textarea id="aurelianMessage" placeholder="Dietary requirements, celebrations, seating preferences..."></textarea>
-          </div>
-          <button type="submit" class="aurelian-form__submit" id="aurelianSubmitBtn">Request Reservation</button>
-        </form>
-      </div>
-    </div>
-  </section>
+            <div class="elara-services__grid">
+                <!-- Shoulder -->
+                <div class="elara-service-card elara-glass elara-fade-up elara-fade-up--d1">
+                    <div class="elara-service-card__icon">
+                        <svg viewBox="0 0 24 24">
+                            <circle cx="12" cy="5" r="3"></circle>
+                            <path d="M12 8v4"></path>
+                            <path d="M5 11c0-1 1.5-3 7-3s7 2 7 3"></path>
+                            <path d="M5 11v2c0 1 0 3 2 4"></path>
+                            <path d="M19 11v2c0 1 0 3-2 4"></path>
+                        </svg>
+                    </div>
+                    <h3 class="elara-service-card__title">Shoulder Surgery</h3>
+                    <p class="elara-service-card__description">
+                        Rotator cuff repair, shoulder replacement, instability surgery, and arthroscopic 
+                        procedures. Restoring full range of motion and pain-free living.
+                    </p>
+                    <a href="#contact" class="elara-service-card__link">
+                        Learn more
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
 
-  <!-- ===========================
-       FOOTER
-       =========================== -->
-  <footer class="aurelian-footer">
-    <div class="aurelian-footer__container">
-      <div class="aurelian-footer__logo">
-        AURELIAN
-        <small>Fine Dining Since 1998</small>
-      </div>
-      <div class="aurelian-footer__social">
-        <a href="#" class="aurelian-footer__social-link" aria-label="Instagram" title="Instagram">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
-        </a>
-        <a href="#" class="aurelian-footer__social-link" aria-label="Facebook" title="Facebook">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
-        </a>
-        <a href="#" class="aurelian-footer__social-link" aria-label="Twitter / X" title="Twitter / X">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733 -16z"/><path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772"/></svg>
-        </a>
-        <a href="#" class="aurelian-footer__social-link" aria-label="TripAdvisor" title="TripAdvisor">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6.5" cy="13.5" r="3.5"/><circle cx="17.5" cy="13.5" r="3.5"/><path d="M3 13.5A9.5 9.5 0 0 1 12 4a9.5 9.5 0 0 1 9 9.5"/><circle cx="6.5" cy="13.5" r="1.5"/><circle cx="17.5" cy="13.5" r="1.5"/></svg>
-        </a>
-      </div>
-      <p class="aurelian-footer__copyright">
-        © 2024 Aurelian Fine Dining. All rights reserved. Crafted with passion.
-      </p>
-    </div>
-  </footer>
+                <!-- Hand -->
+                <div class="elara-service-card elara-glass elara-fade-up elara-fade-up--d2">
+                    <div class="elara-service-card__icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M18 11V6a2 2 0 0 0-4 0"></path>
+                            <path d="M14 10V4a2 2 0 0 0-4 0v2"></path>
+                            <path d="M10 10.5V6a2 2 0 0 0-4 0v8"></path>
+                            <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.7-2.4"></path>
+                            <path d="M6 14l-1.5-1.5a2 2 0 0 0-3 0 2 2 0 0 0 0 3L6 20"></path>
+                        </svg>
+                    </div>
+                    <h3 class="elara-service-card__title">Hand & Wrist Surgery</h3>
+                    <p class="elara-service-card__description">
+                        Carpal tunnel release, tendon repair, Dupuytren's treatment, fracture fixation, 
+                        and microsurgery. Precision care for complex hand conditions.
+                    </p>
+                    <a href="#contact" class="elara-service-card__link">
+                        Learn more
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
 
-  <!-- Lightbox for gallery -->
-  <div class="aurelian-lightbox" id="aurelianLightbox">
-    <button class="aurelian-lightbox__close" id="aurelianLightboxClose" aria-label="Close lightbox">✕</button>
-    <img src="" alt="Gallery enlarged view" id="aurelianLightboxImg" />
-  </div>
+                <!-- Sports -->
+                <div class="elara-service-card elara-glass elara-fade-up elara-fade-up--d3">
+                    <div class="elara-service-card__icon">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                        </svg>
+                    </div>
+                    <h3 class="elara-service-card__title">Sports Injuries</h3>
+                    <p class="elara-service-card__description">
+                        Rapid diagnosis and advanced treatment for athletic injuries. Ligament reconstruction, 
+                        joint stabilisation, and accelerated rehabilitation protocols.
+                    </p>
+                    <a href="#contact" class="elara-service-card__link">
+                        Learn more
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="5" y1="12" x2="19" y2="12"></line>
+                            <polyline points="12 5 19 12 12 19"></polyline>
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
 
-  <!-- ===========================
-       JAVASCRIPT
-       =========================== -->
-  <script>
-    (function() {
-      'use strict';
+    <!-- Why Choose Us -->
+    <section class="elara-section elara-why" id="why">
+        <div class="elara-section__container">
+            <div class="elara-why__layout">
+                <div>
+                    <span class="elara-section__label elara-fade-up">Why Elara</span>
+                    <h2 class="elara-section__title elara-fade-up elara-fade-up--d1">
+                        The <strong>difference</strong><br>you deserve
+                    </h2>
+                    <p class="elara-section__subtitle elara-fade-up elara-fade-up--d2">
+                        We believe exceptional outcomes come from an unwavering commitment to 
+                        excellence at every stage of your care journey.
+                    </p>
+                </div>
+                <div class="elara-why__points">
+                    <div class="elara-why-point elara-glass elara-fade-up elara-fade-up--d1">
+                        <div class="elara-why-point__number">01</div>
+                        <h3 class="elara-why-point__title">Specialist Surgeons</h3>
+                        <p class="elara-why-point__description">
+                            Our consultants focus exclusively on upper limb surgery, ensuring unparalleled depth of expertise.
+                        </p>
+                    </div>
+                    <div class="elara-why-point elara-glass elara-fade-up elara-fade-up--d2">
+                        <div class="elara-why-point__number">02</div>
+                        <h3 class="elara-why-point__title">Fast Recovery</h3>
+                        <p class="elara-why-point__description">
+                            Advanced minimally invasive techniques and tailored rehabilitation programs to get you back to life sooner.
+                        </p>
+                    </div>
+                    <div class="elara-why-point elara-glass elara-fade-up elara-fade-up--d3">
+                        <div class="elara-why-point__number">03</div>
+                        <h3 class="elara-why-point__title">Personalised Care</h3>
+                        <p class="elara-why-point__description">
+                            Every treatment plan is crafted around your unique needs, lifestyle, and goals.
+                        </p>
+                    </div>
+                    <div class="elara-why-point elara-glass elara-fade-up elara-fade-up--d4">
+                        <div class="elara-why-point__number">04</div>
+                        <h3 class="elara-why-point__title">Modern Techniques</h3>
+                        <p class="elara-why-point__description">
+                            Cutting-edge surgical technology and evidence-based approaches for the best possible outcomes.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      // ===========================
-      // DARK MODE TOGGLE
-      // ===========================
-      const themeToggle = document.getElementById('aurelianThemeToggle');
-      const root = document.documentElement;
+    <!-- Testimonials -->
+    <section class="elara-section elara-testimonials" id="testimonials">
+        <div class="elara-section__container">
+            <div class="elara-testimonials__header">
+                <span class="elara-section__label elara-fade-up">Patient Stories</span>
+                <h2 class="elara-section__title elara-fade-up elara-fade-up--d1">
+                    Trusted by those <strong>who matter most</strong>
+                </h2>
+                <p class="elara-section__subtitle elara-fade-up elara-fade-up--d2">
+                    Hear from patients whose lives have been transformed through our care.
+                </p>
+            </div>
+            <div class="elara-testimonials__grid">
+                <div class="elara-testimonial-card elara-glass elara-fade-up elara-fade-up--d1">
+                    <div class="elara-testimonial-card__stars">
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="elara-testimonial-card__quote">
+                        "After years of shoulder pain, the team at Elara gave me my life back. 
+                        The surgery was seamless and the aftercare was truly exceptional. I'm playing 
+                        tennis again within months."
+                    </p>
+                    <div class="elara-testimonial-card__author">
+                        <div class="elara-testimonial-card__avatar">JM</div>
+                        <div>
+                            <div class="elara-testimonial-card__name">James Mitchell</div>
+                            <div class="elara-testimonial-card__role">Shoulder Replacement Patient</div>
+                        </div>
+                    </div>
+                </div>
 
-      // Check for saved theme preference or default to dark
-      const savedTheme = localStorage.getItem('aurelian-theme') || 'dark';
-      root.setAttribute('data-theme', savedTheme);
-      updateThemeIcon(savedTheme);
+                <div class="elara-testimonial-card elara-glass elara-fade-up elara-fade-up--d2">
+                    <div class="elara-testimonial-card__stars">
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="elara-testimonial-card__quote">
+                        "The carpal tunnel surgery was life-changing. From the first consultation I felt 
+                        completely at ease. The precision of care and genuine warmth of the whole team 
+                        was remarkable."
+                    </p>
+                    <div class="elara-testimonial-card__author">
+                        <div class="elara-testimonial-card__avatar">SR</div>
+                        <div>
+                            <div class="elara-testimonial-card__name">Sarah Reynolds</div>
+                            <div class="elara-testimonial-card__role">Hand Surgery Patient</div>
+                        </div>
+                    </div>
+                </div>
 
-      themeToggle.addEventListener('click', function() {
-        const current = root.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        root.setAttribute('data-theme', next);
-        localStorage.setItem('aurelian-theme', next);
-        updateThemeIcon(next);
-      });
+                <div class="elara-testimonial-card elara-glass elara-fade-up elara-fade-up--d3">
+                    <div class="elara-testimonial-card__stars">
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                        <svg class="elara-testimonial-card__star" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </div>
+                    <p class="elara-testimonial-card__quote">
+                        "As a professional athlete, I needed the best. The sports injury team understood 
+                        exactly what I needed to return to competition. Their expertise and dedication 
+                        is second to none."
+                    </p>
+                    <div class="elara-testimonial-card__author">
+                        <div class="elara-testimonial-card__avatar">DK</div>
+                        <div>
+                            <div class="elara-testimonial-card__name">Daniel Kovacs</div>
+                            <div class="elara-testimonial-card__role">Sports Injury Patient</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      function updateThemeIcon(theme) {
-        themeToggle.textContent = theme === 'dark' ? '☀️' : '🌙';
-      }
+    <!-- Contact -->
+    <section class="elara-section elara-contact" id="contact">
+        <div class="elara-section__container">
+            <div class="elara-contact__layout">
+                <div class="elara-contact__info">
+                    <span class="elara-section__label elara-fade-up">Get In Touch</span>
+                    <h2 class="elara-section__title elara-fade-up elara-fade-up--d1">
+                        Book your <strong>consultation</strong>
+                    </h2>
+                    <p class="elara-contact__text elara-fade-up elara-fade-up--d2">
+                        Take the first step towards recovery. Our patient coordinators are available 
+                        to arrange your consultation with one of our specialist surgeons.
+                    </p>
+                    <div class="elara-contact__methods elara-fade-up elara-fade-up--d3">
+                        <div class="elara-contact__method">
+                            <div class="elara-contact__method-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="elara-contact__method-label">Telephone</div>
+                                <div class="elara-contact__method-value">
+                                    <a href="tel:+442071234567">+44 (0) 207 123 4567</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="elara-contact__method">
+                            <div class="elara-contact__method-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                    <polyline points="22,6 12,13 2,6"></polyline>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="elara-contact__method-label">Email</div>
+                                <div class="elara-contact__method-value">
+                                    <a href="mailto:enquiries@elaraclinic.co.uk">enquiries@elaraclinic.co.uk</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="elara-contact__method">
+                            <div class="elara-contact__method-icon">
+                                <svg viewBox="0 0 24 24">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
+                                    <circle cx="12" cy="10" r="3"></circle>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="elara-contact__method-label">Address</div>
+                                <div class="elara-contact__method-value">
+                                    48 Harley Street, London, W1G 9PU
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="elara-contact__form-wrapper elara-glass elara-fade-up elara-fade-up--d2">
+                    <form class="elara-contact__form" id="elaraContactForm">
+                        <div class="elara-contact__form-row">
+                            <div class="elara-form-group">
+                                <label class="elara-form-group__label" for="elaraFirstName">First Name</label>
+                                <input class="elara-form-group__input" type="text" id="elaraFirstName" placeholder="John" required>
+                            </div>
+                            <div class="elara-form-group">
+                                <label class="elara-form-group__label" for="elaraLastName">Last Name</label>
+                                <input class="elara-form-group__input" type="text" id="elaraLastName" placeholder="Smith" required>
+                            </div>
+                        </div>
+                        <div class="elara-contact__form-row">
+                            <div class="elara-form-group">
+                                <label class="elara-form-group__label" for="elaraEmail">Email</label>
+                                <input class="elara-form-group__input" type="email" id="elaraEmail" placeholder="john@example.com" required>
+                            </div>
+                            <div class="elara-form-group">
+                                <label class="elara-form-group__label" for="elaraPhone">Phone</label>
+                                <input class="elara-form-group__input" type="tel" id="elaraPhone" placeholder="+44 7700 900000">
+                            </div>
+                        </div>
+                        <div class="elara-form-group">
+                            <label class="elara-form-group__label" for="elaraService">Area of Concern</label>
+                            <select class="elara-form-group__select" id="elaraService">
+                                <option value="" disabled selected>Select a specialty</option>
+                                <option value="shoulder">Shoulder</option>
+                                <option value="hand">Hand & Wrist</option>
+                                <option value="elbow">Elbow</option>
+                                <option value="sports">Sports Injury</option>
+                                <option value="other">Other / Not Sure</option>
+                            </select>
+                        </div>
+                        <div class="elara-form-group">
+                            <label class="elara-form-group__label" for="elaraMessage">Message</label>
+                            <textarea class="elara-form-group__textarea" id="elaraMessage" placeholder="Tell us briefly about your condition or how we can help..."></textarea>
+                        </div>
+                        <button type="submit" class="elara-btn elara-btn--primary elara-contact__submit">
+                            Request Consultation
+                            <svg class="elara-btn__arrow" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <line x1="5" y1="12" x2="19" y2="12"></line>
+                                <polyline points="12 5 19 12 12 19"></polyline>
+                            </svg>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
 
-      // ===========================
-      // NAVIGATION SCROLL EFFECT
-      // ===========================
-      const nav = document.getElementById('aurelianNav');
-      let lastScroll = 0;
+    <!-- Footer -->
+    <footer class="elara-footer">
+        <div class="elara-footer__container">
+            <p class="elara-footer__copy">&copy; 2024 Elara Clinic. All rights reserved.</p>
+            <div class="elara-footer__links">
+                <a href="#" class="elara-footer__link">Privacy Policy</a>
+                <a href="#" class="elara-footer__link">Terms of Service</a>
+                <a href="#" class="elara-footer__link">Accessibility</a>
+            </div>
+        </div>
+    </footer>
 
-      window.addEventListener('scroll', function() {
-        const scrollY = window.pageYOffset;
-        if (scrollY > 80) {
-          nav.classList.add('aurelian-nav--scrolled');
-        } else {
-          nav.classList.remove('aurelian-nav--scrolled');
-        }
-        lastScroll = scrollY;
-      });
+    <script>
+        (function() {
+            'use strict';
 
-      // ===========================
-      // MOBILE NAVIGATION
-      // ===========================
-      const hamburger = document.getElementById('aurelianHamburger');
-      const navLinks = document.getElementById('aurelianNavLinks');
-      const navOverlay = document.getElementById('aurelianNavOverlay');
+            // ====== Navigation scroll effect ======
+            const nav = document.getElementById('elaraNav');
+            let lastScroll = 0;
 
-      hamburger.addEventListener('click', function() {
-        hamburger.classList.toggle('active');
-        navLinks.classList.toggle('aurelian-nav--open');
-        navOverlay.classList.toggle('active');
-        document.body.style.overflow = navLinks.classList.contains('aurelian-nav--open') ? 'hidden' : '';
-      });
-
-      navOverlay.addEventListener('click', closeNav);
-
-      // Close mobile nav when a link is clicked
-      document.querySelectorAll('.aurelian-nav-link').forEach(function(link) {
-        link.addEventListener('click', closeNav);
-      });
-
-      function closeNav() {
-        hamburger.classList.remove('active');
-        navLinks.classList.remove('aurelian-nav--open');
-        navOverlay.classList.remove('active');
-        document.body.style.overflow = '';
-      }
-
-      // ===========================
-      // SCROLL REVEAL ANIMATION
-      // ===========================
-      const revealElements = document.querySelectorAll('.aurelian-reveal');
-
-      const revealObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            // Stagger children for grid items
-            const delay = entry.target.dataset.delay || 0;
-            setTimeout(function() {
-              entry.target.classList.add('aurelian-revealed');
-            }, delay);
-            revealObserver.unobserve(entry.target);
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-      });
-
-      revealElements.forEach(function(el, i) {
-        // Add staggered delay for items in a grid
-        const parent = el.parentElement;
-        if (parent && (parent.classList.contains('aurelian-menu__grid'))) {
-          el.dataset.delay = i * 100;
-        }
-        revealObserver.observe(el);
-      });
-
-      // ===========================
-      // COUNTER ANIMATION (About Stats)
-      // ===========================
-      const statNumbers = document.querySelectorAll('.aurelian-about__stat-number[data-count]');
-
-      const counterObserver = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            animateCounter(entry.target);
-            counterObserver.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.5 });
-
-      statNumbers.forEach(function(el) {
-        counterObserver.observe(el);
-      });
-
-      function animateCounter(element) {
-        const target = parseInt(element.dataset.count);
-        const duration = 2000;
-        const startTime = performance.now();
-
-        function update(currentTime) {
-          const elapsed = currentTime - startTime;
-          const progress = Math.min(elapsed / duration, 1);
-
-          // Ease out cubic
-          const eased = 1 - Math.pow(1 - progress, 3);
-          const current = Math.floor(eased * target);
-
-          // Format large numbers
-          if (target >= 1000) {
-            element.textContent = current.toLocaleString() + '+';
-          } else {
-            element.textContent = current;
-          }
-
-          if (progress < 1) {
-            requestAnimationFrame(update);
-          }
-        }
-
-        requestAnimationFrame(update);
-      }
-
-      // ===========================
-      // MENU FILTERING
-      // ===========================
-      const filterBtns = document.querySelectorAll('.aurelian-menu__filter-btn');
-      const menuItems = document.querySelectorAll('.aurelian-menu__item');
-
-      filterBtns.forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          // Update active state
-          filterBtns.forEach(function(b) { b.classList.remove('active'); });
-          btn.classList.add('active');
-
-          const filter = btn.dataset.filter;
-
-          menuItems.forEach(function(item) {
-            if (filter === 'all' || item.dataset.category === filter) {
-              item.classList.remove('aurelian-hidden');
-              // Re-trigger animation
-              item.style.opacity = '0';
-              item.style.transform = 'translateY(20px)';
-              setTimeout(function() {
-                item.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
-                item.style.opacity = '1';
-                item.style.transform = 'translateY(0)';
-              }, 50);
-            } else {
-              item.classList.add('aurelian-hidden');
+            function handleNavScroll() {
+                const currentScroll = window.pageYOffset;
+                if (currentScroll > 50) {
+                    nav.classList.add('elara-nav--scrolled');
+                } else {
+                    nav.classList.remove('elara-nav--scrolled');
+                }
+                lastScroll = currentScroll;
             }
-          });
-        });
-      });
 
-      // ===========================
-      // GALLERY LIGHTBOX
-      // ===========================
-      const lightbox = document.getElementById('aurelianLightbox');
-      const lightboxImg = document.getElementById('aurelianLightboxImg');
-      const lightboxClose = document.getElementById('aurelianLightboxClose');
-      const galleryItems = document.querySelectorAll('.aurelian-gallery__item');
+            window.addEventListener('scroll', handleNavScroll, { passive: true });
 
-      galleryItems.forEach(function(item) {
-        item.addEventListener('click', function() {
-          const img = item.querySelector('img');
-          // Use higher resolution for lightbox
-          const src = img.src.replace('w=600', 'w=1200').replace('w=800', 'w=1600');
-          lightboxImg.src = src;
-          lightboxImg.alt = item.dataset.caption || 'Gallery image';
-          lightbox.classList.add('aurelian-lightbox--active');
-          document.body.style.overflow = 'hidden';
-        });
-      });
+            // ====== Mobile menu toggle ======
+            const mobileToggle = document.getElementById('elaraMobileToggle');
+            const mobileMenu = document.getElementById('elaraMobileMenu');
+            const mobileLinks = document.querySelectorAll('[data-mobile-link]');
 
-      lightboxClose.addEventListener('click', closeLightbox);
-      lightbox.addEventListener('click', function(e) {
-        if (e.target === lightbox) closeLightbox();
-      });
+            function toggleMobileMenu() {
+                const isOpen = mobileMenu.classList.contains('elara-mobile-menu--open');
+                mobileMenu.classList.toggle('elara-mobile-menu--open');
+                mobileToggle.classList.toggle('elara-nav__mobile-toggle--active');
+                document.body.style.overflow = isOpen ? '' : 'hidden';
+            }
 
-      // Close with Escape key
-      document.addEventListener('keydown', function(e) {
-        if (e.key === 'Escape') {
-          closeLightbox();
-          closeNav();
-        }
-      });
+            function closeMobileMenu() {
+                mobileMenu.classList.remove('elara-mobile-menu--open');
+                mobileToggle.classList.remove('elara-nav__mobile-toggle--active');
+                document.body.style.overflow = '';
+            }
 
-      function closeLightbox() {
-        lightbox.classList.remove('aurelian-lightbox--active');
-        document.body.style.overflow = '';
-      }
+            mobileToggle.addEventListener('click', toggleMobileMenu);
+            mobileLinks.forEach(function(link) {
+                link.addEventListener('click', function() {
+                    closeMobileMenu();
+                });
+            });
 
-      // ===========================
-      // CONTACT FORM HANDLING
-      // ===========================
-      const contactForm = document.getElementById('aurelianContactForm');
-      const submitBtn = document.getElementById('aurelianSubmitBtn');
+            // ====== Scroll reveal animations ======
+            const fadeElements = document.querySelectorAll('.elara-fade-up');
 
-      contactForm.addEventListener('submit', function(e) {
-        e.preventDefault();
+            function revealOnScroll() {
+                const windowHeight = window.innerHeight;
+                const triggerPoint = windowHeight * 0.88;
 
-        // Simple validation visual feedback
-        const inputs = contactForm.querySelectorAll('input[required], textarea');
-        let valid = true;
+                fadeElements.forEach(function(el) {
+                    const elementTop = el.getBoundingClientRect().top;
+                    if (elementTop < triggerPoint) {
+                        el.classList.add('elara-fade-up--visible');
+                    }
+                });
+            }
 
-        inputs.forEach(function(input) {
-          if (!input.value.trim()) {
-            input.style.borderColor = '#e74c3c';
-            valid = false;
-            setTimeout(function() {
-              input.style.borderColor = '';
-            }, 2000);
-          }
-        });
+            // Initial check
+            revealOnScroll();
+            window.addEventListener('scroll', revealOnScroll, { passive: true });
 
-        if (!valid) return;
+            // ====== Contact form ======
+            const contactForm = document.getElementById('elaraContactForm');
 
-        // Simulate form submission
-        submitBtn.textContent = 'Sending...';
-        submitBtn.disabled = true;
+            contactForm.addEventListener('submit', function(e) {
+                e.preventDefault();
 
-        setTimeout(function() {
-          submitBtn.textContent = '✓ Reservation Requested!';
-          submitBtn.classList.add('aurelian-submitted');
-          contactForm.reset();
+                const submitBtn = contactForm.querySelector('.elara-contact__submit');
+                const originalText = submitBtn.innerHTML;
 
-          // Reset button after 3 seconds
-          setTimeout(function() {
-            submitBtn.textContent = 'Request Reservation';
-            submitBtn.classList.remove('aurelian-submitted');
-            submitBtn.disabled = false;
-          }, 3000);
-        }, 1500);
-      });
+                submitBtn.innerHTML = `
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                    Thank you — we'll be in touch
+                `;
+                submitBtn.style.background = 'var(--color-accent)';
+                submitBtn.disabled = true;
 
-      // ===========================
-      // PARALLAX EFFECT ON HERO
-      // ===========================
-      const heroBg = document.querySelector('.aurelian-hero__bg');
+                setTimeout(function() {
+                    submitBtn.innerHTML = originalText;
+                    submitBtn.style.background = '';
+                    submitBtn.disabled = false;
+                    contactForm.reset();
+                }, 4000);
+            });
 
-      window.addEventListener('scroll', function() {
-        if (window.pageYOffset < window.innerHeight) {
-          const offset = window.pageYOffset * 0.3;
-          heroBg.style.transform = 'scale(1.05) translateY(' + offset + 'px)';
-        }
-      });
-
-      // ===========================
-      // SET MINIMUM DATE FOR FORM
-      // ===========================
-      const dateInput = document.getElementById('aurelianDate');
-      if (dateInput) {
-        const today = new Date().toISOString().split('T')[0];
-        dateInput.setAttribute('min', today);
-      }
-
-      // ===========================
-      // RIPPLE EFFECT ON CTA BUTTON
-      // ===========================
-      const ctaBtn = document.querySelector('.aurelian-hero__cta');
-      if (ctaBtn) {
-        ctaBtn.addEventListener('mouseenter', function(e) {
-          const rect = ctaBtn.getBoundingClientRect();
-          const x = e.clientX - rect.left;
-          const y = e.clientY - rect.top;
-          ctaBtn.style.setProperty('--ripple-x', x + 'px');
-          ctaBtn.style.setProperty('--ripple-y', y + 'px');
-        });
-      }
-
-    })();
-  </script>
+            // ====== Smooth anchor scrolling (fallback for older browsers) ======
+            document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
+                anchor.addEventListener('click', function(e) {
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        e.preventDefault();
+                        const navHeight = nav.offsetHeight;
+                        const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

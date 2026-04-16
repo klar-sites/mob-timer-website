@@ -1,10 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html lang="en"><head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elara Clinic — Specialists in Shoulder & Hand Surgery</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>Elara Clinic — Specialists in Shoulder &amp; Hand Surgery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <style>
         *, *::before, *::after {
             margin: 0;
@@ -1208,6 +1207,17 @@
     </style>
 </head>
 <body>
+<style>.elara-about__image-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    border-radius: inherit;
+}
+
+.elara-about__image-inner {
+    overflow: hidden;
+}</style>
 
     <!-- Ambient Background -->
     <div class="elara-ambient-bg" aria-hidden="true">
@@ -1241,11 +1251,11 @@
 
     <!-- Mobile Menu -->
     <div class="elara-mobile-menu" id="elaraMobileMenu">
-        <a href="#about" class="elara-mobile-menu__link" data-mobile-link>About</a>
-        <a href="#services" class="elara-mobile-menu__link" data-mobile-link>Services</a>
-        <a href="#why" class="elara-mobile-menu__link" data-mobile-link>Why Us</a>
-        <a href="#testimonials" class="elara-mobile-menu__link" data-mobile-link>Testimonials</a>
-        <a href="#contact" class="elara-mobile-menu__link" data-mobile-link>Book Consultation</a>
+        <a href="#about" class="elara-mobile-menu__link" data-mobile-link="">About</a>
+        <a href="#services" class="elara-mobile-menu__link" data-mobile-link="">Services</a>
+        <a href="#why" class="elara-mobile-menu__link" data-mobile-link="">Why Us</a>
+        <a href="#testimonials" class="elara-mobile-menu__link" data-mobile-link="">Testimonials</a>
+        <a href="#contact" class="elara-mobile-menu__link" data-mobile-link="">Book Consultation</a>
     </div>
 
     <!-- Hero -->
@@ -1256,7 +1266,7 @@
                 Private Specialist Clinic
             </div>
             <h1 class="elara-hero__title elara-fade-up elara-fade-up--d1">
-                Specialists in<br><strong>Shoulder</strong> & <strong><em>Hand</em></strong> Surgery
+                Specialists in<br><strong>Shoulder</strong> &amp; <strong><em>Hand</em></strong> Surgery
             </h1>
             <p class="elara-hero__description elara-fade-up elara-fade-up--d2">
                 Exceptional surgical care delivered with precision and compassion. 
@@ -1285,9 +1295,7 @@
                 <div class="elara-about__visual elara-fade-up">
                     <div class="elara-about__image-frame elara-glass">
                         <div class="elara-about__image-inner">
-                            <svg class="elara-about__image-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.8">
-                                <path d="M22 12h-4l-3 9L9 3l-3 9H2"></path>
-                            </svg>
+                            <img class="elara-about__image-photo" src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="About us - Modern office workspace">
                         </div>
                         <div class="elara-about__stats">
                             <div class="elara-about__stat-number">25+</div>
@@ -1394,7 +1402,7 @@
                             <path d="M6 14l-1.5-1.5a2 2 0 0 0-3 0 2 2 0 0 0 0 3L6 20"></path>
                         </svg>
                     </div>
-                    <h3 class="elara-service-card__title">Hand & Wrist Surgery</h3>
+                    <h3 class="elara-service-card__title">Hand &amp; Wrist Surgery</h3>
                     <p class="elara-service-card__description">
                         Carpal tunnel release, tendon repair, Dupuytren's treatment, fracture fixation, 
                         and microsurgery. Precision care for complex hand conditions.
@@ -1624,17 +1632,17 @@
                         <div class="elara-contact__form-row">
                             <div class="elara-form-group">
                                 <label class="elara-form-group__label" for="elaraFirstName">First Name</label>
-                                <input class="elara-form-group__input" type="text" id="elaraFirstName" placeholder="John" required>
+                                <input class="elara-form-group__input" type="text" id="elaraFirstName" placeholder="John" required="">
                             </div>
                             <div class="elara-form-group">
                                 <label class="elara-form-group__label" for="elaraLastName">Last Name</label>
-                                <input class="elara-form-group__input" type="text" id="elaraLastName" placeholder="Smith" required>
+                                <input class="elara-form-group__input" type="text" id="elaraLastName" placeholder="Smith" required="">
                             </div>
                         </div>
                         <div class="elara-contact__form-row">
                             <div class="elara-form-group">
                                 <label class="elara-form-group__label" for="elaraEmail">Email</label>
-                                <input class="elara-form-group__input" type="email" id="elaraEmail" placeholder="john@example.com" required>
+                                <input class="elara-form-group__input" type="email" id="elaraEmail" placeholder="john@example.com" required="">
                             </div>
                             <div class="elara-form-group">
                                 <label class="elara-form-group__label" for="elaraPhone">Phone</label>
@@ -1644,9 +1652,9 @@
                         <div class="elara-form-group">
                             <label class="elara-form-group__label" for="elaraService">Area of Concern</label>
                             <select class="elara-form-group__select" id="elaraService">
-                                <option value="" disabled selected>Select a specialty</option>
+                                <option value="" disabled="" selected="">Select a specialty</option>
                                 <option value="shoulder">Shoulder</option>
-                                <option value="hand">Hand & Wrist</option>
+                                <option value="hand">Hand &amp; Wrist</option>
                                 <option value="elbow">Elbow</option>
                                 <option value="sports">Sports Injury</option>
                                 <option value="other">Other / Not Sure</option>
@@ -1672,7 +1680,7 @@
     <!-- Footer -->
     <footer class="elara-footer">
         <div class="elara-footer__container">
-            <p class="elara-footer__copy">&copy; 2024 Elara Clinic. All rights reserved.</p>
+            <p class="elara-footer__copy">© 2024 Elara Clinic. All rights reserved.</p>
             <div class="elara-footer__links">
                 <a href="#" class="elara-footer__link">Privacy Policy</a>
                 <a href="#" class="elara-footer__link">Terms of Service</a>
@@ -1789,5 +1797,5 @@
             });
         })();
     </script>
-</body>
-</html>
+
+</body></html>

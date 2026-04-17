@@ -1,0 +1,1901 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ashworth Clinic — Shoulder & Hand Surgery Specialists</title>
+
+    <!-- Fonts: Satoshi for body, Instrument Serif for editorial display -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+
+    <style>
+        /* ============================================
+           CSS CUSTOM PROPERTIES
+           ============================================ */
+        :root {
+            /* Color Palette */
+            --canvas: #F4F6F8;
+            --surface: rgba(255, 255, 255, 0.55);
+            --surface-solid: #FFFFFF;
+            --ink: #1A1D23;
+            --ink-secondary: #5A6172;
+            --ink-tertiary: #8B93A5;
+            --accent: #2A7C6F;
+            --accent-light: rgba(42, 124, 111, 0.08);
+            --accent-glow: rgba(42, 124, 111, 0.15);
+            --gold: #C4A265;
+            --gold-light: rgba(196, 162, 101, 0.1);
+            --border: rgba(200, 210, 225, 0.45);
+            --border-light: rgba(200, 210, 225, 0.25);
+            --shadow-diffuse: rgba(20, 30, 50, 0.06);
+            --shadow-tight: rgba(20, 30, 50, 0.03);
+            --glass-bg: rgba(255, 255, 255, 0.45);
+            --glass-bg-strong: rgba(255, 255, 255, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.5);
+
+            /* Typography */
+            --font-display: 'Instrument Serif', serif;
+            --font-body: 'Satoshi', -apple-system, 'Segoe UI', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
+
+            /* Spacing */
+            --section-gap: clamp(4rem, 10vw, 8rem);
+            --container-max: 1320px;
+            --px: clamp(1.25rem, 4vw, 4rem);
+
+            /* Transitions */
+            --spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* ============================================
+           FONT FACE — Satoshi
+           ============================================ */
+        @font-face {
+            font-family: 'Satoshi';
+            src: url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap') format('woff2');
+            font-weight: 400 700;
+            font-display: swap;
+        }
+
+        /* Import Satoshi from Fontshare */
+        @import url('https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap');
+
+        /* ============================================
+           RESET & BASE
+           ============================================ */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            color: var(--ink);
+            background-color: var(--canvas);
+            line-height: 1.65;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* ============================================
+           BACKGROUND — Ambient Shapes
+           ============================================ */
+        .ambient-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .ambient-bg::before {
+            content: '';
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            width: 60vw;
+            height: 60vw;
+            max-width: 800px;
+            max-height: 800px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(42, 124, 111, 0.07) 0%, rgba(42, 124, 111, 0.02) 50%, transparent 70%);
+            animation: ambientFloat1 25s ease-in-out infinite;
+        }
+
+        .ambient-bg::after {
+            content: '';
+            position: absolute;
+            bottom: -15%;
+            left: -15%;
+            width: 50vw;
+            height: 50vw;
+            max-width: 700px;
+            max-height: 700px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(196, 162, 101, 0.06) 0%, rgba(196, 162, 101, 0.01) 50%, transparent 70%);
+            animation: ambientFloat2 30s ease-in-out infinite;
+        }
+
+        .ambient-shape-3 {
+            position: absolute;
+            top: 40%;
+            left: 30%;
+            width: 40vw;
+            height: 40vw;
+            max-width: 600px;
+            max-height: 600px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(140, 160, 200, 0.05) 0%, transparent 60%);
+            animation: ambientFloat3 20s ease-in-out infinite;
+        }
+
+        @keyframes ambientFloat1 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(-30px, 40px) scale(1.05); }
+            66% { transform: translate(20px, -20px) scale(0.97); }
+        }
+
+        @keyframes ambientFloat2 {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(40px, -30px) scale(1.08); }
+        }
+
+        @keyframes ambientFloat3 {
+            0%, 100% { transform: translate(0, 0); }
+            25% { transform: translate(20px, 30px); }
+            75% { transform: translate(-25px, -15px); }
+        }
+
+        /* Grain overlay */
+        .grain-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* ============================================
+           LAYOUT UTILITIES
+           ============================================ */
+        .container {
+            width: 100%;
+            max-width: var(--container-max);
+            margin: 0 auto;
+            padding: 0 var(--px);
+        }
+
+        section {
+            position: relative;
+            z-index: 2;
+        }
+
+        /* ============================================
+           TYPOGRAPHY
+           ============================================ */
+        h1, h2, h3, h4 {
+            font-family: var(--font-display);
+            font-weight: 400;
+            line-height: 1.1;
+            letter-spacing: -0.01em;
+        }
+
+        h1 {
+            font-size: clamp(2.75rem, 6.5vw, 5.5rem);
+            color: var(--ink);
+        }
+
+        h2 {
+            font-size: clamp(2rem, 4vw, 3.25rem);
+            color: var(--ink);
+        }
+
+        h3 {
+            font-size: clamp(1.25rem, 2vw, 1.5rem);
+            color: var(--ink);
+        }
+
+        p {
+            color: var(--ink-secondary);
+            max-width: 60ch;
+            font-size: clamp(0.9375rem, 1.2vw, 1.0625rem);
+        }
+
+        .label {
+            font-family: var(--font-body);
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            color: var(--accent);
+        }
+
+        /* ============================================
+           NAVIGATION
+           ============================================ */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            z-index: 100;
+            padding: 1.25rem 0;
+            transition: all 0.5s var(--ease-smooth);
+        }
+
+        .nav.scrolled {
+            background: rgba(244, 246, 248, 0.7);
+            backdrop-filter: blur(20px) saturate(1.4);
+            -webkit-backdrop-filter: blur(20px) saturate(1.4);
+            border-bottom: 1px solid var(--border-light);
+            padding: 0.875rem 0;
+        }
+
+        .nav-inner {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .nav-logo {
+            font-family: var(--font-display);
+            font-size: 1.375rem;
+            color: var(--ink);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .nav-logo-mark {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            background: var(--accent);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-logo-mark svg {
+            width: 18px;
+            height: 18px;
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .nav-links {
+                display: flex;
+            }
+        }
+
+        .nav-links a {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: var(--ink-secondary);
+            text-decoration: none;
+            transition: color 0.3s var(--ease-smooth);
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1.5px;
+            background: var(--accent);
+            transition: width 0.3s var(--ease-smooth);
+        }
+
+        .nav-links a:hover {
+            color: var(--ink);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .nav-cta {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--surface-solid) !important;
+            background: var(--accent);
+            padding: 0.625rem 1.5rem;
+            border-radius: 100px;
+            text-decoration: none;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .nav-cta::after {
+            display: none !important;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 24px rgba(42, 124, 111, 0.2);
+            color: var(--surface-solid) !important;
+        }
+
+        .nav-cta:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Mobile menu button */
+        .nav-mobile-toggle {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px;
+            z-index: 101;
+        }
+
+        @media (min-width: 768px) {
+            .nav-mobile-toggle {
+                display: none;
+            }
+        }
+
+        .nav-mobile-toggle span {
+            display: block;
+            width: 22px;
+            height: 1.5px;
+            background: var(--ink);
+            transition: all 0.3s var(--ease-smooth);
+            transform-origin: center;
+        }
+
+        .nav-mobile-toggle.active span:nth-child(1) {
+            transform: rotate(45deg) translate(4px, 5px);
+        }
+
+        .nav-mobile-toggle.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .nav-mobile-toggle.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(4px, -5px);
+        }
+
+        /* Mobile menu overlay */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100dvh;
+            background: rgba(244, 246, 248, 0.95);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 99;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.4s var(--ease-smooth);
+        }
+
+        .mobile-menu.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .mobile-menu a {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--ink);
+            text-decoration: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.4s var(--ease-smooth);
+        }
+
+        .mobile-menu.active a {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu.active a:nth-child(1) { transition-delay: 0.1s; }
+        .mobile-menu.active a:nth-child(2) { transition-delay: 0.15s; }
+        .mobile-menu.active a:nth-child(3) { transition-delay: 0.2s; }
+        .mobile-menu.active a:nth-child(4) { transition-delay: 0.25s; }
+        .mobile-menu.active a:nth-child(5) { transition-delay: 0.3s; }
+        .mobile-menu.active a:nth-child(6) { transition-delay: 0.35s; }
+
+        /* ============================================
+           HERO SECTION
+           ============================================ */
+        .hero {
+            min-height: 100dvh;
+            display: flex;
+            align-items: center;
+            padding-top: 6rem;
+            padding-bottom: 4rem;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: center;
+        }
+
+        @media (min-width: 768px) {
+            .hero-grid {
+                grid-template-columns: 1.15fr 0.85fr;
+                gap: 4rem;
+            }
+        }
+
+        .hero-content {
+            max-width: 620px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--glass-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+        }
+
+        .hero-label-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: var(--accent);
+            animation: pulse 2.5s ease-in-out infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        .hero h1 {
+            margin-bottom: 1.5rem;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .hero-text {
+            font-size: clamp(1rem, 1.5vw, 1.125rem);
+            line-height: 1.7;
+            margin-bottom: 2.5rem;
+            max-width: 48ch;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: var(--surface-solid);
+            background: var(--accent);
+            padding: 0.9375rem 2rem;
+            border-radius: 100px;
+            border: none;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 32px rgba(42, 124, 111, 0.25);
+        }
+
+        .btn-primary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            font-weight: 500;
+            color: var(--ink);
+            background: transparent;
+            padding: 0.9375rem 1.75rem;
+            border-radius: 100px;
+            border: 1.5px solid var(--border);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.3s var(--ease-smooth);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+            transform: translateY(-1px);
+        }
+
+        .btn-secondary:active {
+            transform: translateY(0) scale(0.98);
+        }
+
+        /* Hero visual */
+        .hero-visual {
+            position: relative;
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-glass-card {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            padding: 2.5rem;
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            box-shadow:
+                0 24px 48px -12px var(--shadow-diffuse),
+                0 0 0 1px rgba(255,255,255,0.3) inset;
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 1.25rem;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 1.25rem;
+            border: 1px solid var(--border-light);
+        }
+
+        .hero-stat-number {
+            font-family: var(--font-display);
+            font-size: 2.25rem;
+            color: var(--ink);
+            line-height: 1;
+            margin-bottom: 0.375rem;
+        }
+
+        .hero-stat-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: var(--ink-tertiary);
+            letter-spacing: 0.02em;
+        }
+
+        .hero-glass-divider {
+            width: 100%;
+            height: 1px;
+            background: var(--border-light);
+            margin: 1.5rem 0;
+        }
+
+        .hero-trust {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .hero-trust-avatars {
+            display: flex;
+        }
+
+        .hero-trust-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 2px solid var(--surface-solid);
+            margin-left: -10px;
+            background: var(--canvas);
+            overflow: hidden;
+        }
+
+        .hero-trust-avatar:first-child {
+            margin-left: 0;
+        }
+
+        .hero-trust-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hero-trust-text {
+            font-size: 0.8125rem;
+            color: var(--ink-secondary);
+            line-height: 1.4;
+        }
+
+        .hero-trust-text strong {
+            color: var(--ink);
+            font-weight: 600;
+        }
+
+        /* Floating accent decoration */
+        .hero-visual::before {
+            content: '';
+            position: absolute;
+            top: -30px;
+            right: -30px;
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--accent-glow), transparent 70%);
+            animation: ambientFloat3 15s ease-in-out infinite;
+        }
+
+        /* ============================================
+           ABOUT SECTION
+           ============================================ */
+        .about {
+            padding: var(--section-gap) 0;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+
+        @media (min-width: 768px) {
+            .about-grid {
+                grid-template-columns: 0.4fr 0.6fr;
+                gap: 4rem;
+            }
+        }
+
+        .about-left .label {
+            margin-bottom: 1rem;
+            display: block;
+        }
+
+        .about-left h2 {
+            max-width: 400px;
+        }
+
+        .about-left h2 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .about-right {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .about-right p {
+            font-size: clamp(1rem, 1.3vw, 1.125rem);
+            line-height: 1.75;
+        }
+
+        .about-line {
+            width: 48px;
+            height: 2px;
+            background: var(--gold);
+            border-radius: 2px;
+        }
+
+        .about-highlight {
+            display: flex;
+            gap: 2rem;
+            margin-top: 0.5rem;
+        }
+
+        .about-highlight-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .about-highlight-number {
+            font-family: var(--font-display);
+            font-size: 2rem;
+            color: var(--ink);
+            line-height: 1;
+        }
+
+        .about-highlight-text {
+            font-size: 0.8125rem;
+            color: var(--ink-tertiary);
+            font-weight: 500;
+        }
+
+        /* ============================================
+           SERVICES SECTION
+           ============================================ */
+        .services {
+            padding: var(--section-gap) 0;
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 3.5rem;
+        }
+
+        .services-header .label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .services-header h2 {
+            margin: 0 auto;
+            max-width: 500px;
+        }
+
+        .services-header h2 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 600px) {
+            .services-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (min-width: 960px) {
+            .services-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .service-card {
+            position: relative;
+            padding: 2rem;
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px -8px var(--shadow-diffuse);
+            transition: all 0.4s var(--ease-smooth);
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border-radius: 1.5rem;
+            opacity: 0;
+            background: linear-gradient(135deg, var(--accent-light), transparent 60%);
+            transition: opacity 0.4s var(--ease-smooth);
+        }
+
+        .service-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 16px 48px -12px var(--shadow-diffuse), 0 0 0 1px var(--accent-glow);
+            border-color: rgba(42, 124, 111, 0.2);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            position: relative;
+            z-index: 1;
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+            transition: background 0.3s var(--ease-smooth);
+        }
+
+        .service-card:hover .service-icon {
+            background: var(--accent-glow);
+        }
+
+        .service-icon svg {
+            width: 24px;
+            height: 24px;
+            color: var(--accent);
+        }
+
+        .service-card h3 {
+            position: relative;
+            z-index: 1;
+            margin-bottom: 0.75rem;
+        }
+
+        .service-card p {
+            position: relative;
+            z-index: 1;
+            font-size: 0.9rem;
+            line-height: 1.65;
+        }
+
+        /* ============================================
+           WHY CHOOSE US
+           ============================================ */
+        .why-us {
+            padding: var(--section-gap) 0;
+        }
+
+        .why-us-inner {
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: clamp(2.5rem, 5vw, 4rem);
+            box-shadow: 0 24px 48px -12px var(--shadow-diffuse);
+        }
+
+        .why-us-header {
+            margin-bottom: 3rem;
+        }
+
+        .why-us-header .label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .why-us-header h2 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .why-us-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+        }
+
+        @media (min-width: 600px) {
+            .why-us-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .why-us-item {
+            display: flex;
+            gap: 1.25rem;
+            align-items: flex-start;
+        }
+
+        .why-us-num {
+            flex-shrink: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            background: var(--gold-light);
+            color: var(--gold);
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .why-us-item h3 {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            margin-bottom: 0.375rem;
+        }
+
+        .why-us-item p {
+            font-size: 0.875rem;
+            line-height: 1.6;
+        }
+
+        /* ============================================
+           TESTIMONIALS
+           ============================================ */
+        .testimonials {
+            padding: var(--section-gap) 0;
+        }
+
+        .testimonials-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .testimonials-header .label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .testimonials-header h2 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .testimonials-grid {
+                grid-template-columns: 1fr 1fr 1fr;
+            }
+        }
+
+        .testimonial-card {
+            padding: 2rem;
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(20px) saturate(1.2);
+            -webkit-backdrop-filter: blur(20px) saturate(1.2);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.5rem;
+            box-shadow: 0 8px 32px -8px var(--shadow-diffuse);
+            transition: all 0.4s var(--ease-smooth);
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 40px -10px var(--shadow-diffuse);
+        }
+
+        .testimonial-stars {
+            display: flex;
+            gap: 2px;
+            margin-bottom: 1.25rem;
+        }
+
+        .testimonial-stars svg {
+            width: 16px;
+            height: 16px;
+            color: var(--gold);
+            fill: var(--gold);
+        }
+
+        .testimonial-card blockquote {
+            font-size: 0.9375rem;
+            line-height: 1.7;
+            color: var(--ink-secondary);
+            margin-bottom: 1.5rem;
+            font-style: italic;
+        }
+
+        .testimonial-author {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding-top: 1.25rem;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .testimonial-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--accent);
+        }
+
+        .testimonial-name {
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: var(--ink);
+        }
+
+        .testimonial-role {
+            font-size: 0.75rem;
+            color: var(--ink-tertiary);
+        }
+
+        /* ============================================
+           CONTACT SECTION
+           ============================================ */
+        .contact {
+            padding: var(--section-gap) 0;
+            padding-bottom: calc(var(--section-gap) + 2rem);
+        }
+
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 3rem;
+        }
+
+        @media (min-width: 768px) {
+            .contact-grid {
+                grid-template-columns: 0.45fr 0.55fr;
+                gap: 4rem;
+            }
+        }
+
+        .contact-info .label {
+            display: block;
+            margin-bottom: 1rem;
+        }
+
+        .contact-info h2 {
+            margin-bottom: 1.25rem;
+        }
+
+        .contact-info h2 em {
+            font-style: italic;
+            color: var(--accent);
+        }
+
+        .contact-info > p {
+            margin-bottom: 2.5rem;
+        }
+
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+        }
+
+        .contact-detail {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .contact-detail-icon {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: var(--accent-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .contact-detail-icon svg {
+            width: 20px;
+            height: 20px;
+            color: var(--accent);
+        }
+
+        .contact-detail-text {
+            font-size: 0.9375rem;
+            color: var(--ink);
+            font-weight: 500;
+        }
+
+        .contact-detail-label {
+            font-size: 0.75rem;
+            color: var(--ink-tertiary);
+            margin-bottom: 0.125rem;
+        }
+
+        /* Form */
+        .contact-form-wrapper {
+            background: var(--glass-bg-strong);
+            backdrop-filter: blur(24px) saturate(1.3);
+            -webkit-backdrop-filter: blur(24px) saturate(1.3);
+            border: 1px solid var(--glass-border);
+            border-radius: 2rem;
+            padding: 2.5rem;
+            box-shadow: 0 24px 48px -12px var(--shadow-diffuse);
+        }
+
+        .contact-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            font-size: 0.8125rem;
+            font-weight: 600;
+            color: var(--ink);
+            letter-spacing: 0.01em;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            font-family: var(--font-body);
+            font-size: 0.9375rem;
+            color: var(--ink);
+            background: rgba(255, 255, 255, 0.6);
+            border: 1.5px solid var(--border);
+            border-radius: 0.875rem;
+            padding: 0.875rem 1.125rem;
+            outline: none;
+            transition: all 0.3s var(--ease-smooth);
+            resize: none;
+        }
+
+        .form-group input::placeholder,
+        .form-group textarea::placeholder {
+            color: var(--ink-tertiary);
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            border-color: var(--accent);
+            box-shadow: 0 0 0 3px var(--accent-light);
+            background: rgba(255, 255, 255, 0.85);
+        }
+
+        .form-group textarea {
+            min-height: 120px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (min-width: 480px) {
+            .form-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .form-submit {
+            margin-top: 0.5rem;
+        }
+
+        .form-submit .btn-primary {
+            width: 100%;
+            justify-content: center;
+            font-size: 1rem;
+            padding: 1.0625rem 2rem;
+        }
+
+        /* ============================================
+           FOOTER
+           ============================================ */
+        .footer {
+            position: relative;
+            z-index: 2;
+            padding: 2.5rem 0;
+            border-top: 1px solid var(--border-light);
+        }
+
+        .footer-inner {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            align-items: center;
+            text-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .footer-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+            }
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.125rem;
+            color: var(--ink);
+        }
+
+        .footer-copy {
+            font-size: 0.8125rem;
+            color: var(--ink-tertiary);
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-links a {
+            font-size: 0.8125rem;
+            color: var(--ink-tertiary);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+
+        /* ============================================
+           SCROLL ANIMATIONS
+           ============================================ */
+        .reveal {
+            opacity: 0;
+            transform: translateY(32px);
+            transition: opacity 0.7s var(--ease-smooth), transform 0.7s var(--ease-smooth);
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .reveal-delay-1 { transition-delay: 0.1s; }
+        .reveal-delay-2 { transition-delay: 0.2s; }
+        .reveal-delay-3 { transition-delay: 0.3s; }
+        .reveal-delay-4 { transition-delay: 0.4s; }
+        .reveal-delay-5 { transition-delay: 0.5s; }
+
+        /* ============================================
+           RESPONSIVE FINE-TUNING
+           ============================================ */
+        @media (max-width: 767px) {
+            .hero-visual {
+                order: -1;
+            }
+
+            .hero-glass-card {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: clamp(2.5rem, 8vw, 3.5rem);
+            }
+
+            .about-highlight {
+                flex-direction: row;
+                gap: 2rem;
+            }
+
+            .testimonials-grid .testimonial-card:nth-child(3) {
+                display: none;
+            }
+        }
+
+        @media (max-width: 599px) {
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .why-us-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Ambient Background -->
+    <div class="ambient-bg" aria-hidden="true">
+        <div class="ambient-shape-3"></div>
+    </div>
+    <div class="grain-overlay" aria-hidden="true"></div>
+
+    <!-- ============================
+         NAVIGATION
+         ============================ -->
+    <nav class="nav" id="mainNav" role="navigation" aria-label="Main navigation">
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">
+                <div class="nav-logo-mark">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round">
+                        <path d="M12 2v4M12 18v4M6 8l2 3M16 8l-2 3M8 11h8M10 14l2 4 2-4"/>
+                    </svg>
+                </div>
+                Ashworth Clinic
+            </a>
+
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#why-us">Why Us</a></li>
+                <li><a href="#testimonials">Testimonials</a></li>
+                <li><a href="#contact" class="nav-cta">Book Consultation</a></li>
+            </ul>
+
+            <button class="nav-mobile-toggle" id="mobileToggle" aria-label="Toggle menu" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobileMenu" role="dialog" aria-label="Mobile navigation">
+        <a href="#about" class="mobile-menu-link">About</a>
+        <a href="#services" class="mobile-menu-link">Services</a>
+        <a href="#why-us" class="mobile-menu-link">Why Us</a>
+        <a href="#testimonials" class="mobile-menu-link">Testimonials</a>
+        <a href="#contact" class="mobile-menu-link">Contact</a>
+        <a href="#contact" class="btn-primary" style="margin-top: 1rem;">Book Consultation</a>
+    </div>
+
+    <!-- ============================
+         HERO
+         ============================ -->
+    <section class="hero" id="hero">
+        <div class="container">
+            <div class="hero-grid">
+                <div class="hero-content">
+                    <div class="hero-label reveal">
+                        <div class="hero-label-dot"></div>
+                        <span class="label" style="margin: 0;">Accepting New Patients</span>
+                    </div>
+
+                    <h1 class="reveal reveal-delay-1">
+                        Specialists in Shoulder & <em>Hand</em> Surgery
+                    </h1>
+
+                    <p class="hero-text reveal reveal-delay-2">
+                        Precision orthopaedic care for complex shoulder and hand conditions. From diagnosis through recovery, we deliver outcomes shaped by decades of surgical expertise.
+                    </p>
+
+                    <div class="hero-actions reveal reveal-delay-3">
+                        <a href="#contact" class="btn-primary">
+                            Book Consultation
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </a>
+                        <a href="#services" class="btn-secondary">View Services</a>
+                    </div>
+                </div>
+
+                <div class="hero-visual reveal reveal-delay-2">
+                    <div class="hero-glass-card">
+                        <div class="hero-stats">
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">23+</div>
+                                <div class="hero-stat-label">Years Practice</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">8.4k</div>
+                                <div class="hero-stat-label">Surgeries Completed</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">97.3%</div>
+                                <div class="hero-stat-label">Patient Satisfaction</div>
+                            </div>
+                            <div class="hero-stat">
+                                <div class="hero-stat-number">14</div>
+                                <div class="hero-stat-label">Specialist Surgeons</div>
+                            </div>
+                        </div>
+                        <div class="hero-glass-divider"></div>
+                        <div class="hero-trust">
+                            <div class="hero-trust-avatars">
+                                <div class="hero-trust-avatar">
+                                    <img src="https://picsum.photos/seed/doc1/72/72" alt="Patient" loading="lazy">
+                                </div>
+                                <div class="hero-trust-avatar">
+                                    <img src="https://picsum.photos/seed/doc2/72/72" alt="Patient" loading="lazy">
+                                </div>
+                                <div class="hero-trust-avatar">
+                                    <img src="https://picsum.photos/seed/doc3/72/72" alt="Patient" loading="lazy">
+                                </div>
+                            </div>
+                            <div class="hero-trust-text">
+                                <strong>Trusted by athletes</strong><br>
+                                and professionals worldwide
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         ABOUT
+         ============================ -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-grid">
+                <div class="about-left reveal">
+                    <span class="label">About the Clinic</span>
+                    <h2>A tradition of <em>surgical precision</em></h2>
+                </div>
+                <div class="about-right">
+                    <p class="reveal reveal-delay-1">
+                        Ashworth Clinic was founded on a single principle: that exceptional surgical outcomes demand both technical mastery and genuine attentiveness. Our consultants hold fellowships from leading international centres and bring a combined expertise spanning reconstructive shoulder surgery, complex hand trauma, and microsurgical repair.
+                    </p>
+                    <p class="reveal reveal-delay-2">
+                        Every treatment plan is built around the individual — their anatomy, their goals, their daily demands. We do not believe in one-size-fits-all protocols. From the first consultation to final rehabilitation, you are guided by the same surgeon who operates.
+                    </p>
+                    <div class="about-line reveal reveal-delay-3"></div>
+                    <div class="about-highlight reveal reveal-delay-3">
+                        <div class="about-highlight-item">
+                            <div class="about-highlight-number">3</div>
+                            <div class="about-highlight-text">Clinic locations</div>
+                        </div>
+                        <div class="about-highlight-item">
+                            <div class="about-highlight-number">48hr</div>
+                            <div class="about-highlight-text">Avg. appointment wait</div>
+                        </div>
+                        <div class="about-highlight-item">
+                            <div class="about-highlight-number">12</div>
+                            <div class="about-highlight-text">Research publications</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         SERVICES
+         ============================ -->
+    <section class="services" id="services">
+        <div class="container">
+            <div class="services-header">
+                <span class="label reveal">Our Specialties</span>
+                <h2 class="reveal reveal-delay-1">Focused expertise in <em>upper limb</em> surgery</h2>
+            </div>
+
+            <div class="services-grid">
+                <!-- Rotator Cuff -->
+                <div class="service-card reveal reveal-delay-1">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="10"/>
+                            <path d="M12 8v4l2 2"/>
+                            <path d="M8 12a4 4 0 0 1 8 0"/>
+                        </svg>
+                    </div>
+                    <h3>Rotator Cuff Repair</h3>
+                    <p>Arthroscopic and open repair techniques for partial and full-thickness tears, restoring range of motion and strength.</p>
+                </div>
+
+                <!-- Shoulder Instability -->
+                <div class="service-card reveal reveal-delay-2">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                            <path d="M2 17l10 5 10-5"/>
+                            <path d="M2 12l10 5 10-5"/>
+                        </svg>
+                    </div>
+                    <h3>Shoulder Instability</h3>
+                    <p>Stabilisation procedures including Bankart repair and Latarjet for recurrent dislocations and subluxation.</p>
+                </div>
+
+                <!-- Carpal Tunnel -->
+                <div class="service-card reveal reveal-delay-3">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 11V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v0"/>
+                            <path d="M14 10V4a2 2 0 0 0-2-2 2 2 0 0 0-2 2v2"/>
+                            <path d="M10 10.5V6a2 2 0 0 0-2-2 2 2 0 0 0-2 2v8"/>
+                            <path d="M18 8a2 2 0 1 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/>
+                        </svg>
+                    </div>
+                    <h3>Carpal Tunnel Release</h3>
+                    <p>Minimally invasive decompression surgery for median nerve entrapment, with rapid return to daily function.</p>
+                </div>
+
+                <!-- Hand Fractures -->
+                <div class="service-card reveal reveal-delay-2">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/>
+                            <path d="M9 12h6M12 9v6"/>
+                        </svg>
+                    </div>
+                    <h3>Hand & Wrist Fractures</h3>
+                    <p>Precise fixation of scaphoid, metacarpal, and distal radius fractures using advanced plating and screw techniques.</p>
+                </div>
+
+                <!-- Sports Injuries -->
+                <div class="service-card reveal reveal-delay-3">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"/>
+                            <path d="M12 15l-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"/>
+                            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"/>
+                            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"/>
+                        </svg>
+                    </div>
+                    <h3>Sports Injuries</h3>
+                    <p>Tailored surgical and rehabilitative pathways for athletes — from ligament reconstruction to tendon repair.</p>
+                </div>
+
+                <!-- Tendon Repair -->
+                <div class="service-card reveal reveal-delay-4">
+                    <div class="service-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 16V7a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v9m16 0H4m16 0 1.28 2.55a1 1 0 0 1-.9 1.45H3.62a1 1 0 0 1-.9-1.45L4 16"/>
+                        </svg>
+                    </div>
+                    <h3>Tendon Reconstruction</h3>
+                    <p>Complex flexor and extensor tendon repairs and staged grafting, restoring grip and dexterity.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         WHY CHOOSE US
+         ============================ -->
+    <section class="why-us" id="why-us">
+        <div class="container">
+            <div class="why-us-inner">
+                <div class="why-us-header">
+                    <span class="label reveal">Why Ashworth</span>
+                    <h2 class="reveal reveal-delay-1">Built around the <em>patient</em>, not the process</h2>
+                </div>
+
+                <div class="why-us-grid">
+                    <div class="why-us-item reveal reveal-delay-1">
+                        <div class="why-us-num">01</div>
+                        <div>
+                            <h3>Fellowship-Trained Surgeons</h3>
+                            <p>Every consultant holds subspecialty fellowship training from internationally recognised centres of orthopaedic excellence.</p>
+                        </div>
+                    </div>
+
+                    <div class="why-us-item reveal reveal-delay-2">
+                        <div class="why-us-num">02</div>
+                        <div>
+                            <h3>Accelerated Recovery Protocols</h3>
+                            <p>Evidence-based pathways designed to minimise downtime. Our patients return to activity faster through structured post-operative care.</p>
+                        </div>
+                    </div>
+
+                    <div class="why-us-item reveal reveal-delay-3">
+                        <div class="why-us-num">03</div>
+                        <div>
+                            <h3>Continuity of Care</h3>
+                            <p>Your operating surgeon leads every stage — from initial assessment through surgery and rehabilitation. No handoffs, no fragmentation.</p>
+                        </div>
+                    </div>
+
+                    <div class="why-us-item reveal reveal-delay-4">
+                        <div class="why-us-num">04</div>
+                        <div>
+                            <h3>Advanced Surgical Techniques</h3>
+                            <p>Arthroscopic, microsurgical, and image-guided approaches that reduce tissue disruption and improve long-term outcomes.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         TESTIMONIALS
+         ============================ -->
+    <section class="testimonials" id="testimonials">
+        <div class="container">
+            <div class="testimonials-header">
+                <span class="label reveal">Patient Experiences</span>
+                <h2 class="reveal reveal-delay-1">Trusted by those who <em>matter most</em></h2>
+            </div>
+
+            <div class="testimonials-grid">
+                <div class="testimonial-card reveal reveal-delay-1">
+                    <div class="testimonial-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <blockquote>"After eighteen months of shoulder pain that three other clinics couldn't resolve, Mr. Ashworth identified the problem in my first appointment. Six weeks post-surgery, I was back on the tennis court."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">RM</div>
+                        <div>
+                            <div class="testimonial-name">Rachel Moriarty</div>
+                            <div class="testimonial-role">Rotator Cuff Repair, 2024</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal reveal-delay-2">
+                    <div class="testimonial-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <blockquote>"The carpal tunnel release was genuinely life-changing. I'm a concert pianist and the thought of surgery was terrifying. The team understood what was at stake and delivered beyond my expectations."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">TK</div>
+                        <div>
+                            <div class="testimonial-name">Tomasz Kowalski</div>
+                            <div class="testimonial-role">Carpal Tunnel Release, 2023</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="testimonial-card reveal reveal-delay-3">
+                    <div class="testimonial-stars">
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                        <svg viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                    </div>
+                    <blockquote>"Professional from start to finish. My shoulder stabilisation surgery was handled with extraordinary care. The follow-up programme was thorough and I felt genuinely looked after throughout."</blockquote>
+                    <div class="testimonial-author">
+                        <div class="testimonial-avatar">EH</div>
+                        <div>
+                            <div class="testimonial-name">Eleanor Hughes</div>
+                            <div class="testimonial-role">Shoulder Stabilisation, 2024</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         CONTACT
+         ============================ -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <div class="contact-grid">
+                <div class="contact-info">
+                    <span class="label reveal">Get in Touch</span>
+                    <h2 class="reveal reveal-delay-1">Begin your <em>recovery</em></h2>
+                    <p class="reveal reveal-delay-2">Request a consultation and our team will arrange your appointment within 48 hours. All enquiries are treated with complete confidentiality.</p>
+
+                    <div class="contact-details">
+                        <div class="contact-detail reveal reveal-delay-3">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Telephone</div>
+                                <div class="contact-detail-text">+44 (0) 207 946 0382</div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail reveal reveal-delay-4">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Email</div>
+                                <div class="contact-detail-text">referrals@ashworthclinic.co.uk</div>
+                            </div>
+                        </div>
+
+                        <div class="contact-detail reveal reveal-delay-5">
+                            <div class="contact-detail-icon">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                    <circle cx="12" cy="10" r="3"/>
+                                </svg>
+                            </div>
+                            <div>
+                                <div class="contact-detail-label">Clinic</div>
+                                <div class="contact-detail-text">82 Harley Street, London W1G 7HF</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form-wrapper reveal reveal-delay-2">
+                    <form class="contact-form" id="contactForm" novalidate>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="contactName">Full Name</label>
+                                <input type="text" id="contactName" name="name" placeholder="Your name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="contactEmail">Email Address</label>
+                                <input type="email" id="contactEmail" name="email" placeholder="your@email.com" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactPhone">Phone Number</label>
+                            <input type="tel" id="contactPhone" name="phone" placeholder="+44 (0) 7XXX XXX XXX">
+                        </div>
+                        <div class="form-group">
+                            <label for="contactMessage">Tell Us About Your Condition</label>
+                            <textarea id="contactMessage" name="message" placeholder="Briefly describe your symptoms, injury, or the consultation you'd like to arrange..." rows="5"></textarea>
+                        </div>
+                        <div class="form-submit">
+                            <button type="submit" class="btn-primary">
+                                Request Consultation
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================
+         FOOTER
+         ============================ -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-logo">Ashworth Clinic</div>
+            <div class="footer-links">
+                <a href="#about">About</a>
+                <a href="#services">Services</a>
+                <a href="#contact">Contact</a>
+            </div>
+            <div class="footer-copy">&copy; 2024 Ashworth Clinic. All rights reserved.</div>
+        </div>
+    </footer>
+
+    <!-- ============================================
+         JAVASCRIPT
+         ============================================ -->
+    <script>
+        // ==================================
+        // NAVIGATION — Scroll State
+        // ==================================
+        const nav = document.getElementById('mainNav');
+
+        function updateNav() {
+            if (window.scrollY > 60) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        }
+
+        window.addEventListener('scroll', updateNav, { passive: true });
+        updateNav();
+
+        // ==================================
+        // MOBILE MENU
+        // ==================================
+        const mobileToggle = document.getElementById('mobileToggle');
+        const mobileMenu = document.getElementById('mobileMenu');
+        const mobileMenuLinks = mobileMenu.querySelectorAll('a');
+
+        mobileToggle.addEventListener('click', () => {
+            const isActive = mobileMenu.classList.contains('active');
+            mobileMenu.classList.toggle('active');
+            mobileToggle.classList.toggle('active');
+            mobileToggle.setAttribute('aria-expanded', !isActive);
+            document.body.style.overflow = isActive ? '' : 'hidden';
+        });
+
+        mobileMenuLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.remove('active');
+                mobileToggle.classList.remove('active');
+                mobileToggle.setAttribute('aria-expanded', 'false');
+                document.body.style.overflow = '';
+            });
+        });
+
+        // ==================================
+        // SCROLL REVEAL — Intersection Observer
+        // ==================================
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.12,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        revealElements.forEach(el => revealObserver.observe(el));
+
+        // ==================================
+        // SMOOTH SCROLL — for anchor links
+        // ==================================
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const navHeight = nav.offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.scrollY - navHeight - 20;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+
+        // ==================================
+        // FORM HANDLING
+        // ==================================
+        const contactForm = document.getElementById('contactForm');
+
+        contactForm.addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            const submitBtn = contactForm.querySelector('.btn-primary');
+            const originalText = submitBtn.innerHTML;
+
+            submitBtn.innerHTML = `
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+                Request Sent
+            `;
+            submitBtn.style.background = '#1a8a6e';
+            submitBtn.disabled = true;
+
+            setTimeout(() => {
+                submitBtn.innerHTML = originalText;
+                submitBtn.style.background = '';
+                submitBtn.disabled = false;
+                contactForm.reset();
+            }, 3000);
+        });
+    </script>
+</body>
+</html>

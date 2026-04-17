@@ -3458,7 +3458,7 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) => {
             const editor = $('#klarEditorContent');
             const cleanHTML = this.sanitizeHTML(editor.innerHTML);
             const fullDoc =
-              `<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Exported Content</title></head><body>${cleanHTML}</body></html>`;
+              `<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Exported Content</title></head><body>${cleanHTML}<//body></html>`;
 
 
 

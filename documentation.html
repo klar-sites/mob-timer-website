@@ -2797,368 +2797,368 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) => {
     <div class="klar-toast" id="klarToast"></div>
 
     <script>
-    /* ═══════════════════════════════════════
+      /* ═══════════════════════════════════════
      KLAR DOCS — APPLICATION SCRIPT
     ═══════════════════════════════════════ */
-    (() => {
-      'use strict';
+      (() => {
+        'use strict';
 
-      /* ─── Utilities ─── */
-      const $ = (sel, ctx = document) => ctx.querySelector(sel);
-      const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
+        /* ─── Utilities ─── */
+        const $ = (sel, ctx = document) => ctx.querySelector(sel);
+        const $$ = (sel, ctx = document) => [...ctx.querySelectorAll(sel)];
 
-      function showToast(msg, duration = 2500) {
-        const toast = $('#klarToast');
-        toast.textContent = msg;
-        toast.classList.add('is-visible');
-        clearTimeout(toast._timeout);
-        toast._timeout = setTimeout(() => toast.classList.remove('is-visible'), duration);
-      }
-
-      /* ─── Theme Management ─── */
-      const ThemeManager = {
-        init() {
-          const saved = localStorage.getItem('klar-theme');
-          const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-          const theme = saved || system;
-          document.documentElement.setAttribute('data-theme', theme);
-
-          $('#klarThemeToggle').addEventListener('click', () => this.toggle());
-
-          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-            if (!localStorage.getItem('klar-theme')) {
-              document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-            }
-          });
-        },
-        toggle() {
-          const current = document.documentElement.getAttribute('data-theme');
-          const next = current === 'dark' ? 'light' : 'dark';
-          document.documentElement.setAttribute('data-theme', next);
-          localStorage.setItem('klar-theme', next);
+        function showToast(msg, duration = 2500) {
+          const toast = $('#klarToast');
+          toast.textContent = msg;
+          toast.classList.add('is-visible');
+          clearTimeout(toast._timeout);
+          toast._timeout = setTimeout(() => toast.classList.remove('is-visible'), duration);
         }
-      };
 
-      /* ─── Router ─── */
-      const Router = {
-        currentPage: 'getting-started',
+        /* ─── Theme Management ─── */
+        const ThemeManager = {
+          init() {
+            const saved = localStorage.getItem('klar-theme');
+            const system = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            const theme = saved || system;
+            document.documentElement.setAttribute('data-theme', theme);
 
-        init() {
-          document.addEventListener('click', (e) => {
-            const link = e.target.closest('[data-nav]');
-            if (link) {
-              e.preventDefault();
-              this.navigate(link.dataset.nav);
-            }
-          });
+            $('#klarThemeToggle').addEventListener('click', () => this.toggle());
 
-          const hash = location.hash.replace('#', '');
-          if (hash && $(`#page-${hash}`)) {
-            this.navigate(hash, false);
-          }
-        },
-
-        navigate(pageId, pushState = true) {
-          // Hide all pages
-          $$('.klar-page').forEach(p => p.classList.remove('is-active'));
-
-          // Show target page
-          const page = $(`#page-${pageId}`);
-          if (!page) return;
-          page.classList.add('is-active');
-
-          // Update sidebar
-          $$('.klar-sidebar__link').forEach(l => l.classList.remove('is-active'));
-          const sidebarLink = $(`.klar-sidebar__link[data-nav="${pageId}"]`);
-          if (sidebarLink) sidebarLink.classList.add('is-active');
-
-          // Scroll to top
-          window.scrollTo({
-            top: 0,
-            behavior: 'instant'
-          });
-
-          // Update URL
-          if (pushState) history.pushState(null, '', `#${pageId}`);
-
-          // Update ToC
-          TOC.generate(page);
-
-          // Re-run animations
-          $$('.klar-animate', page).forEach(el => {
-            el.style.animation = 'none';
-            el.offsetHeight; // force reflow
-            el.style.animation = '';
-          });
-
-          // Close mobile sidebar
-          Sidebar.close();
-
-          this.currentPage = pageId;
-
-          // Close search
-          Search.close();
-        }
-      };
-
-      /* ─── Sidebar ─── */
-      const Sidebar = {
-        isOpen: false,
-
-        init() {
-          $('#klarMenuBtn').addEventListener('click', () => this.toggle());
-          $('#klarSidebarOverlay').addEventListener('click', () => this.close());
-        },
-
-        toggle() {
-          this.isOpen ? this.close() : this.open();
-        },
-
-        open() {
-          this.isOpen = true;
-          $('#klarSidebar').classList.add('is-open');
-          $('#klarSidebarOverlay').classList.add('is-visible');
-        },
-
-        close() {
-          this.isOpen = false;
-          $('#klarSidebar').classList.remove('is-open');
-          $('#klarSidebarOverlay').classList.remove('is-visible');
-        }
-      };
-
-      /* ─── Table of Contents ─── */
-      const TOC = {
-        observer: null,
-
-        generate(page) {
-          const list = $('#klarTocList');
-          list.innerHTML = '';
-
-          const headings = $$('h2[id], h3[id]', page);
-          if (headings.length === 0) {
-            $('#klarToc').style.display = 'none';
-            return;
-          }
-          $('#klarToc').style.display = '';
-
-          headings.forEach(h => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.className = 'klar-toc__link';
-            a.href = `#${h.id}`;
-            a.textContent = h.textContent.replace('#', '').trim();
-            a.dataset.level = h.tagName === 'H3' ? '3' : '2';
-            li.appendChild(a);
-            list.appendChild(li);
-          });
-
-          this.observeHeadings(headings);
-        },
-
-        observeHeadings(headings) {
-          if (this.observer) this.observer.disconnect();
-
-          this.observer = new IntersectionObserver(
-            (entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                  $$('.klar-toc__link').forEach(l => l.classList.remove('is-active'));
-                  const link = $(`.klar-toc__link[href="#${entry.target.id}"]`);
-                  if (link) link.classList.add('is-active');
-                }
-              });
-            }, {
-              rootMargin: '-80px 0px -70% 0px',
-              threshold: 0
-            }
-          );
-
-          headings.forEach(h => this.observer.observe(h));
-        }
-      };
-
-      /* ─── Search ─── */
-      const Search = {
-        isOpen: false,
-        activeIndex: -1,
-
-        // Searchable content index
-        index: [{
-            title: 'Introduction',
-            section: 'Getting Started',
-            page: 'getting-started',
-            keywords: 'intro overview about klar cms'
-          },
-          {
-            title: 'Installation',
-            section: 'Getting Started',
-            page: 'installation',
-            keywords: 'install setup npm cdn script'
-          },
-          {
-            title: 'Quick Start',
-            section: 'Getting Started',
-            page: 'quick-start',
-            keywords: 'start begin tutorial'
-          },
-          {
-            title: 'Clean HTML Output',
-            section: 'Core Concepts',
-            page: 'clean-html',
-            keywords: 'sanitize clean semantic html output'
-          },
-          {
-            title: 'Editing Content',
-            section: 'Core Concepts',
-            page: 'editing',
-            keywords: 'edit contenteditable regions'
-          },
-          {
-            title: 'Configuration',
-            section: 'Core Concepts',
-            page: 'configuration',
-            keywords: 'config options settings defaults'
-          },
-          {
-            title: 'Live CMS Demo',
-            section: 'CMS Features',
-            page: 'cms-demo',
-            keywords: 'demo editor interactive try'
-          },
-          {
-            title: 'HTML Sanitization',
-            section: 'CMS Features',
-            page: 'sanitization',
-            keywords: 'sanitize clean strip remove'
-          },
-          {
-            title: 'Export & Save',
-            section: 'CMS Features',
-            page: 'export',
-            keywords: 'export save download file github'
-          },
-          {
-            title: 'API Overview',
-            section: 'API Reference',
-            page: 'api-overview',
-            keywords: 'api constructor options'
-          },
-          {
-            title: 'Methods',
-            section: 'API Reference',
-            page: 'api-methods',
-            keywords: 'methods enable disable save gethtml destroy'
-          },
-          {
-            title: 'Events',
-            section: 'API Reference',
-            page: 'api-events',
-            keywords: 'events on change save enable disable'
-          },
-          {
-            title: 'Plugin System',
-            section: 'Advanced',
-            page: 'plugins',
-            keywords: 'plugins extend hooks lifecycle'
-          },
-          {
-            title: 'Performance',
-            section: 'Advanced',
-            page: 'performance',
-            keywords: 'performance speed bundle size fast'
-          },
-          {
-            title: 'Accessibility',
-            section: 'Advanced',
-            page: 'accessibility',
-            keywords: 'accessibility a11y wcag keyboard aria'
-          },
-        ],
-
-        init() {
-          const searchInput = $('#klarSearchInput');
-          const modal = $('#klarSearchModal');
-          const modalInput = $('#klarSearchModalInput');
-          const backdrop = $('#klarSearchBackdrop');
-
-          searchInput.addEventListener('click', () => this.open());
-
-          backdrop.addEventListener('click', () => this.close());
-
-          modalInput.addEventListener('input', () => this.search(modalInput.value));
-
-          // Keyboard shortcuts
-          document.addEventListener('keydown', (e) => {
-            if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
-              e.preventDefault();
-              this.isOpen ? this.close() : this.open();
-            }
-            if (e.key === 'Escape' && this.isOpen) {
-              this.close();
-            }
-            if (this.isOpen) {
-              if (e.key === 'ArrowDown') {
-                e.preventDefault();
-                this.moveActive(1);
-              } else if (e.key === 'ArrowUp') {
-                e.preventDefault();
-                this.moveActive(-1);
-              } else if (e.key === 'Enter') {
-                e.preventDefault();
-                this.selectActive();
+            window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+              if (!localStorage.getItem('klar-theme')) {
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
               }
+            });
+          },
+          toggle() {
+            const current = document.documentElement.getAttribute('data-theme');
+            const next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('klar-theme', next);
+          }
+        };
+
+        /* ─── Router ─── */
+        const Router = {
+          currentPage: 'getting-started',
+
+          init() {
+            document.addEventListener('click', (e) => {
+              const link = e.target.closest('[data-nav]');
+              if (link) {
+                e.preventDefault();
+                this.navigate(link.dataset.nav);
+              }
+            });
+
+            const hash = location.hash.replace('#', '');
+            if (hash && $(`#page-${hash}`)) {
+              this.navigate(hash, false);
             }
-          });
-        },
+          },
 
-        open() {
-          this.isOpen = true;
-          $('#klarSearchModal').classList.add('is-open');
-          const input = $('#klarSearchModalInput');
-          input.value = '';
-          input.focus();
-          this.search('');
-        },
+          navigate(pageId, pushState = true) {
+            // Hide all pages
+            $$('.klar-page').forEach(p => p.classList.remove('is-active'));
 
-        close() {
-          this.isOpen = false;
-          $('#klarSearchModal').classList.remove('is-open');
-          this.activeIndex = -1;
-        },
+            // Show target page
+            const page = $(`#page-${pageId}`);
+            if (!page) return;
+            page.classList.add('is-active');
 
-        search(query) {
-          const results = $('#klarSearchResults');
-          query = query.toLowerCase().trim();
+            // Update sidebar
+            $$('.klar-sidebar__link').forEach(l => l.classList.remove('is-active'));
+            const sidebarLink = $(`.klar-sidebar__link[data-nav="${pageId}"]`);
+            if (sidebarLink) sidebarLink.classList.add('is-active');
 
-          if (!query) {
-            results.innerHTML = this.index.map((item, i) =>
+            // Scroll to top
+            window.scrollTo({
+              top: 0,
+              behavior: 'instant'
+            });
+
+            // Update URL
+            if (pushState) history.pushState(null, '', `#${pageId}`);
+
+            // Update ToC
+            TOC.generate(page);
+
+            // Re-run animations
+            $$('.klar-animate', page).forEach(el => {
+              el.style.animation = 'none';
+              el.offsetHeight; // force reflow
+              el.style.animation = '';
+            });
+
+            // Close mobile sidebar
+            Sidebar.close();
+
+            this.currentPage = pageId;
+
+            // Close search
+            Search.close();
+          }
+        };
+
+        /* ─── Sidebar ─── */
+        const Sidebar = {
+          isOpen: false,
+
+          init() {
+            $('#klarMenuBtn').addEventListener('click', () => this.toggle());
+            $('#klarSidebarOverlay').addEventListener('click', () => this.close());
+          },
+
+          toggle() {
+            this.isOpen ? this.close() : this.open();
+          },
+
+          open() {
+            this.isOpen = true;
+            $('#klarSidebar').classList.add('is-open');
+            $('#klarSidebarOverlay').classList.add('is-visible');
+          },
+
+          close() {
+            this.isOpen = false;
+            $('#klarSidebar').classList.remove('is-open');
+            $('#klarSidebarOverlay').classList.remove('is-visible');
+          }
+        };
+
+        /* ─── Table of Contents ─── */
+        const TOC = {
+          observer: null,
+
+          generate(page) {
+            const list = $('#klarTocList');
+            list.innerHTML = '';
+
+            const headings = $$('h2[id], h3[id]', page);
+            if (headings.length === 0) {
+              $('#klarToc').style.display = 'none';
+              return;
+            }
+            $('#klarToc').style.display = '';
+
+            headings.forEach(h => {
+              const li = document.createElement('li');
+              const a = document.createElement('a');
+              a.className = 'klar-toc__link';
+              a.href = `#${h.id}`;
+              a.textContent = h.textContent.replace('#', '').trim();
+              a.dataset.level = h.tagName === 'H3' ? '3' : '2';
+              li.appendChild(a);
+              list.appendChild(li);
+            });
+
+            this.observeHeadings(headings);
+          },
+
+          observeHeadings(headings) {
+            if (this.observer) this.observer.disconnect();
+
+            this.observer = new IntersectionObserver(
+              (entries) => {
+                entries.forEach(entry => {
+                  if (entry.isIntersecting) {
+                    $$('.klar-toc__link').forEach(l => l.classList.remove('is-active'));
+                    const link = $(`.klar-toc__link[href="#${entry.target.id}"]`);
+                    if (link) link.classList.add('is-active');
+                  }
+                });
+              }, {
+                rootMargin: '-80px 0px -70% 0px',
+                threshold: 0
+              }
+            );
+
+            headings.forEach(h => this.observer.observe(h));
+          }
+        };
+
+        /* ─── Search ─── */
+        const Search = {
+          isOpen: false,
+          activeIndex: -1,
+
+          // Searchable content index
+          index: [{
+              title: 'Introduction',
+              section: 'Getting Started',
+              page: 'getting-started',
+              keywords: 'intro overview about klar cms'
+            },
+            {
+              title: 'Installation',
+              section: 'Getting Started',
+              page: 'installation',
+              keywords: 'install setup npm cdn script'
+            },
+            {
+              title: 'Quick Start',
+              section: 'Getting Started',
+              page: 'quick-start',
+              keywords: 'start begin tutorial'
+            },
+            {
+              title: 'Clean HTML Output',
+              section: 'Core Concepts',
+              page: 'clean-html',
+              keywords: 'sanitize clean semantic html output'
+            },
+            {
+              title: 'Editing Content',
+              section: 'Core Concepts',
+              page: 'editing',
+              keywords: 'edit contenteditable regions'
+            },
+            {
+              title: 'Configuration',
+              section: 'Core Concepts',
+              page: 'configuration',
+              keywords: 'config options settings defaults'
+            },
+            {
+              title: 'Live CMS Demo',
+              section: 'CMS Features',
+              page: 'cms-demo',
+              keywords: 'demo editor interactive try'
+            },
+            {
+              title: 'HTML Sanitization',
+              section: 'CMS Features',
+              page: 'sanitization',
+              keywords: 'sanitize clean strip remove'
+            },
+            {
+              title: 'Export & Save',
+              section: 'CMS Features',
+              page: 'export',
+              keywords: 'export save download file github'
+            },
+            {
+              title: 'API Overview',
+              section: 'API Reference',
+              page: 'api-overview',
+              keywords: 'api constructor options'
+            },
+            {
+              title: 'Methods',
+              section: 'API Reference',
+              page: 'api-methods',
+              keywords: 'methods enable disable save gethtml destroy'
+            },
+            {
+              title: 'Events',
+              section: 'API Reference',
+              page: 'api-events',
+              keywords: 'events on change save enable disable'
+            },
+            {
+              title: 'Plugin System',
+              section: 'Advanced',
+              page: 'plugins',
+              keywords: 'plugins extend hooks lifecycle'
+            },
+            {
+              title: 'Performance',
+              section: 'Advanced',
+              page: 'performance',
+              keywords: 'performance speed bundle size fast'
+            },
+            {
+              title: 'Accessibility',
+              section: 'Advanced',
+              page: 'accessibility',
+              keywords: 'accessibility a11y wcag keyboard aria'
+            },
+          ],
+
+          init() {
+            const searchInput = $('#klarSearchInput');
+            const modal = $('#klarSearchModal');
+            const modalInput = $('#klarSearchModalInput');
+            const backdrop = $('#klarSearchBackdrop');
+
+            searchInput.addEventListener('click', () => this.open());
+
+            backdrop.addEventListener('click', () => this.close());
+
+            modalInput.addEventListener('input', () => this.search(modalInput.value));
+
+            // Keyboard shortcuts
+            document.addEventListener('keydown', (e) => {
+              if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+                e.preventDefault();
+                this.isOpen ? this.close() : this.open();
+              }
+              if (e.key === 'Escape' && this.isOpen) {
+                this.close();
+              }
+              if (this.isOpen) {
+                if (e.key === 'ArrowDown') {
+                  e.preventDefault();
+                  this.moveActive(1);
+                } else if (e.key === 'ArrowUp') {
+                  e.preventDefault();
+                  this.moveActive(-1);
+                } else if (e.key === 'Enter') {
+                  e.preventDefault();
+                  this.selectActive();
+                }
+              }
+            });
+          },
+
+          open() {
+            this.isOpen = true;
+            $('#klarSearchModal').classList.add('is-open');
+            const input = $('#klarSearchModalInput');
+            input.value = '';
+            input.focus();
+            this.search('');
+          },
+
+          close() {
+            this.isOpen = false;
+            $('#klarSearchModal').classList.remove('is-open');
+            this.activeIndex = -1;
+          },
+
+          search(query) {
+            const results = $('#klarSearchResults');
+            query = query.toLowerCase().trim();
+
+            if (!query) {
+              results.innerHTML = this.index.map((item, i) =>
+                this.renderResult(item, i)
+              ).join('');
+              this.activeIndex = -1;
+              return;
+            }
+
+            const matches = this.index.filter(item =>
+              item.title.toLowerCase().includes(query) ||
+              item.section.toLowerCase().includes(query) ||
+              item.keywords.includes(query)
+            );
+
+            if (matches.length === 0) {
+              results.innerHTML = '<div class="klar-search-modal__empty">No results found</div>';
+              this.activeIndex = -1;
+              return;
+            }
+
+            results.innerHTML = matches.map((item, i) =>
               this.renderResult(item, i)
             ).join('');
             this.activeIndex = -1;
-            return;
-          }
+          },
 
-          const matches = this.index.filter(item =>
-            item.title.toLowerCase().includes(query) ||
-            item.section.toLowerCase().includes(query) ||
-            item.keywords.includes(query)
-          );
-
-          if (matches.length === 0) {
-            results.innerHTML = '<div class="klar-search-modal__empty">No results found</div>';
-            this.activeIndex = -1;
-            return;
-          }
-
-          results.innerHTML = matches.map((item, i) =>
-            this.renderResult(item, i)
-          ).join('');
-          this.activeIndex = -1;
-        },
-
-        renderResult(item, index) {
-          return `
+          renderResult(item, index) {
+            return `
       <div class="klar-search-modal__result" data-result-page="${item.page}" data-result-index="${index}">
         <svg class="klar-search-modal__result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
           <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
@@ -3169,344 +3169,344 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) => {
         </div>
       </div>
     `;
-        },
+          },
 
-        moveActive(dir) {
-          const results = $$('.klar-search-modal__result');
-          if (!results.length) return;
+          moveActive(dir) {
+            const results = $$('.klar-search-modal__result');
+            if (!results.length) return;
 
-          results.forEach(r => r.classList.remove('is-active'));
-          this.activeIndex += dir;
-          if (this.activeIndex < 0) this.activeIndex = results.length - 1;
-          if (this.activeIndex >= results.length) this.activeIndex = 0;
-          results[this.activeIndex].classList.add('is-active');
-          results[this.activeIndex].scrollIntoView({
-            block: 'nearest'
-          });
-        },
+            results.forEach(r => r.classList.remove('is-active'));
+            this.activeIndex += dir;
+            if (this.activeIndex < 0) this.activeIndex = results.length - 1;
+            if (this.activeIndex >= results.length) this.activeIndex = 0;
+            results[this.activeIndex].classList.add('is-active');
+            results[this.activeIndex].scrollIntoView({
+              block: 'nearest'
+            });
+          },
 
-        selectActive() {
-          const results = $$('.klar-search-modal__result');
-          const active = results[this.activeIndex] || results[0];
-          if (active) {
-            Router.navigate(active.dataset.resultPage);
+          selectActive() {
+            const results = $$('.klar-search-modal__result');
+            const active = results[this.activeIndex] || results[0];
+            if (active) {
+              Router.navigate(active.dataset.resultPage);
+            }
           }
-        }
-      };
+        };
 
-      // Click handler for search results
-      document.addEventListener('click', (e) => {
-        const result = e.target.closest('.klar-search-modal__result');
-        if (result) {
-          Router.navigate(result.dataset.resultPage);
-        }
-      });
-
-      /* ─── Copy to Clipboard ─── */
-      document.addEventListener('click', (e) => {
-        const btn = e.target.closest('[data-copy]');
-        if (!btn) return;
-
-        const block = btn.closest('.klar-code-block');
-        if (!block) return;
-
-        const code = $('pre code', block);
-        if (!code) return;
-
-        navigator.clipboard.writeText(code.textContent).then(() => {
-          btn.classList.add('is-copied');
-          const originalHTML = btn.innerHTML;
-          btn.innerHTML =
-            `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Copied`;
-          setTimeout(() => {
-            btn.classList.remove('is-copied');
-            btn.innerHTML = originalHTML;
-          }, 2000);
+        // Click handler for search results
+        document.addEventListener('click', (e) => {
+          const result = e.target.closest('.klar-search-modal__result');
+          if (result) {
+            Router.navigate(result.dataset.resultPage);
+          }
         });
-      });
 
-      /* ─── CMS Demo Editor ─── */
-      const CMSDemo = {
-        isEditing: false,
-        originalContent: '',
-        isDirty: false,
+        /* ─── Copy to Clipboard ─── */
+        document.addEventListener('click', (e) => {
+          const btn = e.target.closest('[data-copy]');
+          if (!btn) return;
 
-        init() {
-          const editor = $('#klarEditorContent');
-          const toggle = $('#klarEditToggle');
-          const saveBtn = $('#klarSaveBtn');
-          const exportBtn = $('#klarExportBtn');
+          const block = btn.closest('.klar-code-block');
+          if (!block) return;
 
-          this.originalContent = editor.innerHTML;
+          const code = $('pre code', block);
+          if (!code) return;
 
-          toggle.addEventListener('click', () => this.toggleEdit());
-          toggle.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              e.preventDefault();
-              this.toggleEdit();
-            }
+          navigator.clipboard.writeText(code.textContent).then(() => {
+            btn.classList.add('is-copied');
+            const originalHTML = btn.innerHTML;
+            btn.innerHTML =
+              `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg> Copied`;
+            setTimeout(() => {
+              btn.classList.remove('is-copied');
+              btn.innerHTML = originalHTML;
+            }, 2000);
           });
+        });
 
-          saveBtn.addEventListener('click', () => this.save());
-          exportBtn.addEventListener('click', () => this.export());
+        /* ─── CMS Demo Editor ─── */
+        const CMSDemo = {
+          isEditing: false,
+          originalContent: '',
+          isDirty: false,
 
-          // Formatting buttons
-          $$('.klar-cms-demo__toolbar-btn[data-format]').forEach(btn => {
-            btn.addEventListener('click', () => {
-              if (!this.isEditing) return;
-              const format = btn.dataset.format;
-              if (format === 'h2' || format === 'h3') {
-                document.execCommand('formatBlock', false, format);
-              } else {
-                document.execCommand(format, false, null);
-              }
-              editor.focus();
-            });
-          });
+          init() {
+            const editor = $('#klarEditorContent');
+            const toggle = $('#klarEditToggle');
+            const saveBtn = $('#klarSaveBtn');
+            const exportBtn = $('#klarExportBtn');
 
-          // Track dirty state
-          editor.addEventListener('input', () => {
-            if (this.isEditing) {
-              this.isDirty = true;
-              this.updateStatus();
-            }
-          });
-
-          // Output tabs
-          $$('[data-output-tab]').forEach(tab => {
-            tab.addEventListener('click', () => {
-              $$('.klar-output-panel__tab').forEach(t => t.classList.remove('is-active'));
-              $$('.klar-output-panel__content').forEach(c => c.classList.remove('is-visible'));
-              tab.classList.add('is-active');
-              $(`#klarOutput${tab.dataset.outputTab.charAt(0).toUpperCase() + tab.dataset.outputTab.slice(1)}`)
-                .classList.add('is-visible');
-            });
-          });
-        },
-
-        toggleEdit() {
-          this.isEditing = !this.isEditing;
-          const editor = $('#klarEditorContent');
-          const toggle = $('#klarEditToggle');
-          const formatting = $('#klarToolbarFormatting');
-          const blocks = $('#klarToolbarBlocks');
-
-          editor.contentEditable = this.isEditing;
-          toggle.classList.toggle('is-on', this.isEditing);
-          toggle.setAttribute('aria-checked', this.isEditing);
-          editor.classList.toggle('is-editing', this.isEditing);
-
-          formatting.style.opacity = this.isEditing ? '1' : '0.4';
-          formatting.style.pointerEvents = this.isEditing ? 'auto' : 'none';
-          blocks.style.opacity = this.isEditing ? '1' : '0.4';
-          blocks.style.pointerEvents = this.isEditing ? 'auto' : 'none';
-
-          if (this.isEditing) {
             this.originalContent = editor.innerHTML;
-            editor.focus();
-          }
 
-          this.updateStatus();
-        },
+            toggle.addEventListener('click', () => this.toggleEdit());
+            toggle.addEventListener('keydown', (e) => {
+              if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                this.toggleEdit();
+              }
+            });
 
-        updateStatus() {
-          const dot = $('#klarStatusDot');
-          const text = $('#klarStatusText');
+            saveBtn.addEventListener('click', () => this.save());
+            exportBtn.addEventListener('click', () => this.export());
 
-          if (!this.isEditing) {
-            dot.className = 'klar-cms-demo__status-dot';
-            text.textContent = 'Read-only';
-          } else if (this.isDirty) {
-            dot.className = 'klar-cms-demo__status-dot is-dirty';
-            text.textContent = 'Unsaved changes';
-          } else {
-            dot.className = 'klar-cms-demo__status-dot';
-            text.textContent = 'Editing';
-          }
-        },
+            // Formatting buttons
+            $$('.klar-cms-demo__toolbar-btn[data-format]').forEach(btn => {
+              btn.addEventListener('click', () => {
+                if (!this.isEditing) return;
+                const format = btn.dataset.format;
+                if (format === 'h2' || format === 'h3') {
+                  document.execCommand('formatBlock', false, format);
+                } else {
+                  document.execCommand(format, false, null);
+                }
+                editor.focus();
+              });
+            });
 
-        sanitizeHTML(html) {
-          // Create a temporary container
-          const temp = document.createElement('div');
-          temp.innerHTML = html;
+            // Track dirty state
+            editor.addEventListener('input', () => {
+              if (this.isEditing) {
+                this.isDirty = true;
+                this.updateStatus();
+              }
+            });
 
-          // Remove contenteditable attributes
-          temp.querySelectorAll('[contenteditable]').forEach(el => {
-            el.removeAttribute('contenteditable');
-          });
+            // Output tabs
+            $$('[data-output-tab]').forEach(tab => {
+              tab.addEventListener('click', () => {
+                $$('.klar-output-panel__tab').forEach(t => t.classList.remove('is-active'));
+                $$('.klar-output-panel__content').forEach(c => c.classList.remove('is-visible'));
+                tab.classList.add('is-active');
+                $(`#klarOutput${tab.dataset.outputTab.charAt(0).toUpperCase() + tab.dataset.outputTab.slice(1)}`)
+                  .classList.add('is-visible');
+              });
+            });
+          },
 
-          // Remove data-* attributes (editor artifacts)
-          temp.querySelectorAll('*').forEach(el => {
-            [...el.attributes].forEach(attr => {
-              if (attr.name.startsWith('data-') || attr.name === 'style' || attr.name === 'class') {
-                // Keep class only if it's a semantic class
-                if (attr.name === 'class' && el.className.trim() === '') {
-                  el.removeAttribute('class');
-                } else if (attr.name !== 'class') {
-                  el.removeAttribute(attr.name);
+          toggleEdit() {
+            this.isEditing = !this.isEditing;
+            const editor = $('#klarEditorContent');
+            const toggle = $('#klarEditToggle');
+            const formatting = $('#klarToolbarFormatting');
+            const blocks = $('#klarToolbarBlocks');
+
+            editor.contentEditable = this.isEditing;
+            toggle.classList.toggle('is-on', this.isEditing);
+            toggle.setAttribute('aria-checked', this.isEditing);
+            editor.classList.toggle('is-editing', this.isEditing);
+
+            formatting.style.opacity = this.isEditing ? '1' : '0.4';
+            formatting.style.pointerEvents = this.isEditing ? 'auto' : 'none';
+            blocks.style.opacity = this.isEditing ? '1' : '0.4';
+            blocks.style.pointerEvents = this.isEditing ? 'auto' : 'none';
+
+            if (this.isEditing) {
+              this.originalContent = editor.innerHTML;
+              editor.focus();
+            }
+
+            this.updateStatus();
+          },
+
+          updateStatus() {
+            const dot = $('#klarStatusDot');
+            const text = $('#klarStatusText');
+
+            if (!this.isEditing) {
+              dot.className = 'klar-cms-demo__status-dot';
+              text.textContent = 'Read-only';
+            } else if (this.isDirty) {
+              dot.className = 'klar-cms-demo__status-dot is-dirty';
+              text.textContent = 'Unsaved changes';
+            } else {
+              dot.className = 'klar-cms-demo__status-dot';
+              text.textContent = 'Editing';
+            }
+          },
+
+          sanitizeHTML(html) {
+            // Create a temporary container
+            const temp = document.createElement('div');
+            temp.innerHTML = html;
+
+            // Remove contenteditable attributes
+            temp.querySelectorAll('[contenteditable]').forEach(el => {
+              el.removeAttribute('contenteditable');
+            });
+
+            // Remove data-* attributes (editor artifacts)
+            temp.querySelectorAll('*').forEach(el => {
+              [...el.attributes].forEach(attr => {
+                if (attr.name.startsWith('data-') || attr.name === 'style' || attr.name === 'class') {
+                  // Keep class only if it's a semantic class
+                  if (attr.name === 'class' && el.className.trim() === '') {
+                    el.removeAttribute('class');
+                  } else if (attr.name !== 'class') {
+                    el.removeAttribute(attr.name);
+                  }
+                }
+              });
+
+              // Convert styled spans to semantic elements
+              if (el.tagName === 'SPAN') {
+                if (el.style.fontWeight === 'bold' || el.style.fontWeight === '700') {
+                  const strong = document.createElement('strong');
+                  strong.innerHTML = el.innerHTML;
+                  el.replaceWith(strong);
+                } else if (el.style.fontStyle === 'italic') {
+                  const em = document.createElement('em');
+                  em.innerHTML = el.innerHTML;
+                  el.replaceWith(em);
+                } else if (!el.attributes.length) {
+                  // Unwrap empty spans
+                  el.replaceWith(...el.childNodes);
                 }
               }
-            });
 
-            // Convert styled spans to semantic elements
-            if (el.tagName === 'SPAN') {
-              if (el.style.fontWeight === 'bold' || el.style.fontWeight === '700') {
-                const strong = document.createElement('strong');
-                strong.innerHTML = el.innerHTML;
-                el.replaceWith(strong);
-              } else if (el.style.fontStyle === 'italic') {
-                const em = document.createElement('em');
-                em.innerHTML = el.innerHTML;
-                el.replaceWith(em);
-              } else if (!el.attributes.length) {
-                // Unwrap empty spans
+              // Remove empty divs that wrap single elements
+              if (el.tagName === 'DIV' && el.children.length === 1 && !el.attributes.length) {
                 el.replaceWith(...el.childNodes);
               }
-            }
+            });
 
-            // Remove empty divs that wrap single elements
-            if (el.tagName === 'DIV' && el.children.length === 1 && !el.attributes.length) {
-              el.replaceWith(...el.childNodes);
-            }
-          });
+            // Remove empty class attributes
+            temp.querySelectorAll('[class=""]').forEach(el => el.removeAttribute('class'));
 
-          // Remove empty class attributes
-          temp.querySelectorAll('[class=""]').forEach(el => el.removeAttribute('class'));
+            // Clean and format
+            let clean = temp.innerHTML;
+            // Normalize whitespace between tags
+            clean = clean.replace(/>\s+</g, '>\n<');
+            // Trim lines
+            clean = clean.split('\n').map(l => l.trim()).filter(l => l).join('\n');
 
-          // Clean and format
-          let clean = temp.innerHTML;
-          // Normalize whitespace between tags
-          clean = clean.replace(/>\s+</g, '>\n<');
-          // Trim lines
-          clean = clean.split('\n').map(l => l.trim()).filter(l => l).join('\n');
+            return clean;
+          },
 
-          return clean;
-        },
+          save() {
+            const editor = $('#klarEditorContent');
+            const rawHTML = editor.innerHTML;
+            const cleanHTML = this.sanitizeHTML(rawHTML);
 
-        save() {
-          const editor = $('#klarEditorContent');
-          const rawHTML = editor.innerHTML;
-          const cleanHTML = this.sanitizeHTML(rawHTML);
+            // Update clean output
+            const output = $('#klarCleanOutput');
+            output.textContent = cleanHTML;
+            // Apply basic highlighting to the output
+            output.innerHTML = this.highlightHTML(cleanHTML);
 
-          // Update clean output
-          const output = $('#klarCleanOutput');
-          output.textContent = cleanHTML;
-          // Apply basic highlighting to the output
-          output.innerHTML = this.highlightHTML(cleanHTML);
+            // Update diff
+            const diffOutput = $('#klarDiffOutput');
+            diffOutput.innerHTML = this.generateDiff(rawHTML, cleanHTML);
 
-          // Update diff
-          const diffOutput = $('#klarDiffOutput');
-          diffOutput.innerHTML = this.generateDiff(rawHTML, cleanHTML);
+            // Update stats
+            const statsOutput = $('#klarStatsOutput');
+            const rawSize = new Blob([rawHTML]).size;
+            const cleanSize = new Blob([cleanHTML]).size;
+            const savings = rawSize - cleanSize;
+            const pctSaved = rawSize > 0 ? ((savings / rawSize) * 100).toFixed(1) : 0;
 
-          // Update stats
-          const statsOutput = $('#klarStatsOutput');
-          const rawSize = new Blob([rawHTML]).size;
-          const cleanSize = new Blob([cleanHTML]).size;
-          const savings = rawSize - cleanSize;
-          const pctSaved = rawSize > 0 ? ((savings / rawSize) * 100).toFixed(1) : 0;
+            statsOutput.innerHTML = [
+              `<span class="klar-hl-attr">Raw HTML size</span>:    <span class="klar-hl-number">${rawSize}</span> bytes`,
+              `<span class="klar-hl-attr">Clean HTML size</span>:  <span class="klar-hl-number">${cleanSize}</span> bytes`,
+              `<span class="klar-hl-attr">Bytes removed</span>:    <span class="klar-hl-string">${savings}</span> bytes (<span class="klar-hl-string">${pctSaved}%</span> reduction)`,
+              ``,
+              `<span class="klar-hl-attr">Attributes removed</span>: <span class="klar-hl-number">${(rawHTML.match(/contenteditable|data-|style="/g) || []).length}</span>`,
+              `<span class="klar-hl-attr">Spans unwrapped</span>:    <span class="klar-hl-number">${(rawHTML.match(/<span/g) || []).length - (cleanHTML.match(/<span/g) || []).length}</span>`,
+              `<span class="klar-hl-attr">Divs collapsed</span>:    <span class="klar-hl-number">${Math.max(0, (rawHTML.match(/<div/g) || []).length - (cleanHTML.match(/<div/g) || []).length)}</span>`,
+            ].join('\n');
 
-          statsOutput.innerHTML = [
-            `<span class="klar-hl-attr">Raw HTML size</span>:    <span class="klar-hl-number">${rawSize}</span> bytes`,
-            `<span class="klar-hl-attr">Clean HTML size</span>:  <span class="klar-hl-number">${cleanSize}</span> bytes`,
-            `<span class="klar-hl-attr">Bytes removed</span>:    <span class="klar-hl-string">${savings}</span> bytes (<span class="klar-hl-string">${pctSaved}%</span> reduction)`,
-            ``,
-            `<span class="klar-hl-attr">Attributes removed</span>: <span class="klar-hl-number">${(rawHTML.match(/contenteditable|data-|style="/g) || []).length}</span>`,
-            `<span class="klar-hl-attr">Spans unwrapped</span>:    <span class="klar-hl-number">${(rawHTML.match(/<span/g) || []).length - (cleanHTML.match(/<span/g) || []).length}</span>`,
-            `<span class="klar-hl-attr">Divs collapsed</span>:    <span class="klar-hl-number">${Math.max(0, (rawHTML.match(/<div/g) || []).length - (cleanHTML.match(/<div/g) || []).length)}</span>`,
-          ].join('\n');
+            this.isDirty = false;
+            this.updateStatus();
+            showToast('✓ Saved — HTML sanitized and output updated');
+          },
 
-          this.isDirty = false;
-          this.updateStatus();
-          showToast('✓ Saved — HTML sanitized and output updated');
-        },
+          highlightHTML(html) {
+            return html
+              .replace(/&/g, '&amp;')
+              .replace(/</g, '&lt;')
+              .replace(/>/g, '&gt;')
+              .replace(/(&lt;\/?)([\w]+)/g, '$1<span class="klar-hl-tag">$2</span>')
+              .replace(/([\w-]+)(=)/g, '<span class="klar-hl-attr">$1</span>$2')
+              .replace(/"([^"]*)"/g, '"<span class="klar-hl-string">$1</span>"');
+          },
 
-        highlightHTML(html) {
-          return html
-            .replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/(&lt;\/?)([\w]+)/g, '$1<span class="klar-hl-tag">$2</span>')
-            .replace(/([\w-]+)(=)/g, '<span class="klar-hl-attr">$1</span>$2')
-            .replace(/"([^"]*)"/g, '"<span class="klar-hl-string">$1</span>"');
-        },
+          generateDiff(raw, clean) {
+            const rawLines = raw.replace(/></g, '>\n<').split('\n').map(l => l.trim()).filter(l => l);
+            const cleanLines = clean.split('\n').filter(l => l);
+            let diff = '';
 
-        generateDiff(raw, clean) {
-          const rawLines = raw.replace(/></g, '>\n<').split('\n').map(l => l.trim()).filter(l => l);
-          const cleanLines = clean.split('\n').filter(l => l);
-          let diff = '';
+            // Simple diff: show removed lines and kept lines
+            const cleanSet = new Set(cleanLines.map(l => l.trim()));
 
-          // Simple diff: show removed lines and kept lines
-          const cleanSet = new Set(cleanLines.map(l => l.trim()));
+            rawLines.forEach(line => {
+              const trimmed = line.trim();
+              const escaped = trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              if (!cleanSet.has(trimmed)) {
+                diff += `<div class="klar-diff__line klar-diff__line--remove">- ${escaped}</div>`;
+              }
+            });
 
-          rawLines.forEach(line => {
-            const trimmed = line.trim();
-            const escaped = trimmed.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            if (!cleanSet.has(trimmed)) {
-              diff += `<div class="klar-diff__line klar-diff__line--remove">- ${escaped}</div>`;
-            }
-          });
+            cleanLines.forEach(line => {
+              const escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+              diff += `<div class="klar-diff__line klar-diff__line--add">+ ${escaped}</div>`;
+            });
 
-          cleanLines.forEach(line => {
-            const escaped = line.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-            diff += `<div class="klar-diff__line klar-diff__line--add">+ ${escaped}</div>`;
-          });
+            return diff || '<span class="klar-hl-comment">No differences detected</span>';
+          },
 
-          return diff || '<span class="klar-hl-comment">No differences detected</span>';
-        },
-
-        export () {
-          const editor = $('#klarEditorContent');
-          const cleanHTML = this.sanitizeHTML(editor.innerHTML);
-          const fullDoc = '<div>' + cleanHTML + '</div>';
+          export () {
+            const editor = $('#klarEditorContent');
+            const cleanHTML = this.sanitizeHTML(editor.innerHTML);
+            const fullDoc = `<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Exported Content</title></head><body>${cleanHTML}</body></html>`;
 
 
 
-          const blob = new Blob([fullDoc], {
-            type: 'text/html'
-          });
-          const url = URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = 'klar-export.html';
-          a.click();
-          URL.revokeObjectURL(url);
-          showToast('✓ Exported as klar-export.html');
-        }
-      };
+            const blob = new Blob([fullDoc], {
+              type: 'text/html'
+            });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'klar-export.html';
+            a.click();
+            URL.revokeObjectURL(url);
+            showToast('✓ Exported as klar-export.html');
+          }
+        };
 
-      /* ─── Keyboard Navigation ─── */
-      document.addEventListener('keydown', (e) => {
-        // '/' to focus search
-        if (e.key === '/' && !e.metaKey && !e.ctrlKey && document.activeElement.tagName !== 'INPUT' && !document
-          .activeElement.isContentEditable) {
-          e.preventDefault();
-          Search.open();
-        }
-      });
+        /* ─── Keyboard Navigation ─── */
+        document.addEventListener('keydown', (e) => {
+          // '/' to focus search
+          if (e.key === '/' && !e.metaKey && !e.ctrlKey && document.activeElement.tagName !== 'INPUT' && !document
+            .activeElement.isContentEditable) {
+            e.preventDefault();
+            Search.open();
+          }
+        });
 
-      /* ─── Scroll Spy for Sidebar ─── */
-      // Already handled by TOC observer
+        /* ─── Scroll Spy for Sidebar ─── */
+        // Already handled by TOC observer
 
-      /* ─── Initialize ─── */
-      ThemeManager.init();
-      Sidebar.init();
-      Router.init();
-      Search.init();
-      CMSDemo.init();
+        /* ─── Initialize ─── */
+        ThemeManager.init();
+        Sidebar.init();
+        Router.init();
+        Search.init();
+        CMSDemo.init();
 
-      // Generate initial TOC
-      const activePage = $('.klar-page.is-active');
-      if (activePage) TOC.generate(activePage);
+        // Generate initial TOC
+        const activePage = $('.klar-page.is-active');
+        if (activePage) TOC.generate(activePage);
 
-      // Handle popstate
-      window.addEventListener('popstate', () => {
-        const hash = location.hash.replace('#', '');
-        if (hash && $(`#page-${hash}`)) {
-          Router.navigate(hash, false);
-        }
-      });
+        // Handle popstate
+        window.addEventListener('popstate', () => {
+          const hash = location.hash.replace('#', '');
+          if (hash && $(`#page-${hash}`)) {
+            Router.navigate(hash, false);
+          }
+        });
 
-    })();
+      })();
     </script>
 
   </body>

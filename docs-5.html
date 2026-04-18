@@ -473,11 +473,19 @@
         visibility: visible;
       }
 
-      .klar-search-modal__backdrop {
+      /* .klar-search-modal__backdrop {
         position: absolute;
         inset: 0;
         background: rgba(0, 0, 0, 0.3);
+      } */
+
+      .klar-search-modal__backdrop {
+        position: absolute;
+        inset: 0;
+        background: rgba(15, 23, 42, 0.4);
+        backdrop-filter: blur(4px);
       }
+
 
       [data-theme="dark"] .klar-search-modal__backdrop {
         background: rgba(0, 0, 0, 0.6);
@@ -3332,7 +3340,7 @@
 
         function renderResult(item, index) {
           return `
-              <div class="klar-search-modal__result" data-result-page="${item.page}" data-result-index="${index}">
+              <div class="klar-search-modal__result" data-nav="${item.page}" data-result-index="${index}">
                 <svg class="klar-search-modal__result-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                   <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/>
                 </svg>

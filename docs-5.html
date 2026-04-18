@@ -3228,6 +3228,14 @@
           searchModal.classList.add("is-open");
           setTimeout(() => searchModalInput.focus(), 100);
           searchResults.innerHTML = pages.map((item, i) => renderResult(item, i)).join('');
+          searchResults
+            .querySelectorAll(".klar-search-modal__result")
+            .forEach((el) => {
+              el.addEventListener("click", () => {
+                navigateTo(el.getAttribute("data-nav"));
+                closeSearch();
+              });
+            });
           // this.search('');
           // $('#klarSearchModal').classList.add('is-open');
           // const input = $('#klarSearchModalInput');

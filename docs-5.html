@@ -3332,8 +3332,11 @@
         searchModalInput.addEventListener("input", () => {
           const q = searchModalInput.value.toLowerCase().trim();
           if (!q) {
-            searchResults.innerHTML = "";
-            return;
+              searchResults.innerHTML = pages.map((item, i) => this.renderResult(item, i)).join('');
+              this.activeIndex = -1;
+              return;
+            // searchResults.innerHTML = "";
+            // return;
           }
 
           const matches = pages.filter(

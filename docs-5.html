@@ -1,25 +1,14 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en" data-theme="light">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klar CMS — Clean HTML, Zero Bloat</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&display=swap"
-      rel="stylesheet" />
-    <style>
-      /*!
-  Theme: Default
-  Description: Original highlight.js style
-  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
-  Maintainer: @highlightjs/core-team
-  Website: https://highlightjs.org/
-  License: see project LICENSE
-  Touched: 2021
-*/pre code.hljs{display:block;overflow-x:auto;padding:1em}code.hljs{padding:3px 5px}.hljs{background:#f3f3f3;color:#444}.hljs-comment{color:#697070}.hljs-punctuation,.hljs-tag{color:#444a}.hljs-tag .hljs-attr,.hljs-tag .hljs-name{color:#444}.hljs-attribute,.hljs-doctag,.hljs-keyword,.hljs-meta .hljs-keyword,.hljs-name,.hljs-selector-tag{font-weight:700}.hljs-deletion,.hljs-number,.hljs-quote,.hljs-selector-class,.hljs-selector-id,.hljs-string,.hljs-template-tag,.hljs-type{color:#800}.hljs-section,.hljs-title{color:#800;font-weight:700}.hljs-link,.hljs-operator,.hljs-regexp,.hljs-selector-attr,.hljs-selector-pseudo,.hljs-symbol,.hljs-template-variable,.hljs-variable{color:#ab5656}.hljs-literal{color:#695}.hljs-addition,.hljs-built_in,.hljs-bullet,.hljs-code{color:#397300}.hljs-meta{color:#1f7199}.hljs-meta .hljs-string{color:#38a}.hljs-emphasis{font-style:italic}.hljs-strong{font-weight:700}
-    </style>
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&amp;family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;1,400&amp;display=swap"
+      rel="stylesheet">
     <style>
       /* ═══════════════════════════════════════
    CSS VARIABLES & THEMING
@@ -1798,6 +1787,111 @@
         opacity: 1;
       }
     </style>
+    <style>
+      /*!
+  Theme: Default
+  Description: Original highlight.js style
+  Author: (c) Ivan Sagalaev <maniac@softwaremaniacs.org>
+  Maintainer: @highlightjs/core-team
+  Website: https://highlightjs.org/
+  License: see project LICENSE
+  Touched: 2021
+*/
+      pre code.hljs {
+        display: block;
+        overflow-x: auto;
+        padding: 1em
+      }
+
+      code.hljs {
+        padding: 3px 5px
+      }
+
+      .hljs {
+        background: #f3f3f3;
+        color: #444
+      }
+        
+      .hljs-comment {
+        color: var(--code-comment);
+      }
+
+      .hljs-punctuation,
+      .hljs-tag {
+        color: #444a
+      }
+
+      .hljs-tag .hljs-attr,
+      .hljs-tag .hljs-name {
+        color: var(--code-tag);
+      }
+
+      .hljs-attribute,
+      .hljs-doctag,
+      .hljs-keyword,
+      .hljs-meta .hljs-keyword,
+      .hljs-name,
+      .hljs-selector-tag {
+        font-weight: 700;
+        color: var(--code-attr);
+        color: red;
+      }
+
+      .hljs-deletion,
+      .hljs-number,
+      .hljs-quote,
+      .hljs-selector-class,
+      .hljs-selector-id,
+      .hljs-string,
+      .hljs-template-tag,
+      .hljs-type {
+        color: #800
+      }
+
+      .hljs-section,
+      .hljs-title {
+        color: #800;
+        font-weight: 700
+      }
+
+      .hljs-link,
+      .hljs-operator,
+      .hljs-regexp,
+      .hljs-selector-attr,
+      .hljs-selector-pseudo,
+      .hljs-symbol,
+      .hljs-template-variable,
+      .hljs-variable {
+        color: #ab5656
+      }
+
+      .hljs-literal {
+        color: #695
+      }
+
+      .hljs-addition,
+      .hljs-built_in,
+      .hljs-bullet,
+      .hljs-code {
+        color: #397300
+      }
+
+      .hljs-meta {
+        color: #1f7199
+      }
+
+      .hljs-meta .hljs-string {
+        color: var(--code-text);
+      }
+
+      .hljs-emphasis {
+        font-style: italic
+      }
+
+      .hljs-strong {
+        font-weight: 700
+      }
+    </style>
   </head>
   <body>
     <!-- ════════════════════════════════════
@@ -1807,9 +1901,9 @@
       <button class="klar-nav__menu-btn" id="klarMenuBtn" aria-label="Toggle menu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20"
           height="20">
-          <line x1="3" y1="6" x2="21" y2="6" />
-          <line x1="3" y1="12" x2="21" y2="12" />
-          <line x1="3" y1="18" x2="21" y2="18" />
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
         </svg>
       </button>
 
@@ -1823,12 +1917,12 @@
         <div class="klar-nav__search">
           <svg class="klar-nav__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
           </svg>
           <input type="text" class="klar-nav__search-input" placeholder="Search documentation..." id="klarSearchInput"
-            readonly aria-label="Search documentation" />
-          <span class="klar-nav__search-kbd">&#8984;K</span>
+            readonly="" aria-label="Search documentation">
+          <span class="klar-nav__search-kbd">⌘K</span>
         </div>
       </div>
 
@@ -1836,19 +1930,21 @@
         <a href="https://github.com" class="klar-nav__btn" aria-label="GitHub" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" fill="currentColor">
             <path
-              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z">
+            </path>
           </svg>
         </a>
         <button class="klar-theme-toggle" id="klarThemeToggle" aria-label="Toggle theme">
           <svg class="klar-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
-            <circle cx="12" cy="12" r="5" />
+            <circle cx="12" cy="12" r="5"></circle>
             <path
-              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42">
+            </path>
           </svg>
           <svg class="klar-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
             stroke-linecap="round">
-            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
           </svg>
         </button>
       </div>
@@ -1862,16 +1958,16 @@
       <div class="klar-search-modal__container">
         <div class="klar-search-modal__input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="8" />
-            <path d="M21 21l-4.35-4.35" />
+            <circle cx="11" cy="11" r="8"></circle>
+            <path d="M21 21l-4.35-4.35"></path>
           </svg>
           <input type="text" class="klar-search-modal__input" placeholder="Search docs..." id="klarSearchModalInput"
-            autocomplete="off" />
+            autocomplete="off">
         </div>
         <div class="klar-search-modal__results" id="klarSearchResults"></div>
         <div class="klar-search-modal__footer">
-          <span><kbd>&uarr;&darr;</kbd> Navigate</span>
-          <span><kbd>&crarr;</kbd> Select</span>
+          <span><kbd>↑↓</kbd> Navigate</span>
+          <span><kbd>↵</kbd> Select</span>
           <span><kbd>Esc</kbd> Close</span>
         </div>
       </div>
@@ -1954,7 +2050,7 @@
                 <div class="klar-feature-card">
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5" />
+                      <path d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"></path>
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">Click-to-Edit</div>
@@ -1965,13 +2061,13 @@
                 <div class="klar-feature-card">
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <polyline points="16 18 22 12 16 6" />
-                      <polyline points="8 6 2 12 8 18" />
+                      <polyline points="16 18 22 12 16 6"></polyline>
+                      <polyline points="8 6 2 12 8 18"></polyline>
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">Clean HTML Output</div>
                   <div class="klar-feature-card__desc">
-                    Your edits are applied cleanly. No injected wrappers, no data attributes &mdash; your HTML stays
+                    Your edits are applied cleanly. No injected wrappers, no data attributes — your HTML stays
                     exactly as you wrote it.
                   </div>
                 </div>
@@ -1979,12 +2075,13 @@
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
                       <path
-                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                        d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22">
+                      </path>
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">GitHub-Native</div>
                   <div class="klar-feature-card__desc">
-                    Commit edits directly to your repo, publish to GitHub Pages, and manage media files &mdash; all from
+                    Commit edits directly to your repo, publish to GitHub Pages, and manage media files — all from
                     the browser.
                   </div>
                 </div>
@@ -1994,32 +2091,32 @@
                 What You Can Do<a href="#what-you-can-do" class="klar-heading-anchor">#</a>
               </h2>
               <ul>
-                <li><strong>Click-to-edit</strong> &mdash; hover to highlight, click to edit any text, heading, button,
+                <li><strong>Click-to-edit</strong> — hover to highlight, click to edit any text, heading, button,
                   or link</li>
-                <li><strong>Structured panel</strong> &mdash; edit text, attributes (href, src, alt, class, style), and
+                <li><strong>Structured panel</strong> — edit text, attributes (href, src, alt, class, style), and
                   raw HTML in a sidebar form</li>
-                <li><strong>Image and media management</strong> &mdash; upload, browse, and swap images from your
+                <li><strong>Image and media management</strong> — upload, browse, and swap images from your
                   GitHub-backed media library</li>
-                <li><strong>Icon picker</strong> &mdash; search and insert icons from Heroicons, Material Design, and
+                <li><strong>Icon picker</strong> — search and insert icons from Heroicons, Material Design, and
                   Lucide libraries</li>
-                <li><strong>SVG editing</strong> &mdash; edit SVG attributes like stroke, fill, and viewBox, or replace
+                <li><strong>SVG editing</strong> — edit SVG attributes like stroke, fill, and viewBox, or replace
                   SVGs entirely</li>
-                <li><strong>Link editing</strong> &mdash; edit href on any anchor element, even when the link wraps
+                <li><strong>Link editing</strong> — edit href on any anchor element, even when the link wraps
                   images or other content</li>
-                <li><strong>List/container editing</strong> &mdash; add, remove, reorder, and duplicate items in
+                <li><strong>List/container editing</strong> — add, remove, reorder, and duplicate items in
                   repeating containers like lists and grids</li>
-                <li><strong>Code editor</strong> &mdash; edit HTML, CSS, and JavaScript directly with syntax
+                <li><strong>Code editor</strong> — edit HTML, CSS, and JavaScript directly with syntax
                   highlighting and live preview</li>
-                <li><strong>AI assistant</strong> &mdash; ask AI to make changes to your page with natural language</li>
-                <li><strong>Multi-page management</strong> &mdash; create, duplicate, rename, and delete pages in your
+                <li><strong>AI assistant</strong> — ask AI to make changes to your page with natural language</li>
+                <li><strong>Multi-page management</strong> — create, duplicate, rename, and delete pages in your
                   repo</li>
-                <li><strong>Shared sections</strong> &mdash; edit a header or footer once and sync it across all pages
+                <li><strong>Shared sections</strong> — edit a header or footer once and sync it across all pages
                 </li>
-                <li><strong>Save and publish</strong> &mdash; commit your edits to GitHub and publish to GitHub Pages
+                <li><strong>Save and publish</strong> — commit your edits to GitHub and publish to GitHub Pages
                   with one click</li>
-                <li><strong>Version history</strong> &mdash; browse previous versions of your page and restore any
+                <li><strong>Version history</strong> — browse previous versions of your page and restore any
                   commit</li>
-                <li><strong>Responsive preview</strong> &mdash; test your page at desktop, tablet, and phone sizes</li>
+                <li><strong>Responsive preview</strong> — test your page at desktop, tablet, and phone sizes</li>
               </ul>
 
               <h2 id="how-it-works">
@@ -2027,38 +2124,38 @@
               </h2>
               <p>
                 Go to <strong>klar.website</strong>, sign in with Google, and connect your GitHub repository. Klar loads
-                your page in a live preview. Click on any element to start editing. When you're done, hit Save &mdash;
+                your page in a live preview. Click on any element to start editing. When you're done, hit Save —
                 your changes are committed directly to your repo as clean HTML.
               </p>
 
               <div class="klar-code-block klar-animate klar-animate--d2">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">HTML</span>
-                  <button class="klar-code-block__copy" data-copy>
+                  <button class="klar-code-block__copy" data-copy="">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2" />
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
+                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
                     </svg>
                     Copy
                   </button>
                 </div>
-                <pre><code><span class="klar-hl-comment">&lt;!-- Your original HTML --&gt;</span>
-<span class="klar-hl-tag">&lt;section</span> <span class="klar-hl-attr">class</span>=<span class="klar-hl-string">"hero"</span><span class="klar-hl-tag">&gt;</span>
-  <span class="klar-hl-tag">&lt;h1&gt;</span>Welcome to My Site<span class="klar-hl-tag">&lt;/h1&gt;</span>
-  <span class="klar-hl-tag">&lt;p&gt;</span>This is the description.<span class="klar-hl-tag">&lt;/p&gt;</span>
-<span class="klar-hl-tag">&lt;/section&gt;</span>
+                <pre><code><span class="hljs-comment">&lt;!-- Your original HTML --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"hero"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome to My Site<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>This is these description.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span>
 
-<span class="klar-hl-comment">&lt;!-- After editing with Klar — still clean! --&gt;</span>
-<span class="klar-hl-tag">&lt;section</span> <span class="klar-hl-attr">class</span>=<span class="klar-hl-string">"hero"</span><span class="klar-hl-tag">&gt;</span>
-  <span class="klar-hl-tag">&lt;h1&gt;</span>Welcome to My Updated Site<span class="klar-hl-tag">&lt;/h1&gt;</span>
-  <span class="klar-hl-tag">&lt;p&gt;</span>A better description here.<span class="klar-hl-tag">&lt;/p&gt;</span>
-<span class="klar-hl-tag">&lt;/section&gt;</span></code></pre>
+<span class="hljs-comment">&lt;!-- After editing with Klar — still clean! --&gt;</span>
+<span class="hljs-tag">&lt;<span class="hljs-name">section</span> <span class="hljs-attr">class</span>=<span class="hljs-string">"hero"</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">h1</span>&gt;</span>Welcome to My Updated Site<span class="hljs-tag">&lt;/<span class="hljs-name">h1</span>&gt;</span>
+  <span class="hljs-tag">&lt;<span class="hljs-name">p</span>&gt;</span>A better description here.<span class="hljs-tag">&lt;/<span class="hljs-name">p</span>&gt;</span>
+<span class="hljs-tag">&lt;/<span class="hljs-name">section</span>&gt;</span></code></pre>
               </div>
 
               <div class="klar-callout klar-callout--success">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
                 <div>
                   <strong>Ready to get started?</strong> Head over to the <a href="#" data-nav="papge-setup">Setup &amp;
@@ -2070,7 +2167,7 @@
                 <div></div>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-setup">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Setup &amp; Login &rarr;</span>
+                  <span class="klar-article-nav__title">Setup &amp; Login →</span>
                 </a>
               </div>
             </div>
@@ -2110,12 +2207,12 @@
 
               <div class="klar-callout klar-callout--info">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4M12 8h.01"></path>
                 </svg>
                 <div>
-                  To create a GitHub token, go to <strong>GitHub &rarr; Settings &rarr; Developer settings &rarr;
-                    Personal access tokens &rarr; Tokens (classic)</strong>, and generate a new token with
+                  To create a GitHub token, go to <strong>GitHub → Settings → Developer settings →
+                    Personal access tokens → Tokens (classic)</strong>, and generate a new token with
                   <code>repo</code> and <code>pages</code> scope. Your token is encrypted before being stored.
                 </div>
               </div>
@@ -2173,11 +2270,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-getting-started">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Introduction</span>
+                  <span class="klar-article-nav__title">← Introduction</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-quick-start">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Quick Start &rarr;</span>
+                  <span class="klar-article-nav__title">Quick Start →</span>
                 </a>
               </div>
             </div>
@@ -2211,7 +2308,7 @@
                 </h2>
                 <p>
                   Klar loads your page in a live preview. Hover over any element to see it highlighted with a blue
-                  outline. Click to select it &mdash; text elements become editable right on the page, while images and
+                  outline. Click to select it — text elements become editable right on the page, while images and
                   SVGs open the structured panel on the right.
                 </p>
                 <p>
@@ -2236,7 +2333,7 @@
                   4. Save &amp; Publish<a href="#step-4" class="klar-heading-anchor">#</a>
                 </h2>
                 <p>
-                  Press <kbd>Cmd+S</kbd> (or click Save) to commit your changes to GitHub. Your HTML stays clean &mdash;
+                  Press <kbd>Cmd+S</kbd> (or click Save) to commit your changes to GitHub. Your HTML stays clean —
                   no wrappers or data attributes are injected.
                 </p>
                 <p>
@@ -2247,8 +2344,8 @@
 
               <div class="klar-callout klar-callout--success">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-                  <polyline points="22 4 12 14.01 9 11.01" />
+                  <path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path>
+                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
                 </svg>
                 <div>
                   <strong>That's it!</strong> You're now editing your website visually and saving changes directly to
@@ -2261,11 +2358,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-setup">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Setup &amp; Login</span>
+                  <span class="klar-article-nav__title">← Setup &amp; Login</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-visual-editing">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Visual Editing &rarr;</span>
+                  <span class="klar-article-nav__title">Visual Editing →</span>
                 </a>
               </div>
             </div>
@@ -2283,21 +2380,21 @@
 
               <h2 id="how-editing-works">How It Works<a href="#how-editing-works" class="klar-heading-anchor">#</a></h2>
               <p>Your website loads in a live preview inside the editor. Hover over any element to see it highlighted
-                with a blue outline. Click to select it &mdash; the element becomes editable directly on the page.</p>
+                with a blue outline. Click to select it — the element becomes editable directly on the page.</p>
 
               <h2 id="editable-elements">Editable Elements<a href="#editable-elements" class="klar-heading-anchor">#</a>
               </h2>
               <p>By default, Klar makes the following element types editable:</p>
               <ul>
-                <li><strong>Text elements</strong> &mdash; headings (h1&ndash;h6), paragraphs, spans, links, buttons,
+                <li><strong>Text elements</strong> — headings (h1–h6), paragraphs, spans, links, buttons,
                   list items, table cells, labels, blockquotes, and more</li>
-                <li><strong>Images</strong> &mdash; click to change the source, alt text, or pick a new image from the
+                <li><strong>Images</strong> — click to change the source, alt text, or pick a new image from the
                   media library</li>
-                <li><strong>SVGs &amp; Icons</strong> &mdash; edit SVG attributes (stroke, fill, viewBox, width, height)
+                <li><strong>SVGs &amp; Icons</strong> — edit SVG attributes (stroke, fill, viewBox, width, height)
                   or replace the icon entirely using the icon picker</li>
-                <li><strong>Links</strong> &mdash; edit the href on any anchor element, even when the link wraps images
+                <li><strong>Links</strong> — edit the href on any anchor element, even when the link wraps images
                   or other content</li>
-                <li><strong>Background images</strong> &mdash; swap background images on elements with the
+                <li><strong>Background images</strong> — swap background images on elements with the
                   <code>:style(background-image)</code> selector
                 </li>
               </ul>
@@ -2338,12 +2435,12 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-quick-start">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Quick Start</span>
+                  <span class="klar-article-nav__title">← Quick Start</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next"
                   data-nav="page-structured-panel">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Structured Panel &rarr;</span>
+                  <span class="klar-article-nav__title">Structured Panel →</span>
                 </a>
               </div>
             </div>
@@ -2417,7 +2514,7 @@
                     </tr>
                     <tr>
                       <td><strong>Aria-label</strong></td>
-                      <td>Headings (h1&ndash;h6)</td>
+                      <td>Headings (h1–h6)</td>
                       <td>Edit accessibility labels</td>
                     </tr>
                   </tbody>
@@ -2444,11 +2541,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-visual-editing">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Visual Editing</span>
+                  <span class="klar-article-nav__title">← Visual Editing</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-code-editor">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Code Editor &rarr;</span>
+                  <span class="klar-article-nav__title">Code Editor →</span>
                 </a>
               </div>
             </div>
@@ -2472,10 +2569,10 @@
               <h2 id="code-tabs">HTML, CSS &amp; JS Tabs<a href="#code-tabs" class="klar-heading-anchor">#</a></h2>
               <p>The code editor has separate tabs depending on your project configuration:</p>
               <ul>
-                <li><strong>HTML</strong> &mdash; always available. Edit the full HTML source of your page.</li>
-                <li><strong>CSS</strong> &mdash; available when you've configured a CSS file path in project settings.
+                <li><strong>HTML</strong> — always available. Edit the full HTML source of your page.</li>
+                <li><strong>CSS</strong> — available when you've configured a CSS file path in project settings.
                   Changes are previewed live in the visual editor.</li>
-                <li><strong>JS</strong> &mdash; available when you've configured a JS file path in project settings.
+                <li><strong>JS</strong> — available when you've configured a JS file path in project settings.
                   Changes are previewed live.</li>
               </ul>
               <p>CSS and JS changes are saved alongside HTML when you click Save or Publish.</p>
@@ -2492,11 +2589,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-structured-panel">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Structured Panel</span>
+                  <span class="klar-article-nav__title">← Structured Panel</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-ai-assistant">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">AI Assistant &rarr;</span>
+                  <span class="klar-article-nav__title">AI Assistant →</span>
                 </a>
               </div>
             </div>
@@ -2534,21 +2631,21 @@
               <h2 id="ai-apply">Applying Changes<a href="#ai-apply" class="klar-heading-anchor">#</a></h2>
               <p>When the AI generates code, you'll see apply buttons for each type of change:</p>
               <ul>
-                <li><strong>Apply HTML</strong> &mdash; insert or replace HTML content</li>
-                <li><strong>Apply CSS</strong> &mdash; add or update styles</li>
-                <li><strong>Apply JS</strong> &mdash; add or update JavaScript</li>
-                <li><strong>Apply all</strong> &mdash; apply all changes at once</li>
+                <li><strong>Apply HTML</strong> — insert or replace HTML content</li>
+                <li><strong>Apply CSS</strong> — add or update styles</li>
+                <li><strong>Apply JS</strong> — add or update JavaScript</li>
+                <li><strong>Apply all</strong> — apply all changes at once</li>
               </ul>
 
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-code-editor">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Code Editor</span>
+                  <span class="klar-article-nav__title">← Code Editor</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next"
                   data-nav="page-media-management">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Media &amp; Icons &rarr;</span>
+                  <span class="klar-article-nav__title">Media &amp; Icons →</span>
                 </a>
               </div>
             </div>
@@ -2568,11 +2665,11 @@
               <p>When you click an image element, the structured panel shows the current source and alt text, plus a
                 button to open the media library. The media library has three tabs:</p>
               <ul>
-                <li><strong>Images</strong> &mdash; browse existing images from your configured media folder in GitHub
+                <li><strong>Images</strong> — browse existing images from your configured media folder in GitHub
                 </li>
-                <li><strong>Upload</strong> &mdash; drag and drop or click to upload new images directly to your repo
+                <li><strong>Upload</strong> — drag and drop or click to upload new images directly to your repo
                 </li>
-                <li><strong>URL</strong> &mdash; enter a direct image URL</li>
+                <li><strong>URL</strong> — enter a direct image URL</li>
               </ul>
               <p>You can also delete unused images and copy file URLs. File sizes are displayed for each image.</p>
 
@@ -2602,11 +2699,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-ai-assistant">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; AI Assistant</span>
+                  <span class="klar-article-nav__title">← AI Assistant</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-management">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Page Management &rarr;</span>
+                  <span class="klar-article-nav__title">Page Management →</span>
                 </a>
               </div>
             </div>
@@ -2627,10 +2724,10 @@
 
               <h2 id="page-actions">Page Actions<a href="#page-actions" class="klar-heading-anchor">#</a></h2>
               <ul>
-                <li><strong>Create page</strong> &mdash; add a new HTML file to your repository</li>
-                <li><strong>Duplicate page</strong> &mdash; copy an existing page with a new filename</li>
-                <li><strong>Rename page</strong> &mdash; change a page's filename</li>
-                <li><strong>Delete page</strong> &mdash; remove a page from your repo (requires confirmation)</li>
+                <li><strong>Create page</strong> — add a new HTML file to your repository</li>
+                <li><strong>Duplicate page</strong> — copy an existing page with a new filename</li>
+                <li><strong>Rename page</strong> — change a page's filename</li>
+                <li><strong>Delete page</strong> — remove a page from your repo (requires confirmation)</li>
               </ul>
               <p>All page operations are committed directly to your GitHub repository.</p>
 
@@ -2641,11 +2738,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-media-management">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Media &amp; Icons</span>
+                  <span class="klar-article-nav__title">← Media &amp; Icons</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-shared-sections">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Shared Sections &rarr;</span>
+                  <span class="klar-article-nav__title">Shared Sections →</span>
                 </a>
               </div>
             </div>
@@ -2663,7 +2760,7 @@
 
               <h2 id="what-are-shared">What Are Shared Sections?<a href="#what-are-shared"
                   class="klar-heading-anchor">#</a></h2>
-              <p>Most websites have elements that appear on every page &mdash; a navigation header, a footer, a cookie
+              <p>Most websites have elements that appear on every page — a navigation header, a footer, a cookie
                 banner. Shared sections let you edit these once and push the changes to all pages in your repository.
               </p>
 
@@ -2672,16 +2769,16 @@
               <p>In your project settings (Editor tab), enter CSS selectors for the sections that are shared across
                 pages. For example:</p>
               <ul>
-                <li><code>nav, footer</code> &mdash; sync the navigation and footer</li>
-                <li><code>.shared-header, .shared-footer</code> &mdash; sync elements with specific classes</li>
+                <li><code>nav, footer</code> — sync the navigation and footer</li>
+                <li><code>.shared-header, .shared-footer</code> — sync elements with specific classes</li>
               </ul>
 
               <h2 id="syncing">How Syncing Works<a href="#syncing" class="klar-heading-anchor">#</a></h2>
               <p>There are two ways to sync shared sections:</p>
               <ul>
-                <li><strong>Manual sync</strong> &mdash; if "Show Sync Action" is enabled, a sync icon appears next to
+                <li><strong>Manual sync</strong> — if "Show Sync Action" is enabled, a sync icon appears next to
                   shared sections in the sections panel. Click it to sync that section across all pages.</li>
-                <li><strong>Auto-sync on save</strong> &mdash; if "Auto-Sync Shared Sections" is enabled, any edits to
+                <li><strong>Auto-sync on save</strong> — if "Auto-Sync Shared Sections" is enabled, any edits to
                   shared sections are automatically pushed to all other pages when you save.</li>
               </ul>
               <p>After syncing, you'll see a toast confirmation showing how many pages were updated (e.g., "Synced to 3
@@ -2690,11 +2787,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-page-management">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Page Management</span>
+                  <span class="klar-article-nav__title">← Page Management</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-save-publish">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Save &amp; Publish &rarr;</span>
+                  <span class="klar-article-nav__title">Save &amp; Publish →</span>
                 </a>
               </div>
             </div>
@@ -2712,7 +2809,7 @@
               <h2 id="saving">Saving<a href="#saving" class="klar-heading-anchor">#</a></h2>
               <p>Click <strong>Save</strong> in the toolbar (or press <kbd>Cmd+S</kbd>) to commit your changes to
                 GitHub. Klar applies your edits to the original HTML file in your repo and creates a new commit. Your
-                HTML output is always clean &mdash; no editor artifacts, wrappers, or data attributes are added.</p>
+                HTML output is always clean — no editor artifacts, wrappers, or data attributes are added.</p>
               <p>If you have CSS or JS files configured, any changes made in the code editor are saved alongside the
                 HTML in the same operation.</p>
 
@@ -2727,8 +2824,8 @@
 
               <div class="klar-callout klar-callout--info">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4M12 8h.01"></path>
                 </svg>
                 <div>
                   There is also a <strong>"Publish latest"</strong> option that deploys the current state of your main
@@ -2746,11 +2843,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-shared-sections">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Shared Sections</span>
+                  <span class="klar-article-nav__title">← Shared Sections</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-version-history">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Version History &rarr;</span>
+                  <span class="klar-article-nav__title">Version History →</span>
                 </a>
               </div>
             </div>
@@ -2785,12 +2882,12 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-save-publish">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Save &amp; Publish</span>
+                  <span class="klar-article-nav__title">← Save &amp; Publish</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next"
                   data-nav="page-project-settings">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Project Settings &rarr;</span>
+                  <span class="klar-article-nav__title">Project Settings →</span>
                 </a>
               </div>
             </div>
@@ -2908,11 +3005,11 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-version-history">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Version History</span>
+                  <span class="klar-article-nav__title">← Version History</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="page-selectors">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Custom Selectors &rarr;</span>
+                  <span class="klar-article-nav__title">Custom Selectors →</span>
                 </a>
               </div>
             </div>
@@ -2985,22 +3082,22 @@
               </h2>
               <p>You can also mark elements directly in your HTML without configuring selectors:</p>
               <ul>
-                <li><code>data-klar-edit</code> or <code>data-klar</code> &mdash; mark any element as editable
+                <li><code>data-klar-edit</code> or <code>data-klar</code> — mark any element as editable
                   regardless of tag name</li>
-                <li><code>data-klar-list</code> or <code>data-list</code> &mdash; mark a parent as a list container for
+                <li><code>data-klar-list</code> or <code>data-list</code> — mark a parent as a list container for
                   container editing</li>
-                <li><code>data-klar-style-bg</code> &mdash; enable background-image editing on that element</li>
+                <li><code>data-klar-style-bg</code> — enable background-image editing on that element</li>
               </ul>
 
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-project-settings">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Project Settings</span>
+                  <span class="klar-article-nav__title">← Project Settings</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next"
                   data-nav="page-keyboard-shortcuts">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Keyboard Shortcuts &rarr;</span>
+                  <span class="klar-article-nav__title">Keyboard Shortcuts →</span>
                 </a>
               </div>
             </div>
@@ -3078,8 +3175,8 @@
 
               <div class="klar-callout klar-callout--info">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 16v-4M12 8h.01" />
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <path d="M12 16v-4M12 8h.01"></path>
                 </svg>
                 <div>
                   On Windows/Linux, use <kbd>Ctrl</kbd> instead of <kbd>Cmd</kbd> for all shortcuts.
@@ -3089,12 +3186,12 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-selectors">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Custom Selectors</span>
+                  <span class="klar-article-nav__title">← Custom Selectors</span>
                 </a>
                 <a href="#" class="klar-article-nav__link klar-article-nav__link--next"
                   data-nav="page-viewport-preview">
                   <span class="klar-article-nav__label">Next</span>
-                  <span class="klar-article-nav__title">Viewport &amp; Preview &rarr;</span>
+                  <span class="klar-article-nav__title">Viewport &amp; Preview →</span>
                 </a>
               </div>
             </div>
@@ -3144,15 +3241,15 @@
 
               <h2 id="responsive-mode">Responsive Mode<a href="#responsive-mode" class="klar-heading-anchor">#</a></h2>
               <p>Toggle responsive mode to freely resize the preview by dragging the left, right, bottom, or corner
-                handles. The current dimensions are shown below the preview (e.g., "375 &times; 667"). Minimum size is
-                280 &times; 200 pixels.</p>
+                handles. The current dimensions are shown below the preview (e.g., "375 × 667"). Minimum size is
+                280 × 200 pixels.</p>
 
               <h2 id="preview-mode">Preview Mode<a href="#preview-mode" class="klar-heading-anchor">#</a></h2>
               <p>Click the eye icon to toggle preview mode. In preview mode:</p>
               <ul>
-                <li>Editing interactions are disabled &mdash; you see the page as visitors would</li>
+                <li>Editing interactions are disabled — you see the page as visitors would</li>
                 <li>Anchor links (<code>#fragment</code>) work with smooth scrolling</li>
-                <li>External links show a "Preview mode &mdash; links are disabled" toast</li>
+                <li>External links show a "Preview mode — links are disabled" toast</li>
                 <li>Scroll position is preserved when switching between edit and preview modes</li>
               </ul>
 
@@ -3163,7 +3260,7 @@
               <div class="klar-article-nav">
                 <a href="#" class="klar-article-nav__link" data-nav="page-keyboard-shortcuts">
                   <span class="klar-article-nav__label">Previous</span>
-                  <span class="klar-article-nav__title">&larr; Keyboard Shortcuts</span>
+                  <span class="klar-article-nav__title">← Keyboard Shortcuts</span>
                 </a>
                 <div></div>
               </div>
@@ -3538,5 +3635,6 @@
         }
       })();
     </script>
+
   </body>
 </html>

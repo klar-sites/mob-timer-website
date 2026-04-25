@@ -1,12 +1,14 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Maison Aurèle — Fine Dining</title>
 
     <!-- Fonts: Distinctive choices — no Inter, no generic serifs -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&amp;family=Outfit:wght@300;400;500;600;700&amp;family=Geist+Mono&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Outfit:wght@300;400;500;600;700&family=Geist+Mono&display=swap" rel="stylesheet">
 
     <style>
         /* ============================================
@@ -1241,405 +1243,24 @@
     <!-- ==========================================
          NAVIGATION — Fixed glass nav with scroll effect
          ========================================== -->
-    <nav class="nav" id="nav">
-      <style>
-        /* =============================================
-   HAMBURGER TOGGLE BUTTON
-   ============================================= */
+    <nav class="aurele-nav" id="aureleNav">
+        <div class="aurele-container aurele-nav-inner">
+            <a href="#" class="aurele-nav-logo">Maison <span>Aurèle</span></a>
 
-        .nav-toggle {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--border);
-          cursor: pointer;
-          padding: 0;
-          gap: 5px;
-          z-index: 110;
-          transition: all var(--transition);
-          flex-shrink: 0;
-        }
+            <ul class="aurele-nav-links">
+                <li><a href="#aurele-about">About</a></li>
+                <li><a href="#aurele-menu">Menu</a></li>
+                <li><a href="#aurele-gallery">Gallery</a></li>
+                <li><a href="#aurele-contact">Contact</a></li>
+            </ul>
 
-        .nav-toggle:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: var(--border-hover);
-        }
-
-        .hamburger-line {
-          display: block;
-          width: 18px;
-          height: 2px;
-          background: var(--text);
-          border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-origin: center;
-        }
-
-        /* Hamburger → X animation */
-        .nav-toggle.active .hamburger-line:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(2) {
-          opacity: 0;
-          transform: scaleX(0);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
-        }
-
-        /* =============================================
-   MOBILE MENU OVERLAY
-   ============================================= */
-
-        .mobile-menu-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 98;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .mobile-menu-overlay.visible {
-          display: block;
-          opacity: 1;
-        }
-
-        /* =============================================
-   MOBILE MENU PANEL
-   ============================================= */
-
-        .mobile-menu {
-          display: none;
-          position: fixed;
-          top: 0;
-          right: 0;
-          width: 300px;
-          max-width: calc(100vw - 48px);
-          height: 100dvh;
-          background: var(--bg-surface);
-          border-left: 1px solid var(--border);
-          z-index: 99;
-          flex-direction: column;
-          padding: 88px 24px 32px;
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .mobile-menu.open {
-          display: flex;
-          transform: translateX(0);
-        }
-
-        /* Slight delay trick: always display:flex when animating out */
-        .mobile-menu.closing {
-          display: flex;
-          transform: translateX(100%);
-        }
-
-        /* =============================================
-   MOBILE MENU LINKS
-   ============================================= */
-
-        .mobile-menu-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          flex: 1;
-        }
-
-        .mobile-menu-links li {
-          opacity: 0;
-          transform: translateX(20px);
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .mobile-menu-links li:nth-child(1) {
-          animation-delay: 0.05s;
-        }
-
-        .mobile-menu-links li:nth-child(2) {
-          animation-delay: 0.08s;
-        }
-
-        .mobile-menu-links li:nth-child(3) {
-          animation-delay: 0.11s;
-        }
-
-        .mobile-menu-links li:nth-child(4) {
-          animation-delay: 0.14s;
-        }
-
-        .mobile-menu-links li:nth-child(5) {
-          animation-delay: 0.17s;
-        }
-
-        .mobile-menu-links li:nth-child(6) {
-          animation-delay: 0.2s;
-        }
-
-        @keyframes mobileMenuSlideIn {
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .mobile-menu-links a {
-          display: block;
-          padding: 14px 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--text-2);
-          border-radius: 12px;
-          transition: all var(--transition);
-          letter-spacing: -0.01em;
-        }
-
-        .mobile-menu-links a:hover,
-        .mobile-menu-links a.nav-active {
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.06);
-        }
-
-        .mobile-menu-links a.nav-active {
-          color: var(--accent);
-        }
-
-        /* =============================================
-   MOBILE MENU FOOTER
-   ============================================= */
-
-        .mobile-menu-footer {
-          padding-top: 24px;
-          border-top: 1px solid var(--border);
-          margin-top: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          opacity: 0;
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
-          transform: translateX(20px);
-        }
-
-        .mobile-menu-download {
-          width: 100%;
-          justify-content: center;
-          padding: 14px 24px;
-          font-size: 15px;
-        }
-
-        .mobile-menu-meta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-size: 12px;
-          color: var(--text-3);
-        }
-
-        /* =============================================
-   BODY LOCK WHEN MENU IS OPEN
-   ============================================= */
-
-        body.mobile-menu-open {
-          overflow: hidden;
-        }
-
-        /* =============================================
-   RESPONSIVE — SHOW/HIDE
-   ============================================= */
-
-        @media (max-width: 900px) {
-          .nav-toggle {
-            display: flex;
-          }
-
-          .nav-links {
-            display: none !important;
-          }
-
-          .nav-download-btn {
-            display: none !important;
-          }
-
-          .nav-inner {
-            justify-content: space-between;
-          }
-        }
-
-        /* On large screens, never show mobile menu */
-        @media (min-width: 901px) {
-
-          .mobile-menu,
-          .mobile-menu-overlay {
-            display: none !important;
-          }
-
-          .nav-toggle {
-            display: none !important;
-          }
-        }
-      </style>
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <img src="logo.png" alt="Mob Timer" width="28" height="28">
-          <span>Mob Timer</span>
-        </a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-        </ul>
-        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
-      </div>
-
-      <!-- Mobile menu overlay -->
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-
-      <!-- Mobile menu panel -->
-      <div class="mobile-menu" id="mobile-menu">
-        <ul class="mobile-menu-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu-footer">
-          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            Download for Mac
-          </a>
-          <div class="mobile-menu-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Free</span>
-          </div>
+            <!-- Mobile toggle button -->
+            <button class="aurele-nav-toggle" id="aureleNavToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-      </div>
-      <script>
-        // =============================================
-        //  MOBILE MENU
-        // =============================================
-
-        (function() {
-          const toggle = document.getElementById('nav-toggle');
-          const mobileMenu = document.getElementById('mobile-menu');
-          const overlay = document.getElementById('mobile-menu-overlay');
-          const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
-
-          if (!toggle || !mobileMenu || !overlay) return;
-
-          let isOpen = false;
-
-          function openMenu() {
-            isOpen = true;
-            toggle.classList.add('active');
-            toggle.setAttribute('aria-expanded', 'true');
-            mobileMenu.classList.remove('closing');
-            mobileMenu.classList.add('open');
-            overlay.classList.add('visible');
-            document.body.classList.add('mobile-menu-open');
-          }
-
-          function closeMenu() {
-            if (!isOpen) return;
-            isOpen = false;
-            toggle.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-            mobileMenu.classList.add('closing');
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('visible');
-            document.body.classList.remove('mobile-menu-open');
-
-            // After transition ends, remove closing class
-            setTimeout(() => {
-              if (!isOpen) {
-                mobileMenu.classList.remove('closing');
-              }
-            }, 350);
-          }
-
-          toggle.addEventListener('click', () => {
-            if (isOpen) {
-              closeMenu();
-            } else {
-              openMenu();
-            }
-          });
-
-          overlay.addEventListener('click', closeMenu);
-
-          // Close on link click
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              closeMenu();
-            });
-          });
-
-          // Close on Escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Close if window resizes past breakpoint
-          window.addEventListener('resize', () => {
-            if (window.innerWidth > 900 && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Sync active link highlighting in mobile menu
-          const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
-          const sectionObserverMobile = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  const id = entry.target.id;
-                  mobileLinkEls.forEach((link) => {
-                    link.classList.toggle(
-                      'nav-active',
-                      link.getAttribute('href') === `#${id}`
-                    );
-                  });
-                }
-              });
-            }, {
-              threshold: 0.4
-            }
-          );
-
-          document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
-        })();
-      </script>
     </nav>
 
     <!-- Mobile full-screen menu overlay -->
@@ -1666,14 +1287,14 @@
             <a href="#aurele-contact" class="aurele-hero-cta">
                 Book a Table
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M5 12h14M12 5l7 7-7 7"></path>
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
             </a>
         </div>
 
         <div class="aurele-hero-visual">
             <div class="aurele-hero-image-wrapper">
-                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&amp;h=1000&amp;fit=crop&amp;q=80" alt="Elegant plated dish at Maison Aurèle" loading="eager">
+                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=800&h=1000&fit=crop&q=80" alt="Elegant plated dish at Maison Aurèle" loading="eager">
             </div>
 
             <!-- Floating glass badge -->
@@ -1726,7 +1347,7 @@
                 </div>
 
                 <div class="aurele-about-image aurele-reveal">
-                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=700&amp;h=900&amp;fit=crop&amp;q=80" alt="Chef preparing a dish over open flame" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1600891964092-4316c288032e?w=700&h=900&fit=crop&q=80" alt="Chef preparing a dish over open flame" loading="lazy">
                 </div>
             </div>
         </div>
@@ -1757,7 +1378,7 @@
                 <!-- Dish 1 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="starter">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Cured trout on plate" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1544025162-d76694265947?w=200&h=200&fit=crop&q=80" alt="Cured trout on plate" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Cured River Trout</h3>
@@ -1770,7 +1391,7 @@
                 <!-- Dish 2 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="starter">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Burrata with heirloom tomatoes" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1623428187969-5da2dcea5ebf?w=200&h=200&fit=crop&q=80" alt="Burrata with heirloom tomatoes" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Heirloom Tomato Salad</h3>
@@ -1783,7 +1404,7 @@
                 <!-- Dish 3 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="main">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Dry-aged duck breast" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=200&h=200&fit=crop&q=80" alt="Dry-aged duck breast" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Dry-aged Duck Breast</h3>
@@ -1796,7 +1417,7 @@
                 <!-- Dish 4 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="main">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1432139509613-5c4255a1d9be?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Wild sea bass fillet" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1432139509613-5c4255a1d9be?w=200&h=200&fit=crop&q=80" alt="Wild sea bass fillet" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Wild Sea Bass</h3>
@@ -1809,7 +1430,7 @@
                 <!-- Dish 5 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="main">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Braised lamb shoulder" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=200&h=200&fit=crop&q=80" alt="Braised lamb shoulder" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Braised Lamb Shoulder</h3>
@@ -1822,7 +1443,7 @@
                 <!-- Dish 6 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="dessert">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Dark chocolate mousse" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=200&h=200&fit=crop&q=80" alt="Dark chocolate mousse" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Valrhona Chocolate Mousse</h3>
@@ -1835,7 +1456,7 @@
                 <!-- Dish 7 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="dessert">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Tarte Tatin" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=200&h=200&fit=crop&q=80" alt="Tarte Tatin" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Tarte Tatin</h3>
@@ -1848,7 +1469,7 @@
                 <!-- Dish 8 -->
                 <div class="aurele-glass-card aurele-dish-card" data-category="starter">
                     <div class="aurele-dish-image">
-                        <img src="https://images.unsplash.com/photo-1607098665874-fd193397547b?w=200&amp;h=200&amp;fit=crop&amp;q=80" alt="Foie gras terrine" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1607098665874-fd193397547b?w=200&h=200&fit=crop&q=80" alt="Foie gras terrine" loading="lazy">
                     </div>
                     <div class="aurele-dish-info">
                         <h3 class="aurele-dish-name">Foie Gras Terrine</h3>
@@ -1873,22 +1494,22 @@
 
             <div class="aurele-gallery-grid aurele-stagger" id="aureleGalleryGrid">
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&amp;h=800&amp;fit=crop&amp;q=80" alt="Restaurant interior with warm lighting" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&h=800&fit=crop&q=80" alt="Restaurant interior with warm lighting" loading="lazy">
                 </div>
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&amp;h=400&amp;fit=crop&amp;q=80" alt="Chef plating a dish" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&h=400&fit=crop&q=80" alt="Chef plating a dish" loading="lazy">
                 </div>
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=400&amp;h=400&amp;fit=crop&amp;q=80" alt="Wine being poured at table" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb51f3a?w=400&h=400&fit=crop&q=80" alt="Wine being poured at table" loading="lazy">
                 </div>
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&amp;h=400&amp;fit=crop&amp;q=80" alt="Table setting with candles" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?w=400&h=400&fit=crop&q=80" alt="Table setting with candles" loading="lazy">
                 </div>
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1428515613728-6b4607e44363?w=400&amp;h=400&amp;fit=crop&amp;q=80" alt="Open kitchen with fire" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1428515613728-6b4607e44363?w=400&h=400&fit=crop&q=80" alt="Open kitchen with fire" loading="lazy">
                 </div>
                 <div class="aurele-gallery-item">
-                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&amp;h=400&amp;fit=crop&amp;q=80" alt="Fresh ingredients on counter" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1470337458703-46ad1756a187?w=400&h=400&fit=crop&q=80" alt="Fresh ingredients on counter" loading="lazy">
                 </div>
             </div>
         </div>
@@ -1908,7 +1529,7 @@
 
                     <div class="aurele-contact-detail">
                         <div class="aurele-contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
                         </div>
                         <div class="aurele-contact-detail-text">
                             <h4>Location</h4>
@@ -1918,7 +1539,7 @@
 
                     <div class="aurele-contact-detail">
                         <div class="aurele-contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"></path></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72 12.84 12.84 0 00.7 2.81 2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45 12.84 12.84 0 002.81.7A2 2 0 0122 16.92z"/></svg>
                         </div>
                         <div class="aurele-contact-detail-text">
                             <h4>Reservations</h4>
@@ -1928,7 +1549,7 @@
 
                     <div class="aurele-contact-detail">
                         <div class="aurele-contact-icon">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
                         </div>
                         <div class="aurele-contact-detail-text">
                             <h4>Email</h4>
@@ -1966,22 +1587,22 @@
                     <form id="aureleContactForm">
                         <div class="aurele-form-group">
                             <label class="aurele-form-label" for="aureleFormName">Your Name</label>
-                            <input class="aurele-form-input" type="text" id="aureleFormName" placeholder="Laurent Marchand" required="">
+                            <input class="aurele-form-input" type="text" id="aureleFormName" placeholder="Laurent Marchand" required>
                         </div>
                         <div class="aurele-form-group">
                             <label class="aurele-form-label" for="aureleFormEmail">Email Address</label>
-                            <input class="aurele-form-input" type="email" id="aureleFormEmail" placeholder="laurent@example.fr" required="">
+                            <input class="aurele-form-input" type="email" id="aureleFormEmail" placeholder="laurent@example.fr" required>
                         </div>
                         <div class="aurele-form-group">
                             <label class="aurele-form-label" for="aureleFormMessage">Message</label>
-                            <textarea class="aurele-form-textarea" id="aureleFormMessage" placeholder="Tell us about your occasion..." required=""></textarea>
+                            <textarea class="aurele-form-textarea" id="aureleFormMessage" placeholder="Tell us about your occasion..." required></textarea>
                         </div>
                         <button type="submit" class="aurele-form-submit">Send Message</button>
                     </form>
 
                     <!-- Success state shown after form submission -->
                     <div class="aurele-form-success" id="aureleFormSuccess">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
                         <h4>Message Sent</h4>
                         <p>Thank you. We'll be in touch within 24 hours.</p>
                     </div>
@@ -2000,21 +1621,21 @@
             </div>
 
             <p class="aurele-footer-copyright">
-                © 2024 Maison Aurèle. All rights reserved.
+                &copy; 2024 Maison Aurèle. All rights reserved.
             </p>
 
             <div class="aurele-footer-socials">
                 <!-- Instagram -->
                 <a href="#" class="aurele-social-link" aria-label="Instagram">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
                 </a>
                 <!-- Facebook -->
                 <a href="#" class="aurele-social-link" aria-label="Facebook">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg>
                 </a>
                 <!-- Twitter/X -->
                 <a href="#" class="aurele-social-link" aria-label="Twitter">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.232L20 4"></path></svg>
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4l11.733 16h4.267l-11.733-16zM4 20l6.768-6.768M13.232 10.232L20 4"/></svg>
                 </a>
             </div>
         </div>
@@ -2236,5 +1857,5 @@
     })();
     </script>
 
-
-</body></html>
+</body>
+</html>

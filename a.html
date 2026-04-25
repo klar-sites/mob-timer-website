@@ -1,12 +1,14 @@
-<!DOCTYPE html><html lang="en"><head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>AURELIA — Fine Dining Experience</title>
     
     <!-- Google Fonts: Outfit for premium, modern feel -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&amp;display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     
     <style>
         /* ========================================
@@ -1387,404 +1389,22 @@
          NAVIGATION
          ======================================== -->
     <nav class="nav" id="nav">
-      <style>
-        /* =============================================
-   HAMBURGER TOGGLE BUTTON
-   ============================================= */
+        <div class="container nav-inner">
+            <a href="#" class="nav-logo">AURELIA<span>.</span></a>
+            
+            <ul class="nav-links">
+                <li><a href="#about">About</a></li>
+                <li><a href="#menu">Menu</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
 
-        .nav-toggle {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--border);
-          cursor: pointer;
-          padding: 0;
-          gap: 5px;
-          z-index: 110;
-          transition: all var(--transition);
-          flex-shrink: 0;
-        }
-
-        .nav-toggle:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: var(--border-hover);
-        }
-
-        .hamburger-line {
-          display: block;
-          width: 18px;
-          height: 2px;
-          background: var(--text);
-          border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-origin: center;
-        }
-
-        /* Hamburger → X animation */
-        .nav-toggle.active .hamburger-line:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(2) {
-          opacity: 0;
-          transform: scaleX(0);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
-        }
-
-        /* =============================================
-   MOBILE MENU OVERLAY
-   ============================================= */
-
-        .mobile-menu-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 98;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .mobile-menu-overlay.visible {
-          display: block;
-          opacity: 1;
-        }
-
-        /* =============================================
-   MOBILE MENU PANEL
-   ============================================= */
-
-        .mobile-menu {
-          display: none;
-          position: fixed;
-          top: 0;
-          right: 0;
-          width: 300px;
-          max-width: calc(100vw - 48px);
-          height: 100dvh;
-          background: var(--bg-surface);
-          border-left: 1px solid var(--border);
-          z-index: 99;
-          flex-direction: column;
-          padding: 88px 24px 32px;
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .mobile-menu.open {
-          display: flex;
-          transform: translateX(0);
-        }
-
-        /* Slight delay trick: always display:flex when animating out */
-        .mobile-menu.closing {
-          display: flex;
-          transform: translateX(100%);
-        }
-
-        /* =============================================
-   MOBILE MENU LINKS
-   ============================================= */
-
-        .mobile-menu-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          flex: 1;
-        }
-
-        .mobile-menu-links li {
-          opacity: 0;
-          transform: translateX(20px);
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .mobile-menu-links li:nth-child(1) {
-          animation-delay: 0.05s;
-        }
-
-        .mobile-menu-links li:nth-child(2) {
-          animation-delay: 0.08s;
-        }
-
-        .mobile-menu-links li:nth-child(3) {
-          animation-delay: 0.11s;
-        }
-
-        .mobile-menu-links li:nth-child(4) {
-          animation-delay: 0.14s;
-        }
-
-        .mobile-menu-links li:nth-child(5) {
-          animation-delay: 0.17s;
-        }
-
-        .mobile-menu-links li:nth-child(6) {
-          animation-delay: 0.2s;
-        }
-
-        @keyframes mobileMenuSlideIn {
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .mobile-menu-links a {
-          display: block;
-          padding: 14px 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--text-2);
-          border-radius: 12px;
-          transition: all var(--transition);
-          letter-spacing: -0.01em;
-        }
-
-        .mobile-menu-links a:hover,
-        .mobile-menu-links a.nav-active {
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.06);
-        }
-
-        .mobile-menu-links a.nav-active {
-          color: var(--accent);
-        }
-
-        /* =============================================
-   MOBILE MENU FOOTER
-   ============================================= */
-
-        .mobile-menu-footer {
-          padding-top: 24px;
-          border-top: 1px solid var(--border);
-          margin-top: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          opacity: 0;
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
-          transform: translateX(20px);
-        }
-
-        .mobile-menu-download {
-          width: 100%;
-          justify-content: center;
-          padding: 14px 24px;
-          font-size: 15px;
-        }
-
-        .mobile-menu-meta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-size: 12px;
-          color: var(--text-3);
-        }
-
-        /* =============================================
-   BODY LOCK WHEN MENU IS OPEN
-   ============================================= */
-
-        body.mobile-menu-open {
-          overflow: hidden;
-        }
-
-        /* =============================================
-   RESPONSIVE — SHOW/HIDE
-   ============================================= */
-
-        @media (max-width: 900px) {
-          .nav-toggle {
-            display: flex;
-          }
-
-          .nav-links {
-            display: none !important;
-          }
-
-          .nav-download-btn {
-            display: none !important;
-          }
-
-          .nav-inner {
-            justify-content: space-between;
-          }
-        }
-
-        /* On large screens, never show mobile menu */
-        @media (min-width: 901px) {
-
-          .mobile-menu,
-          .mobile-menu-overlay {
-            display: none !important;
-          }
-
-          .nav-toggle {
-            display: none !important;
-          }
-        }
-      </style>
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <img src="logo.png" alt="Mob Timer" width="28" height="28">
-          <span>Mob Timer</span>
-        </a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-        </ul>
-        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
-      </div>
-
-      <!-- Mobile menu overlay -->
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-
-      <!-- Mobile menu panel -->
-      <div class="mobile-menu" id="mobile-menu">
-        <ul class="mobile-menu-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu-footer">
-          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            Download for Mac
-          </a>
-          <div class="mobile-menu-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Free</span>
-          </div>
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
         </div>
-      </div>
-      <script>
-        // =============================================
-        //  MOBILE MENU
-        // =============================================
-
-        (function() {
-          const toggle = document.getElementById('nav-toggle');
-          const mobileMenu = document.getElementById('mobile-menu');
-          const overlay = document.getElementById('mobile-menu-overlay');
-          const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
-
-          if (!toggle || !mobileMenu || !overlay) return;
-
-          let isOpen = false;
-
-          function openMenu() {
-            isOpen = true;
-            toggle.classList.add('active');
-            toggle.setAttribute('aria-expanded', 'true');
-            mobileMenu.classList.remove('closing');
-            mobileMenu.classList.add('open');
-            overlay.classList.add('visible');
-            document.body.classList.add('mobile-menu-open');
-          }
-
-          function closeMenu() {
-            if (!isOpen) return;
-            isOpen = false;
-            toggle.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-            mobileMenu.classList.add('closing');
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('visible');
-            document.body.classList.remove('mobile-menu-open');
-
-            // After transition ends, remove closing class
-            setTimeout(() => {
-              if (!isOpen) {
-                mobileMenu.classList.remove('closing');
-              }
-            }, 350);
-          }
-
-          toggle.addEventListener('click', () => {
-            if (isOpen) {
-              closeMenu();
-            } else {
-              openMenu();
-            }
-          });
-
-          overlay.addEventListener('click', closeMenu);
-
-          // Close on link click
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              closeMenu();
-            });
-          });
-
-          // Close on Escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Close if window resizes past breakpoint
-          window.addEventListener('resize', () => {
-            if (window.innerWidth > 900 && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Sync active link highlighting in mobile menu
-          const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
-          const sectionObserverMobile = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  const id = entry.target.id;
-                  mobileLinkEls.forEach((link) => {
-                    link.classList.toggle(
-                      'nav-active',
-                      link.getAttribute('href') === `#${id}`
-                    );
-                  });
-                }
-              });
-            }, {
-              threshold: 0.4
-            }
-          );
-
-          document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
-        })();
-      </script>
     </nav>
 
     <!-- Mobile Menu Overlay -->
@@ -1803,7 +1423,7 @@
     <section class="hero" id="hero">
         <!-- Background Layer -->
         <div class="hero-bg">
-            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&amp;q=80" alt="Restaurant ambiance" loading="eager">
+            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=1920&q=80" alt="Restaurant ambiance" loading="eager">
         </div>
 
         <!-- Ambient Glow Effects -->
@@ -1826,7 +1446,7 @@
                     <a href="#contact" class="btn btn-primary">
                         Book a Table
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M5 12h14M12 5l7 7-7 7"></path>
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
                         </svg>
                     </a>
                     <a href="#menu" class="btn btn-secondary">Explore Menu</a>
@@ -1835,12 +1455,12 @@
 
             <div class="hero-visual">
                 <div class="hero-image-frame">
-                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&amp;q=80" alt="Signature dish presentation" loading="eager">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=800&q=80" alt="Signature dish presentation" loading="eager">
                 </div>
                 <div class="hero-float-badge">
                     <div class="icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                         </svg>
                     </div>
                     <div class="text">
@@ -1860,10 +1480,10 @@
             <div class="about-grid">
                 <div class="about-image-stack reveal">
                     <div class="about-image-main">
-                        <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&amp;q=80" alt="Chef preparing dish" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1600565193348-f74bd3c7ccdf?w=800&q=80" alt="Chef preparing dish" loading="lazy">
                     </div>
                     <div class="about-image-secondary">
-                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&amp;q=80" alt="Wine pairing" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?w=400&q=80" alt="Wine pairing" loading="lazy">
                     </div>
                 </div>
 
@@ -1886,8 +1506,8 @@
                         <div class="about-feature">
                             <div class="about-feature-icon">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"></path>
-                                    <line x1="6" y1="17" x2="18" y2="17"></line>
+                                    <path d="M6 13.87A4 4 0 0 1 7.41 6a5.11 5.11 0 0 1 1.05-1.54 5 5 0 0 1 7.08 0A5.11 5.11 0 0 1 16.59 6 4 4 0 0 1 18 13.87V21H6Z"/>
+                                    <line x1="6" y1="17" x2="18" y2="17"/>
                                 </svg>
                             </div>
                             <h4>12+</h4>
@@ -1896,7 +1516,7 @@
                         <div class="about-feature">
                             <div class="about-feature-icon">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                                    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
                                 </svg>
                             </div>
                             <h4>5</h4>
@@ -1905,10 +1525,10 @@
                         <div class="about-feature">
                             <div class="about-feature-icon">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                                    <circle cx="9" cy="7" r="4"></circle>
-                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                                    <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                                    <circle cx="9" cy="7" r="4"/>
+                                    <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                                    <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
                                 </svg>
                             </div>
                             <h4>50K+</h4>
@@ -1944,7 +1564,7 @@
                 <!-- Starter 1 -->
                 <div class="menu-card reveal" data-category="starters" style="transition-delay: 0.15s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&amp;q=80" alt="Seared Scallops" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a41?w=400&q=80" alt="Seared Scallops" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
@@ -1962,11 +1582,11 @@
                 <!-- Starter 2 -->
                 <div class="menu-card reveal" data-category="starters" style="transition-delay: 0.2s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&amp;q=80" alt="Burrata" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1541014741259-de529411b96a?w=400&q=80" alt="Burrata" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
-                            <h3 class="menu-card-name">Burrata &amp; Heirloom Tomatoes</h3>
+                            <h3 class="menu-card-name">Burrata & Heirloom Tomatoes</h3>
                             <span class="menu-card-price">$24</span>
                         </div>
                         <p class="menu-card-description">
@@ -1980,7 +1600,7 @@
                 <!-- Main 1 -->
                 <div class="menu-card reveal" data-category="mains" style="transition-delay: 0.25s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=400&amp;q=80" alt="Wagyu" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1558030006-450675393462?w=400&q=80" alt="Wagyu" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
@@ -1998,7 +1618,7 @@
                 <!-- Main 2 -->
                 <div class="menu-card reveal" data-category="mains" style="transition-delay: 0.3s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1534766555764-ce878a5e3a2b?w=400&amp;q=80" alt="Duck" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1534766555764-ce878a5e3a2b?w=400&q=80" alt="Duck" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
@@ -2016,7 +1636,7 @@
                 <!-- Dessert 1 -->
                 <div class="menu-card reveal" data-category="desserts" style="transition-delay: 0.35s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&amp;q=80" alt="Chocolate" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?w=400&q=80" alt="Chocolate" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
@@ -2034,7 +1654,7 @@
                 <!-- Dessert 2 -->
                 <div class="menu-card reveal" data-category="desserts" style="transition-delay: 0.4s;">
                     <div class="menu-card-image">
-                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&amp;q=80" alt="Tart" loading="lazy">
+                        <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?w=400&q=80" alt="Tart" loading="lazy">
                     </div>
                     <div class="menu-card-content">
                         <div class="menu-card-header">
@@ -2064,19 +1684,19 @@
 
             <div class="gallery-grid">
                 <div class="gallery-item reveal" style="transition-delay: 0.1s;">
-                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&amp;q=80" alt="Restaurant interior" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=800&q=80" alt="Restaurant interior" loading="lazy">
                 </div>
                 <div class="gallery-item reveal" style="transition-delay: 0.15s;">
-                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&amp;q=80" alt="Chef at work" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1551218808-94e220e084d2?w=600&q=80" alt="Chef at work" loading="lazy">
                 </div>
                 <div class="gallery-item reveal" style="transition-delay: 0.2s;">
-                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&amp;q=80" alt="Wine cellar" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1550966871-3ed3cdb5ed0c?w=600&q=80" alt="Wine cellar" loading="lazy">
                 </div>
                 <div class="gallery-item reveal" style="transition-delay: 0.25s;">
-                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&amp;q=80" alt="Plated dish" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600&q=80" alt="Plated dish" loading="lazy">
                 </div>
                 <div class="gallery-item reveal" style="transition-delay: 0.3s;">
-                    <img src="https://images.unsplash.com/photo-1560053608-13721e0d69e8?w=600&amp;q=80" alt="Dessert presentation" loading="lazy">
+                    <img src="https://images.unsplash.com/photo-1560053608-13721e0d69e8?w=600&q=80" alt="Dessert presentation" loading="lazy">
                 </div>
             </div>
         </div>
@@ -2098,8 +1718,8 @@
                     <div class="contact-card reveal" style="transition-delay: 0.1s;">
                         <div class="contact-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path>
-                                <circle cx="12" cy="10" r="3"></circle>
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
                             </svg>
                         </div>
                         <div>
@@ -2111,7 +1731,7 @@
                     <div class="contact-card reveal" style="transition-delay: 0.15s;">
                         <div class="contact-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
                             </svg>
                         </div>
                         <div>
@@ -2123,8 +1743,8 @@
                     <div class="contact-card reveal" style="transition-delay: 0.2s;">
                         <div class="contact-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-                                <polyline points="22,6 12,13 2,6"></polyline>
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
                             </svg>
                         </div>
                         <div>
@@ -2136,8 +1756,8 @@
                     <div class="contact-card reveal" style="transition-delay: 0.25s;">
                         <div class="contact-icon">
                             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                <circle cx="12" cy="12" r="10"></circle>
-                                <polyline points="12 6 12 12 16 14"></polyline>
+                                <circle cx="12" cy="12" r="10"/>
+                                <polyline points="12 6 12 12 16 14"/>
                             </svg>
                         </div>
                         <div>
@@ -2155,12 +1775,12 @@
 
                         <div class="form-group">
                             <label class="form-label" for="name">Full Name</label>
-                            <input type="text" class="form-input" id="name" name="name" placeholder="Alexandra Chen" required="">
+                            <input type="text" class="form-input" id="name" name="name" placeholder="Alexandra Chen" required>
                         </div>
 
                         <div class="form-group">
                             <label class="form-label" for="email">Email Address</label>
-                            <input type="email" class="form-input" id="email" name="email" placeholder="alex@example.com" required="">
+                            <input type="email" class="form-input" id="email" name="email" placeholder="alex@example.com" required>
                         </div>
 
                         <div class="form-group">
@@ -2176,7 +1796,7 @@
                         <button type="submit" class="btn btn-primary form-submit">
                             Submit Request
                             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M5 12h14M12 5l7 7-7 7"></path>
+                                <path d="M5 12h14M12 5l7 7-7 7"/>
                             </svg>
                         </button>
                     </form>
@@ -2184,8 +1804,8 @@
                     <!-- Success Message -->
                     <div class="form-success" id="formSuccess">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/>
+                            <polyline points="22 4 12 14.01 9 11.01"/>
                         </svg>
                         <h4>Reservation Submitted!</h4>
                         <p>Thank you for choosing Aurelia. Our team will contact you shortly to confirm your booking.</p>
@@ -2209,26 +1829,26 @@
                 <div class="footer-social">
                     <a href="#" aria-label="Instagram">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+                            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/>
+                            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>
                         </svg>
                     </a>
                     <a href="#" aria-label="Facebook">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                            <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
                         </svg>
                     </a>
                     <a href="#" aria-label="Twitter">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path>
+                            <path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"/>
                         </svg>
                     </a>
                     <a href="#" aria-label="LinkedIn">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-                            <rect x="2" y="9" width="4" height="12"></rect>
-                            <circle cx="4" cy="4" r="2"></circle>
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+                            <rect x="2" y="9" width="4" height="12"/>
+                            <circle cx="4" cy="4" r="2"/>
                         </svg>
                     </a>
                 </div>
@@ -2455,5 +2075,5 @@
         });
     </script>
 
-
-</body></html>
+</body>
+</html>

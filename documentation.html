@@ -1,10 +1,14 @@
-<!DOCTYPE html><html lang="en" data-theme="light"><head>
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+  <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Klar CMS — Clean HTML, Zero Bloat</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&amp;family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&amp;family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&amp;display=swap" rel="stylesheet">
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Source+Serif+4:ital,opsz,wght@0,8..60,300;0,8..60,400;0,8..60,600;0,8..60,700;1,8..60,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap"
+      rel="stylesheet">
     <style>
       /* ═══════════════════════════════════════
    CSS VARIABLES & THEMING
@@ -1613,405 +1617,55 @@
     <!-- ════════════════════════════════════
      NAVIGATION
      ════════════════════════════════════ -->
-    <nav class="nav" id="nav">
-      <style>
-        /* =============================================
-   HAMBURGER TOGGLE BUTTON
-   ============================================= */
+    <nav class="klar-nav" role="navigation" aria-label="Main navigation">
+      <button class="klar-nav__menu-btn" id="klarMenuBtn" aria-label="Toggle menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" width="20"
+          height="20">
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
 
-        .nav-toggle {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--border);
-          cursor: pointer;
-          padding: 0;
-          gap: 5px;
-          z-index: 110;
-          transition: all var(--transition);
-          flex-shrink: 0;
-        }
+      <a href="#" class="klar-nav__logo" data-nav="getting-started">
+        <span class="klar-nav__logo-mark">K</span>
+        Klar CMS
+        <span class="klar-nav__version">v0.9</span>
+      </a>
 
-        .nav-toggle:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: var(--border-hover);
-        }
-
-        .hamburger-line {
-          display: block;
-          width: 18px;
-          height: 2px;
-          background: var(--text);
-          border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-origin: center;
-        }
-
-        /* Hamburger → X animation */
-        .nav-toggle.active .hamburger-line:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(2) {
-          opacity: 0;
-          transform: scaleX(0);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
-        }
-
-        /* =============================================
-   MOBILE MENU OVERLAY
-   ============================================= */
-
-        .mobile-menu-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 98;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .mobile-menu-overlay.visible {
-          display: block;
-          opacity: 1;
-        }
-
-        /* =============================================
-   MOBILE MENU PANEL
-   ============================================= */
-
-        .mobile-menu {
-          display: none;
-          position: fixed;
-          top: 0;
-          right: 0;
-          width: 300px;
-          max-width: calc(100vw - 48px);
-          height: 100dvh;
-          background: var(--bg-surface);
-          border-left: 1px solid var(--border);
-          z-index: 99;
-          flex-direction: column;
-          padding: 88px 24px 32px;
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .mobile-menu.open {
-          display: flex;
-          transform: translateX(0);
-        }
-
-        /* Slight delay trick: always display:flex when animating out */
-        .mobile-menu.closing {
-          display: flex;
-          transform: translateX(100%);
-        }
-
-        /* =============================================
-   MOBILE MENU LINKS
-   ============================================= */
-
-        .mobile-menu-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          flex: 1;
-        }
-
-        .mobile-menu-links li {
-          opacity: 0;
-          transform: translateX(20px);
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .mobile-menu-links li:nth-child(1) {
-          animation-delay: 0.05s;
-        }
-
-        .mobile-menu-links li:nth-child(2) {
-          animation-delay: 0.08s;
-        }
-
-        .mobile-menu-links li:nth-child(3) {
-          animation-delay: 0.11s;
-        }
-
-        .mobile-menu-links li:nth-child(4) {
-          animation-delay: 0.14s;
-        }
-
-        .mobile-menu-links li:nth-child(5) {
-          animation-delay: 0.17s;
-        }
-
-        .mobile-menu-links li:nth-child(6) {
-          animation-delay: 0.2s;
-        }
-
-        @keyframes mobileMenuSlideIn {
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .mobile-menu-links a {
-          display: block;
-          padding: 14px 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--text-2);
-          border-radius: 12px;
-          transition: all var(--transition);
-          letter-spacing: -0.01em;
-        }
-
-        .mobile-menu-links a:hover,
-        .mobile-menu-links a.nav-active {
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.06);
-        }
-
-        .mobile-menu-links a.nav-active {
-          color: var(--accent);
-        }
-
-        /* =============================================
-   MOBILE MENU FOOTER
-   ============================================= */
-
-        .mobile-menu-footer {
-          padding-top: 24px;
-          border-top: 1px solid var(--border);
-          margin-top: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          opacity: 0;
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
-          transform: translateX(20px);
-        }
-
-        .mobile-menu-download {
-          width: 100%;
-          justify-content: center;
-          padding: 14px 24px;
-          font-size: 15px;
-        }
-
-        .mobile-menu-meta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-size: 12px;
-          color: var(--text-3);
-        }
-
-        /* =============================================
-   BODY LOCK WHEN MENU IS OPEN
-   ============================================= */
-
-        body.mobile-menu-open {
-          overflow: hidden;
-        }
-
-        /* =============================================
-   RESPONSIVE — SHOW/HIDE
-   ============================================= */
-
-        @media (max-width: 900px) {
-          .nav-toggle {
-            display: flex;
-          }
-
-          .nav-links {
-            display: none !important;
-          }
-
-          .nav-download-btn {
-            display: none !important;
-          }
-
-          .nav-inner {
-            justify-content: space-between;
-          }
-        }
-
-        /* On large screens, never show mobile menu */
-        @media (min-width: 901px) {
-
-          .mobile-menu,
-          .mobile-menu-overlay {
-            display: none !important;
-          }
-
-          .nav-toggle {
-            display: none !important;
-          }
-        }
-      </style>
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <img src="logo.png" alt="Mob Timer" width="28" height="28">
-          <span>Mob Timer</span>
-        </a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-        </ul>
-        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
-      </div>
-
-      <!-- Mobile menu overlay -->
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-
-      <!-- Mobile menu panel -->
-      <div class="mobile-menu" id="mobile-menu">
-        <ul class="mobile-menu-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu-footer">
-          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"></path>
-            </svg>
-            Download for Mac
-          </a>
-          <div class="mobile-menu-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Free</span>
-          </div>
+      <div class="klar-nav__center">
+        <div class="klar-nav__search">
+          <svg class="klar-nav__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
+          </svg>
+          <input type="text" class="klar-nav__search-input" placeholder="Search documentation..." id="klarSearchInput"
+            readonly aria-label="Search documentation">
+          <span class="klar-nav__search-kbd">⌘K</span>
         </div>
       </div>
-      <script>
-        // =============================================
-        //  MOBILE MENU
-        // =============================================
 
-        (function() {
-          const toggle = document.getElementById('nav-toggle');
-          const mobileMenu = document.getElementById('mobile-menu');
-          const overlay = document.getElementById('mobile-menu-overlay');
-          const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
-
-          if (!toggle || !mobileMenu || !overlay) return;
-
-          let isOpen = false;
-
-          function openMenu() {
-            isOpen = true;
-            toggle.classList.add('active');
-            toggle.setAttribute('aria-expanded', 'true');
-            mobileMenu.classList.remove('closing');
-            mobileMenu.classList.add('open');
-            overlay.classList.add('visible');
-            document.body.classList.add('mobile-menu-open');
-          }
-
-          function closeMenu() {
-            if (!isOpen) return;
-            isOpen = false;
-            toggle.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-            mobileMenu.classList.add('closing');
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('visible');
-            document.body.classList.remove('mobile-menu-open');
-
-            // After transition ends, remove closing class
-            setTimeout(() => {
-              if (!isOpen) {
-                mobileMenu.classList.remove('closing');
-              }
-            }, 350);
-          }
-
-          toggle.addEventListener('click', () => {
-            if (isOpen) {
-              closeMenu();
-            } else {
-              openMenu();
-            }
-          });
-
-          overlay.addEventListener('click', closeMenu);
-
-          // Close on link click
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              closeMenu();
-            });
-          });
-
-          // Close on Escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Close if window resizes past breakpoint
-          window.addEventListener('resize', () => {
-            if (window.innerWidth > 900 && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Sync active link highlighting in mobile menu
-          const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
-          const sectionObserverMobile = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  const id = entry.target.id;
-                  mobileLinkEls.forEach((link) => {
-                    link.classList.toggle(
-                      'nav-active',
-                      link.getAttribute('href') === `#${id}`
-                    );
-                  });
-                }
-              });
-            }, {
-              threshold: 0.4
-            }
-          );
-
-          document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
-        })();
-      </script>
+      <div class="klar-nav__actions">
+        <a href="https://github.com" class="klar-nav__btn" aria-label="GitHub" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.17 6.839 9.49.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.604-3.369-1.34-3.369-1.34-.454-1.156-1.11-1.464-1.11-1.464-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0112 6.836c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.167 22 16.418 22 12c0-5.523-4.477-10-10-10z" />
+          </svg>
+        </a>
+        <button class="klar-theme-toggle" id="klarThemeToggle" aria-label="Toggle theme">
+          <svg class="klar-icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <circle cx="12" cy="12" r="5" />
+            <path
+              d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+          </svg>
+          <svg class="klar-icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+            stroke-linecap="round">
+            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+          </svg>
+        </button>
+      </div>
     </nav>
 
     <!-- ════════════════════════════════════
@@ -2022,10 +1676,11 @@
       <div class="klar-search-modal__container">
         <div class="klar-search-modal__input-wrap">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="8"></circle>
-            <path d="M21 21l-4.35-4.35"></path>
+            <circle cx="11" cy="11" r="8" />
+            <path d="M21 21l-4.35-4.35" />
           </svg>
-          <input type="text" class="klar-search-modal__input" placeholder="Search docs..." id="klarSearchModalInput" autocomplete="off">
+          <input type="text" class="klar-search-modal__input" placeholder="Search docs..." id="klarSearchModalInput"
+            autocomplete="off">
         </div>
         <div class="klar-search-modal__results" id="klarSearchResults"></div>
         <div class="klar-search-modal__footer">
@@ -2107,7 +1762,7 @@
                 <div class="klar-feature-card">
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path>
+                      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">Zero Bloat</div>
@@ -2117,8 +1772,8 @@
                 <div class="klar-feature-card">
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <polyline points="16 18 22 12 16 6"></polyline>
-                      <polyline points="8 6 2 12 8 18"></polyline>
+                      <polyline points="16 18 22 12 16 6" />
+                      <polyline points="8 6 2 12 8 18" />
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">Clean Output</div>
@@ -2127,7 +1782,7 @@
                 <div class="klar-feature-card">
                   <div class="klar-feature-card__icon">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                      <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
                     </svg>
                   </div>
                   <div class="klar-feature-card__title">~8KB Gzipped</div>
@@ -2136,7 +1791,8 @@
                 </div>
               </div>
 
-              <h2 id="why-klar">Why Klar?<a href="#why-klar" class="klar-heading-anchor" aria-label="Link to this section">#</a></h2>
+              <h2 id="why-klar">Why Klar?<a href="#why-klar" class="klar-heading-anchor"
+                  aria-label="Link to this section">#</a></h2>
               <p>Most CMS tools inject excessive markup into your pages. WYSIWYG editors wrap everything in
                 <code>&lt;div&gt;</code> and <code>&lt;span&gt;</code> tags with inline styles. Klar takes a
                 fundamentally different approach.
@@ -2144,9 +1800,9 @@
 
               <div class="klar-callout klar-callout--info">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
                 <div><strong>Core principle:</strong> Your HTML should look the same whether it was written by hand or
                   edited with Klar. No artifacts. No tracking attributes.</div>
@@ -2155,16 +1811,17 @@
               <p>When you save content in Klar, the output is <strong>indistinguishable from hand-written HTML</strong>.
                 We strip all editor artifacts, normalize formatting, and respect your existing code style.</p>
 
-              <h2 id="before-after">Before &amp; After<a href="#before-after" class="klar-heading-anchor" aria-label="Link to this section">#</a></h2>
+              <h2 id="before-after">Before &amp; After<a href="#before-after" class="klar-heading-anchor"
+                  aria-label="Link to this section">#</a></h2>
               <p>Here's what a typical CMS outputs versus what Klar produces:</p>
 
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">html — ❌ Typical CMS output</span>
-                  <button class="klar-code-block__copy" data-copy="" aria-label="Copy code">
+                  <button class="klar-code-block__copy" data-copy aria-label="Copy code">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2182,10 +1839,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">html — ✓ Klar output</span>
-                  <button class="klar-code-block__copy" data-copy="" aria-label="Copy code">
+                  <button class="klar-code-block__copy" data-copy aria-label="Copy code">
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2193,7 +1850,8 @@
                 <pre><code><span class="klar-hl-punct">&lt;</span><span class="klar-hl-tag">p</span><span class="klar-hl-punct">&gt;&lt;</span><span class="klar-hl-tag">strong</span><span class="klar-hl-punct">&gt;</span>Hello world<span class="klar-hl-punct">&lt;/</span><span class="klar-hl-tag">strong</span><span class="klar-hl-punct">&gt;&lt;/</span><span class="klar-hl-tag">p</span><span class="klar-hl-punct">&gt;</span></code></pre>
               </div>
 
-              <h2 id="philosophy">Design Philosophy<a href="#philosophy" class="klar-heading-anchor" aria-label="Link to this section">#</a></h2>
+              <h2 id="philosophy">Design Philosophy<a href="#philosophy" class="klar-heading-anchor"
+                  aria-label="Link to this section">#</a></h2>
               <p>Klar is built around three principles:</p>
               <ol>
                 <li><strong>Semantic by default</strong> — We use <code>&lt;strong&gt;</code> not <code>&lt;span
@@ -2202,14 +1860,15 @@
                 <li><strong>Developer-friendly</strong> — Clean API, documented events, extensible via plugins.</li>
               </ol>
 
-              <h3 id="who-its-for">Who it's for<a href="#who-its-for" class="klar-heading-anchor" aria-label="Link to this section">#</a></h3>
+              <h3 id="who-its-for">Who it's for<a href="#who-its-for" class="klar-heading-anchor"
+                  aria-label="Link to this section">#</a></h3>
               <p>Klar is ideal for developers and teams who care about code quality. If you version control your HTML,
                 work with static site generators, or simply prefer clean markup — Klar is built for you.</p>
 
               <div class="klar-callout klar-callout--success">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
+                  <polyline points="22 4 12 14.01 9 11.01" />
                 </svg>
                 <div><strong>Ready to get started?</strong> Jump to <a href="#" data-nav="installation">Installation</a>
                   to set up Klar in under 2 minutes.</div>
@@ -2243,10 +1902,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">html</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2260,10 +1919,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">bash</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2276,10 +1935,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2292,7 +1951,8 @@
 });</code></pre>
               </div>
 
-              <h2 id="install-requirements">Requirements<a href="#install-requirements" class="klar-heading-anchor">#</a></h2>
+              <h2 id="install-requirements">Requirements<a href="#install-requirements"
+                  class="klar-heading-anchor">#</a></h2>
 
               <div class="klar-table-wrap">
                 <table class="klar-table">
@@ -2353,10 +2013,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">html</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2373,10 +2033,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2384,7 +2044,7 @@
                 <pre><code><span class="klar-hl-keyword">const</span> klar = <span class="klar-hl-keyword">new</span> Klar({
   <span class="klar-hl-attr">autoDiscover</span>: <span class="klar-hl-keyword">true</span>,
   <span class="klar-hl-attr">sanitize</span>: <span class="klar-hl-keyword">true</span>,
-  <span class="klar-hl-attr">onSave</span>: <span class="klar-hl-keyword">async</span> (regions) =&gt; {
+  <span class="klar-hl-attr">onSave</span>: <span class="klar-hl-keyword">async</span> (regions) => {
     <span class="klar-hl-comment">// regions is a Map of id → clean HTML</span>
     <span class="klar-hl-keyword">await</span> fetch(<span class="klar-hl-string">'/api/save'</span>, {
       <span class="klar-hl-attr">method</span>: <span class="klar-hl-string">'POST'</span>,
@@ -2400,9 +2060,9 @@
 
               <div class="klar-callout klar-callout--warning">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"></path>
-                  <line x1="12" y1="9" x2="12" y2="13"></line>
-                  <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                  <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                  <line x1="12" y1="9" x2="12" y2="13" />
+                  <line x1="12" y1="17" x2="12.01" y2="17" />
                 </svg>
                 <div>The <code>data-klar</code> attribute is <strong>only used during editing</strong>. It is
                   automatically removed from saved output.</div>
@@ -2433,7 +2093,8 @@
                   codebase clean.</p>
               </div>
 
-              <h2 id="ch-sanitization">Automatic Sanitization<a href="#ch-sanitization" class="klar-heading-anchor">#</a></h2>
+              <h2 id="ch-sanitization">Automatic Sanitization<a href="#ch-sanitization"
+                  class="klar-heading-anchor">#</a></h2>
               <p>When you save content through Klar, every editable region goes through a multi-pass sanitization
                 pipeline:</p>
 
@@ -2491,10 +2152,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2540,30 +2201,39 @@
 
               <div class="klar-cms-demo" id="klarCmsDemo">
                 <div class="klar-cms-demo__toolbar">
-                  <div class="klar-cms-demo__toolbar-group" id="klarToolbarFormatting" style="opacity:0.4;pointer-events:none">
-                    <button class="klar-cms-demo__toolbar-btn" data-format="bold" title="Bold (⌘B)"><strong>B</strong></button>
-                    <button class="klar-cms-demo__toolbar-btn" data-format="italic" title="Italic (⌘I)"><em>I</em></button>
-                    <button class="klar-cms-demo__toolbar-btn" data-format="underline" title="Underline (⌘U)" style="text-decoration:underline">U</button>
+                  <div class="klar-cms-demo__toolbar-group" id="klarToolbarFormatting"
+                    style="opacity:0.4;pointer-events:none">
+                    <button class="klar-cms-demo__toolbar-btn" data-format="bold"
+                      title="Bold (⌘B)"><strong>B</strong></button>
+                    <button class="klar-cms-demo__toolbar-btn" data-format="italic"
+                      title="Italic (⌘I)"><em>I</em></button>
+                    <button class="klar-cms-demo__toolbar-btn" data-format="underline" title="Underline (⌘U)"
+                      style="text-decoration:underline">U</button>
                   </div>
                   <div class="klar-cms-demo__toolbar-sep"></div>
-                  <div class="klar-cms-demo__toolbar-group" id="klarToolbarBlocks" style="opacity:0.4;pointer-events:none">
-                    <button class="klar-cms-demo__toolbar-btn" data-format="h2" title="Heading 2" style="font-size:11px;font-weight:700">H2</button>
-                    <button class="klar-cms-demo__toolbar-btn" data-format="h3" title="Heading 3" style="font-size:10px;font-weight:700">H3</button>
+                  <div class="klar-cms-demo__toolbar-group" id="klarToolbarBlocks"
+                    style="opacity:0.4;pointer-events:none">
+                    <button class="klar-cms-demo__toolbar-btn" data-format="h2" title="Heading 2"
+                      style="font-size:11px;font-weight:700">H2</button>
+                    <button class="klar-cms-demo__toolbar-btn" data-format="h3" title="Heading 3"
+                      style="font-size:10px;font-weight:700">H3</button>
                     <button class="klar-cms-demo__toolbar-btn" data-format="insertUnorderedList" title="Bullet list">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                        <line x1="8" y1="6" x2="21" y2="6"></line>
-                        <line x1="8" y1="12" x2="21" y2="12"></line>
-                        <line x1="8" y1="18" x2="21" y2="18"></line>
-                        <circle cx="4" cy="6" r="1" fill="currentColor"></circle>
-                        <circle cx="4" cy="12" r="1" fill="currentColor"></circle>
-                        <circle cx="4" cy="18" r="1" fill="currentColor"></circle>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <line x1="8" y1="6" x2="21" y2="6" />
+                        <line x1="8" y1="12" x2="21" y2="12" />
+                        <line x1="8" y1="18" x2="21" y2="18" />
+                        <circle cx="4" cy="6" r="1" fill="currentColor" />
+                        <circle cx="4" cy="12" r="1" fill="currentColor" />
+                        <circle cx="4" cy="18" r="1" fill="currentColor" />
                       </svg>
                     </button>
                   </div>
                   <div class="klar-cms-demo__toolbar-right">
                     <div class="klar-cms-demo__mode-toggle">
                       <span>Edit Mode</span>
-                      <div class="klar-cms-demo__toggle-track" id="klarEditToggle" role="switch" aria-checked="false" tabindex="0">
+                      <div class="klar-cms-demo__toggle-track" id="klarEditToggle" role="switch" aria-checked="false"
+                        tabindex="0">
                         <div class="klar-cms-demo__toggle-thumb"></div>
                       </div>
                     </div>
@@ -2586,10 +2256,11 @@
                   </div>
                   <div class="klar-cms-demo__actions">
                     <button class="klar-btn klar-btn--secondary" id="klarExportBtn" title="Export as HTML file">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"></path>
-                        <polyline points="7 10 12 15 17 10"></polyline>
-                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round">
+                        <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4" />
+                        <polyline points="7 10 12 15 17 10" />
+                        <line x1="12" y1="15" x2="12" y2="3" />
                       </svg>
                       Export
                     </button>
@@ -2614,10 +2285,11 @@
                   <div class="klar-code-block">
                     <div class="klar-code-block__header">
                       <span class="klar-code-block__lang">html — sanitized output</span>
-                      <button class="klar-code-block__copy" data-copy="">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                          <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <button class="klar-code-block__copy" data-copy>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                          stroke-linecap="round">
+                          <rect x="9" y="9" width="13" height="13" rx="2" />
+                          <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                         </svg>
                         Copy
                       </button>
@@ -2675,10 +2347,10 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2745,7 +2417,8 @@
                 </table>
               </div>
 
-              <h2 id="api-instance-methods">Instance Methods<a href="#api-instance-methods" class="klar-heading-anchor">#</a></h2>
+              <h2 id="api-instance-methods">Instance Methods<a href="#api-instance-methods"
+                  class="klar-heading-anchor">#</a></h2>
 
               <h3 id="api-enable">editor.enable()<a href="#api-enable" class="klar-heading-anchor">#</a></h3>
               <p>Enables editing mode on all registered regions.</p>
@@ -2760,17 +2433,17 @@
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
                 </div>
                 <pre><code><span class="klar-hl-keyword">const</span> content = <span class="klar-hl-keyword">await</span> editor.save();
 
-content.forEach((html, regionId) =&gt; {
+content.forEach((html, regionId) => {
   console.log(<span class="klar-hl-string">`Region ${regionId}:`</span>, html);
 });</code></pre>
               </div>
@@ -2785,9 +2458,9 @@ content.forEach((html, regionId) =&gt; {
 
               <div class="klar-callout klar-callout--info">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                  <circle cx="12" cy="12" r="10"></circle>
-                  <line x1="12" y1="16" x2="12" y2="12"></line>
-                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                  <circle cx="12" cy="12" r="10" />
+                  <line x1="12" y1="16" x2="12" y2="12" />
+                  <line x1="12" y1="8" x2="12.01" y2="8" />
                 </svg>
                 <div>All methods that modify the DOM are synchronous. Only <code>save()</code> is async (when using a
                   custom <code>onSave</code> handler).</div>
@@ -2825,10 +2498,10 @@ content.forEach((html, regionId) =&gt; {
               <div class="klar-code-block">
                 <div class="klar-code-block__header">
                   <span class="klar-code-block__lang">javascript</span>
-                  <button class="klar-code-block__copy" data-copy="">
+                  <button class="klar-code-block__copy" data-copy>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>
                     Copy
                   </button>
@@ -2927,7 +2600,8 @@ content.forEach((html, regionId) =&gt; {
             <!-- ═══ STUB PAGES ═══ -->
             <div class="klar-page" id="page-editing">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Editing Content</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Editing Content</span></div>
                 <h1>Editing Content</h1>
                 <p class="klar-article__description">Learn how to create and manage editable regions in your HTML pages.
                 </p>
@@ -2939,16 +2613,19 @@ content.forEach((html, regionId) =&gt; {
               <p>Inline mode edits text within existing elements. Block mode allows adding, removing, and reordering
                 block-level elements like paragraphs, headings, and lists.</p>
               <div class="klar-article-nav">
-                <a href="#" class="klar-article-nav__link" data-nav="clean-html"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Clean HTML
+                <a href="#" class="klar-article-nav__link" data-nav="clean-html"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Clean HTML
                     Output</span></a>
-                <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="configuration"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Configuration
+                <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="configuration"><span
+                    class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Configuration
                     →</span></a>
               </div>
             </div>
 
             <div class="klar-page" id="page-configuration">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Configuration</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Configuration</span></div>
                 <h1>Configuration</h1>
                 <p class="klar-article__description">Fine-tune Klar's behavior through comprehensive configuration
                   options.</p>
@@ -2956,9 +2633,11 @@ content.forEach((html, regionId) =&gt; {
               <h2 id="cf-defaults">Default Configuration<a href="#cf-defaults" class="klar-heading-anchor">#</a></h2>
               <p>Klar ships with sensible defaults. Override only what you need.</p>
               <div class="klar-code-block">
-                <div class="klar-code-block__header"><span class="klar-code-block__lang">javascript</span><button class="klar-code-block__copy" data-copy=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                <div class="klar-code-block__header"><span class="klar-code-block__lang">javascript</span><button
+                    class="klar-code-block__copy" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>Copy</button></div>
                 <pre><code><span class="klar-hl-keyword">const</span> defaults = {
   <span class="klar-hl-attr">mode</span>: <span class="klar-hl-string">'inline'</span>,
@@ -2971,16 +2650,19 @@ content.forEach((html, regionId) =&gt; {
 };</code></pre>
               </div>
               <div class="klar-article-nav">
-                <a href="#" class="klar-article-nav__link" data-nav="editing"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Editing
+                <a href="#" class="klar-article-nav__link" data-nav="editing"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Editing
                     Content</span></a>
-                <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="cms-demo"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Live Demo
+                <a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="cms-demo"><span
+                    class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Live Demo
                     →</span></a>
               </div>
             </div>
 
             <div class="klar-page" id="page-sanitization">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>HTML Sanitization</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>HTML Sanitization</span></div>
                 <h1>HTML Sanitization</h1>
                 <p class="klar-article__description">Deep dive into Klar's sanitization engine and how it keeps your
                   HTML clean.</p>
@@ -2988,13 +2670,17 @@ content.forEach((html, regionId) =&gt; {
               <h2 id="sn-pipeline">Sanitization Pipeline<a href="#sn-pipeline" class="klar-heading-anchor">#</a></h2>
               <p>Every piece of HTML that passes through Klar goes through a multi-stage cleaning pipeline. Each stage
                 is independent and configurable.</p>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="cms-demo"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Live
-                    Demo</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="export"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Export &amp; Save →</span></a></div>
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="cms-demo"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← Live
+                    Demo</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next"
+                  data-nav="export"><span class="klar-article-nav__label">Next</span><span
+                    class="klar-article-nav__title">Export & Save →</span></a></div>
             </div>
 
             <div class="klar-page" id="page-export">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Export &amp; Save</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Export & Save</span></div>
                 <h1>Export &amp; Save</h1>
                 <p class="klar-article__description">Save edited content back to your codebase or export as standalone
                   HTML files.</p>
@@ -3002,24 +2688,32 @@ content.forEach((html, regionId) =&gt; {
               <h2 id="ex-methods">Save Methods<a href="#ex-methods" class="klar-heading-anchor">#</a></h2>
               <p>Klar supports multiple save targets: local file download, GitHub API, REST endpoints, and custom
                 handlers via the <code>onSave</code> callback.</p>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="sanitization"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← HTML
-                    Sanitization</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="api-overview"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">API Overview →</span></a></div>
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="sanitization"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← HTML
+                    Sanitization</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next"
+                  data-nav="api-overview"><span class="klar-article-nav__label">Next</span><span
+                    class="klar-article-nav__title">API Overview →</span></a></div>
             </div>
 
             <div class="klar-page" id="page-api-methods">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Methods</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Methods</span></div>
                 <h1>API Methods</h1>
                 <p class="klar-article__description">Full list of methods available on the Klar editor instance.</p>
               </div>
               <p>See <a href="#" data-nav="api-overview">API Overview</a> for the complete reference.</p>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="api-overview"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← API
-                    Overview</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="api-events"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Events →</span></a></div>
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="api-overview"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">← API
+                    Overview</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next"
+                  data-nav="api-events"><span class="klar-article-nav__label">Next</span><span
+                    class="klar-article-nav__title">Events →</span></a></div>
             </div>
 
             <div class="klar-page" id="page-api-events">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Events</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Events</span></div>
                 <h1>Events</h1>
                 <p class="klar-article__description">Hook into editor lifecycle events for custom behavior.</p>
               </div>
@@ -3028,25 +2722,31 @@ content.forEach((html, regionId) =&gt; {
                 <code>save</code>, <code>error</code>. Subscribe using the standard <code>on()</code> method.
               </p>
               <div class="klar-code-block">
-                <div class="klar-code-block__header"><span class="klar-code-block__lang">javascript</span><button class="klar-code-block__copy" data-copy=""><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-                      <rect x="9" y="9" width="13" height="13" rx="2"></rect>
-                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path>
+                <div class="klar-code-block__header"><span class="klar-code-block__lang">javascript</span><button
+                    class="klar-code-block__copy" data-copy><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                      stroke-width="2" stroke-linecap="round">
+                      <rect x="9" y="9" width="13" height="13" rx="2" />
+                      <path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1" />
                     </svg>Copy</button></div>
-                <pre><code>editor.on(<span class="klar-hl-string">'change'</span>, (regionId, html) =&gt; {
+                <pre><code>editor.on(<span class="klar-hl-string">'change'</span>, (regionId, html) => {
   console.log(<span class="klar-hl-string">`Changed: ${regionId}`</span>);
 });
 
-editor.on(<span class="klar-hl-string">'save'</span>, (regions) =&gt; {
+editor.on(<span class="klar-hl-string">'save'</span>, (regions) => {
   console.log(<span class="klar-hl-string">'All regions saved'</span>);
 });</code></pre>
               </div>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="api-methods"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
-                    Methods</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="plugins"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Plugins →</span></a></div>
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="api-methods"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
+                    Methods</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next"
+                  data-nav="plugins"><span class="klar-article-nav__label">Next</span><span
+                    class="klar-article-nav__title">Plugins →</span></a></div>
             </div>
 
             <div class="klar-page" id="page-performance">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Performance</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Performance</span></div>
                 <h1>Performance</h1>
                 <p class="klar-article__description">How Klar stays fast and lightweight by design.</p>
               </div>
@@ -3056,13 +2756,17 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) =&gt; {
               <h2 id="perf-runtime">Runtime Performance<a href="#perf-runtime" class="klar-heading-anchor">#</a></h2>
               <p>Klar batches DOM mutations using <code>requestAnimationFrame</code> and debounces change events.
                 Sanitization runs in a document fragment to avoid layout thrashing.</p>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="plugins"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
-                    Plugins</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next" data-nav="accessibility"><span class="klar-article-nav__label">Next</span><span class="klar-article-nav__title">Accessibility →</span></a></div>
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="plugins"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
+                    Plugins</span></a><a href="#" class="klar-article-nav__link klar-article-nav__link--next"
+                  data-nav="accessibility"><span class="klar-article-nav__label">Next</span><span
+                    class="klar-article-nav__title">Accessibility →</span></a></div>
             </div>
 
             <div class="klar-page" id="page-accessibility">
               <div class="klar-article__header klar-animat">
-                <div class="klar-article__breadcrumb"><a href="#" data-nav="getting-started">Docs</a><span>›</span><span>Accessibility</span></div>
+                <div class="klar-article__breadcrumb"><a href="#"
+                    data-nav="getting-started">Docs</a><span>›</span><span>Accessibility</span></div>
                 <h1>Accessibility</h1>
                 <p class="klar-article__description">Klar is built with WCAG 2.1 AA compliance in mind.</p>
               </div>
@@ -3072,7 +2776,8 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) =&gt; {
               <h2 id="a11y-aria">ARIA Attributes<a href="#a11y-aria" class="klar-heading-anchor">#</a></h2>
               <p>Editable regions announce their state via <code>aria-label</code> and <code>role="textbox"</code>. The
                 toolbar uses <code>role="toolbar"</code> with <code>aria-pressed</code> on toggle buttons.</p>
-              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="performance"><span class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
+              <div class="klar-article-nav"><a href="#" class="klar-article-nav__link" data-nav="performance"><span
+                    class="klar-article-nav__label">Previous</span><span class="klar-article-nav__title">←
                     Performance</span></a>
                 <div></div>
               </div>
@@ -3810,5 +3515,5 @@ editor.on(<span class="klar-hl-string">'save'</span>, (regions) =&gt; {
       })();
     </script>
 
-  
-</body></html>
+  </body>
+</html>

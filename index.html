@@ -1,1394 +1,1168 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" type="image/png" sizes="32x32" href="logo.png">
-    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
-    <title>Mob Timer — Focus Timer for macOS</title>
-    <meta name="description"
-      content="A minimal macOS timer designed for deep focus and mob programming. Start instantly, stay focused, get notified.">
-    <link rel="stylesheet" href="styles.css">
+    <title>Brewed Awakening — Artisan Café</title>
+
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&amp;family=JetBrains+Mono:wght@400;500&amp;display=swap"
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&amp;family=Poppins:wght@300;400;500;600;700&amp;display=swap"
       rel="stylesheet">
-  </head>
-  <body>
-    <nav class="nav" id="nav">
-      <style>
-        /* =============================================
-   HAMBURGER TOGGLE BUTTON
-   ============================================= */
 
-        .nav-toggle {
-          display: none;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          width: 40px;
-          height: 40px;
-          border-radius: 10px;
-          background: rgba(255, 255, 255, 0.05);
-          border: 1px solid var(--border);
-          cursor: pointer;
-          padding: 0;
-          gap: 5px;
-          z-index: 110;
-          transition: all var(--transition);
-          flex-shrink: 0;
-        }
-
-        .nav-toggle:hover {
-          background: rgba(255, 255, 255, 0.1);
-          border-color: var(--border-hover);
-        }
-
-        .hamburger-line {
-          display: block;
-          width: 18px;
-          height: 2px;
-          background: var(--text);
-          border-radius: 2px;
-          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-          transform-origin: center;
-        }
-
-        /* Hamburger → X animation */
-        .nav-toggle.active .hamburger-line:nth-child(1) {
-          transform: translateY(7px) rotate(45deg);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(2) {
-          opacity: 0;
-          transform: scaleX(0);
-        }
-
-        .nav-toggle.active .hamburger-line:nth-child(3) {
-          transform: translateY(-7px) rotate(-45deg);
-        }
-
-        /* =============================================
-   MOBILE MENU OVERLAY
-   ============================================= */
-
-        .mobile-menu-overlay {
-          display: none;
-          position: fixed;
-          inset: 0;
-          background: rgba(0, 0, 0, 0.6);
-          backdrop-filter: blur(4px);
-          -webkit-backdrop-filter: blur(4px);
-          z-index: 98;
-          opacity: 0;
-          transition: opacity 0.3s ease;
-        }
-
-        .mobile-menu-overlay.visible {
-          display: block;
-          opacity: 1;
-        }
-
-        /* =============================================
-   MOBILE MENU PANEL
-   ============================================= */
-
-        .mobile-menu {
-          display: none;
-          position: fixed;
-          top: 0;
-          right: 0;
-          width: 300px;
-          max-width: calc(100vw - 48px);
-          height: 100dvh;
-          background: var(--bg-surface);
-          border-left: 1px solid var(--border);
-          z-index: 99;
-          flex-direction: column;
-          padding: 88px 24px 32px;
-          transform: translateX(100%);
-          transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
-          overflow-y: auto;
-          -webkit-overflow-scrolling: touch;
-          box-shadow: -20px 0 60px rgba(0, 0, 0, 0.4);
-        }
-
-        .mobile-menu.open {
-          display: flex;
-          transform: translateX(0);
-        }
-
-        /* Slight delay trick: always display:flex when animating out */
-        .mobile-menu.closing {
-          display: flex;
-          transform: translateX(100%);
-        }
-
-        /* =============================================
-   MOBILE MENU LINKS
-   ============================================= */
-
-        .mobile-menu-links {
-          list-style: none;
-          display: flex;
-          flex-direction: column;
-          gap: 2px;
-          flex: 1;
-        }
-
-        .mobile-menu-links li {
-          opacity: 0;
-          transform: translateX(20px);
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-        }
-
-        .mobile-menu-links li:nth-child(1) {
-          animation-delay: 0.05s;
-        }
-
-        .mobile-menu-links li:nth-child(2) {
-          animation-delay: 0.08s;
-        }
-
-        .mobile-menu-links li:nth-child(3) {
-          animation-delay: 0.11s;
-        }
-
-        .mobile-menu-links li:nth-child(4) {
-          animation-delay: 0.14s;
-        }
-
-        .mobile-menu-links li:nth-child(5) {
-          animation-delay: 0.17s;
-        }
-
-        .mobile-menu-links li:nth-child(6) {
-          animation-delay: 0.2s;
-        }
-
-        @keyframes mobileMenuSlideIn {
-          to {
-            opacity: 1;
-            transform: translateX(0);
-          }
-        }
-
-        .mobile-menu-links a {
-          display: block;
-          padding: 14px 16px;
-          font-size: 16px;
-          font-weight: 500;
-          color: var(--text-2);
-          border-radius: 12px;
-          transition: all var(--transition);
-          letter-spacing: -0.01em;
-        }
-
-        .mobile-menu-links a:hover,
-        .mobile-menu-links a.nav-active {
-          color: var(--text);
-          background: rgba(255, 255, 255, 0.06);
-        }
-
-        .mobile-menu-links a.nav-active {
-          color: var(--accent);
-        }
-
-        /* =============================================
-   MOBILE MENU FOOTER
-   ============================================= */
-
-        .mobile-menu-footer {
-          padding-top: 24px;
-          border-top: 1px solid var(--border);
-          margin-top: 16px;
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
-          opacity: 0;
-          animation: mobileMenuSlideIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.25s forwards;
-          transform: translateX(20px);
-        }
-
-        .mobile-menu-download {
-          width: 100%;
-          justify-content: center;
-          padding: 14px 24px;
-          font-size: 15px;
-        }
-
-        .mobile-menu-meta {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 8px;
-          font-size: 12px;
-          color: var(--text-3);
-        }
-
-        /* =============================================
-   BODY LOCK WHEN MENU IS OPEN
-   ============================================= */
-
-        body.mobile-menu-open {
-          overflow: hidden;
-        }
-
-        /* =============================================
-   RESPONSIVE — SHOW/HIDE
-   ============================================= */
-
-        @media (max-width: 900px) {
-          .nav-toggle {
-            display: flex;
-          }
-
-          .nav-links {
-            display: none !important;
-          }
-
-          .nav-download-btn {
-            display: none !important;
-          }
-
-          .nav-inner {
-            justify-content: space-between;
-          }
-        }
-
-        /* On large screens, never show mobile menu */
-        @media (min-width: 901px) {
-
-          .mobile-menu,
-          .mobile-menu-overlay {
-            display: none !important;
-          }
-
-          .nav-toggle {
-            display: none !important;
-          }
-        }
-      </style>
-      <div class="nav-inner">
-        <a href="#" class="nav-logo">
-          <img src="logo.png" alt="Mob Timer" width="28" height="28">
-          <span>Mob Timer</span>
-        </a>
-        <button class="nav-toggle" id="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-          <span class="hamburger-line"></span>
-        </button>
-
-        <ul class="nav-links" id="nav-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-        </ul>
-        <a href="#download" class="btn btn-sm btn-primary nav-download-btn">Download</a>
-      </div>
-
-      <!-- Mobile menu overlay -->
-      <div class="mobile-menu-overlay" id="mobile-menu-overlay"></div>
-
-      <!-- Mobile menu panel -->
-      <div class="mobile-menu" id="mobile-menu">
-        <ul class="mobile-menu-links">
-          <li><a href="#mob-programming">Mob Programming</a></li>
-          <li><a href="#break-timer">Break Timer</a></li>
-          <li><a href="#features">Features</a></li>
-          <li><a href="#how-it-works">How it works</a></li>
-          <li><a href="#why-mob-timer">Why Mob Timer</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <div class="mobile-menu-footer">
-          <a href="#download" class="btn btn-primary btn-lg mobile-menu-download">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-            Download for Mac
-          </a>
-          <div class="mobile-menu-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Free</span>
-          </div>
-        </div>
-      </div>
-      <script>
-        // =============================================
-        //  MOBILE MENU
-        // =============================================
-
-        (function() {
-          const toggle = document.getElementById('nav-toggle');
-          const mobileMenu = document.getElementById('mobile-menu');
-          const overlay = document.getElementById('mobile-menu-overlay');
-          const mobileLinks = document.querySelectorAll('.mobile-menu-links a, .mobile-menu-download');
-
-          if (!toggle || !mobileMenu || !overlay) return;
-
-          let isOpen = false;
-
-          function openMenu() {
-            isOpen = true;
-            toggle.classList.add('active');
-            toggle.setAttribute('aria-expanded', 'true');
-            mobileMenu.classList.remove('closing');
-            mobileMenu.classList.add('open');
-            overlay.classList.add('visible');
-            document.body.classList.add('mobile-menu-open');
-          }
-
-          function closeMenu() {
-            if (!isOpen) return;
-            isOpen = false;
-            toggle.classList.remove('active');
-            toggle.setAttribute('aria-expanded', 'false');
-            mobileMenu.classList.add('closing');
-            mobileMenu.classList.remove('open');
-            overlay.classList.remove('visible');
-            document.body.classList.remove('mobile-menu-open');
-
-            // After transition ends, remove closing class
-            setTimeout(() => {
-              if (!isOpen) {
-                mobileMenu.classList.remove('closing');
-              }
-            }, 350);
-          }
-
-          toggle.addEventListener('click', () => {
-            if (isOpen) {
-              closeMenu();
-            } else {
-              openMenu();
-            }
-          });
-
-          overlay.addEventListener('click', closeMenu);
-
-          // Close on link click
-          mobileLinks.forEach(link => {
-            link.addEventListener('click', () => {
-              closeMenu();
-            });
-          });
-
-          // Close on Escape key
-          document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape' && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Close if window resizes past breakpoint
-          window.addEventListener('resize', () => {
-            if (window.innerWidth > 900 && isOpen) {
-              closeMenu();
-            }
-          });
-
-          // Sync active link highlighting in mobile menu
-          const mobileLinkEls = document.querySelectorAll('.mobile-menu-links a');
-          const sectionObserverMobile = new IntersectionObserver(
-            (entries) => {
-              entries.forEach((entry) => {
-                if (entry.isIntersecting) {
-                  const id = entry.target.id;
-                  mobileLinkEls.forEach((link) => {
-                    link.classList.toggle(
-                      'nav-active',
-                      link.getAttribute('href') === `#${id}`
-                    );
-                  });
-                }
-              });
-            }, {
-              threshold: 0.4
-            }
-          );
-
-          document.querySelectorAll('section[id]').forEach((s) => sectionObserverMobile.observe(s));
-        })();
-      </script>
-    </nav>
-
-    <!-- ========== HERO ========== -->
-    <section class="hero" id="hero">
-      <div class="hero-bg">
-        <div class="hero-glow hero-glow-1"></div>
-        <div class="hero-glow hero-glow-2"></div>
-        <div class="hero-grid"></div>
-      </div>
-
-      <div class="container">
-        <div class="hero-content">
-          <div class="hero-badge">
-            <span class="badge-dot"></span>Native macOS · Free Download
-          </div>
-
-          <h1 class="hero-title" data-klar-edit="">The timer that<br>
-            <span class="gradient-text">gets out of your way</span>
-          </h1>
-
-          <p class="hero-subtitle">Mob Timer is a minimal macOS timer built for deep focus sessions and collaborative
-            mob programming. Start in seconds. Stay in the zone.</p>
-
-          <div class="hero-actions">
-            <a href="#download" class="btn btn-primary btn-lg">
-              <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                <path d="M8 1v9M4 7l4 4 4-4M2 13h12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-              Download for Mac
-            </a>
-            <a href="/assets/Mob Timer.dmg" download="" class="btn btn-ghost btn-lg">
-              See features
-              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                <path d="M2 7h10M7 2l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                  stroke-linejoin="round"></path>
-              </svg>
-            </a>
-          </div>
-
-          <div class="hero-meta">
-            <span>macOS 13+</span>
-            <span class="meta-dot">·</span>
-            <span>Native SwiftUI</span>
-            <span class="meta-dot">·</span>
-            <span>No subscription</span>
-          </div>
-        </div>
-
-        <!-- App Window Mockup -->
-        <div class="hero-visual">
-          <div class="app-window app-window-mob">
-            <div class="window-chrome">
-              <div class="window-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
-              </div>
-            </div>
-            <div class="window-body mob-window-body">
-              <img src="images/app-screenshot.png" alt="Mob Timer app" class="app-screenshot">
-              <div class="screenshot-time-overlay" id="screenshot-timer">
-                07:28
-              </div>
-            </div>
-          </div>
-          <div class="window-reflection"></div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== SOCIAL PROOF ========== -->
-    <section class="social-proof" id="social-proof">
-      <div class="container">
-        <p class="proof-label">Built for developers who value focus</p>
-        <div class="proof-stats">
-          <div class="stat">
-            <span class="stat-num">3</span>
-            <span class="stat-desc">Timer presets</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-num">∞</span>
-            <span class="stat-desc">Custom durations</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-num">0</span>
-            <span class="stat-desc">Subscriptions</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat">
-            <span class="stat-num">100%</span>
-            <span class="stat-desc">Native macOS</span>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== MOB PROGRAMMING ========== -->
-    <section class="mob-section" id="mob-programming">
-      <div class="mob-bg">
-        <div class="mob-glow mob-glow-1"></div>
-        <div class="mob-glow mob-glow-2"></div>
-      </div>
-      <div class="container">
-        <div class="mob-layout">
-          <div class="mob-copy">
-            <div class="section-tag">Core Feature</div>
-            <h2 class="section-title" style="text-align: left">
-              Mob programming,<br><span class="gradient-text">perfectly in sync</span>
-            </h2>
-            <p class="mob-lead">
-              Mob Timer is built around a single shared countdown that every
-              teammate sees at the same time—no drift, no confusion about whose
-              turn it is.
-            </p>
-
-            <div class="mob-steps" data-klar-list="">
-              <div class="mob-step">
-                <div class="mob-step-num">1</div>
-                <div>
-                  <strong>Create a session</strong>
-                  <p>Start a new session in one click. Get a shareable code instantly, or give it a permanent name your
-                    team can always find. hehe</p>
-                </div>
-              </div>
-              <div class="mob-step">
-                <div class="mob-step-num">2</div>
-                <div>
-                  <strong>Share the code</strong>
-                  <p>Every team member opens Mob Timer and joinsss with the code. The timer and queue sync across all
-                    Macs in real time.</p>
-                </div>
-              </div>
-              <div class="mob-step">
-                <div class="mob-step-num">3</div>
-                <div>
-                  <strong>Auto-rotate drivers</strong>
-                  <p>
-                    When a turn ends, everyone gets notified and the next driver
-                    is automatically highlighted. No manual coordination needed.
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <div class="mob-tags" data-list=""><span class="mob-tag">Real-time sync</span>
-              <span class="mob-tag">Persistent named sessions</span>
-              <span class="mob-tag">Auto-rotation</span>
-            </div>
-          </div>
-
-          <div class="mob-visual">
-            <div class="mob-flow">
-              <!-- Settings / Join card -->
-              <div class="flow-card flow-card-create">
-                <div class="flow-settings-title">Settings</div>
-                <div class="flow-settings-section">
-                  <div class="flow-settings-label">MOB TIMER SESSION</div>
-                  <div class="flow-settings-desc">
-                    A shared timer for your whole team. Everyone sees the same
-                    countdown and knows whose turn it is to drive.
-                  </div>
-                  <div class="flow-input-field">Session code or name</div>
-                  <button class="flow-join-btn">Join Session</button>
-                  <div class="flow-or-divider">or create</div>
-                  <div class="flow-input-field">Session name (optional)</div>
-                  <button class="flow-create-btn">Create Session</button>
-                </div>
-              </div>
-
-              <!-- Arrow -->
-              <div class="flow-arrow">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                    stroke-linejoin="round"></path>
-                </svg>
-              </div>
-
-              <!-- Active Mob Timer card -->
-              <div class="flow-card flow-card-active">
-                <div class="flow-app-tabs">
-                  <span class="flow-app-tab active">Mob Timer</span>
-                  <span class="flow-app-tab">Break Timer</span>
-                </div>
-
-                <div class="flow-ring-wrap">
-                  <svg viewBox="0 0 100 100" class="flow-ring-svg">
-                    <circle cx="50" cy="50" r="42" class="ring-track"></circle>
-                    <circle cx="50" cy="50" r="42" class="ring-progress flow-ring-progress" style="--progress: 0.55">
-                    </circle>
-                  </svg>
-                  <div class="flow-ring-inner">
-                    <div class="flow-driver-name">SUZANNE</div>
-                    <span class="flow-time" id="flow-time">05:06</span>
-                    <div class="flow-driving-sub">Now driving</div>
-                  </div>
-                </div>
-
-                <div class="flow-next-label">Next: Gabriel</div>
-
-                <div style="flex: 1"></div>
-
-                <div class="flow-participants-bar">
-                  <span class="flow-p-label">PARTICIPANTS</span>
-                  <span class="flow-session-code">Session: NEWSWEB</span>
-                </div>
-                <div class="flow-chips">
-                  <span class="flow-chip">Siri ×</span>
-                  <span class="flow-chip flow-chip-active">● Suzanne ×</span>
-                  <span class="flow-chip">Gabriel ×</span>
-                  <span class="flow-chip">Richard ×</span>
-                  <span class="flow-chip flow-chip-add">+</span>
-                </div>
-
-                <!-- Notification toast -->
-                <div class="flow-toast" id="flow-toast">
-                  <span class="flow-toast-icon">🔔</span>
-                  <div class="flow-toast-text">
-                    <strong>Turn complete!</strong>
-                    <span>Gabriel is now driving.</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Sync indicator -->
-            <div class="mob-sync-bar">
-              <div class="sync-dot"></div>
-              <span>Synced across all team members</span>
-              <span class="sync-sep">·</span>
-              <span class="sync-ts">Updated just now</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== BREAK TIMER ========== -->
-    <section class="app-showcase" id="break-timer">
-      <div class="container">
-        <div class="app-showcase-inner">
-          <div class="app-showcase-content">
-            <div class="section-tag">Break Timer</div>
-            <h2 class="section-title" style="text-align: left">Work deeply.<br>Rest intentionally.</h2>
-            <p class="app-showcase-desc">
-              Mob Timer's Break Timer keeps your work sessions structured. Pick
-              a cycle preset — Pomodoro, Deep Work, or your own custom rhythm —
-              and let the app handle the rest. A gentle ring tracks your
-              progress so you stay in the zone without watching the clock.
-            </p>
-            <ul class="app-showcase-points">
-              <li>Pomodoro, Deep Work, Quick, and Custom presets</li>
-              <li>Visual ring progress — always glanceable</li>
-              <li>Shared across your whole team in real time</li>
-            </ul>
-          </div>
-          <div class="app-showcase-visual">
-            <img src="images/app-break-timer.png" alt="Mob Timer Break Timer" class="app-showcase-img">
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== FEATURES ========== -->
-    <section class="features" id="features">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">Features</div>
-          <h2 class="section-title">Everything you need,<br>nothing you don't</h2>
-          <p class="section-subtitle">
-            Mob Timer strips away the noise so you can focus on what matters.
-            Every feature is intentional.
-          </p>
-        </div>
-
-        <div class="features-grid">
-          <div class="feature-card feature-card-large">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M11 3C7.134 3 4 6.134 4 10s3.134 7 7 7 7-3.134 7-7-3.134-7-7-7z" stroke="currentColor"
-                  stroke-width="1.5"></path>
-                <path d="M11 7v4l2.5 2.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-              </svg>
-            </div>
-            <h3>Persistent Sessions</h3>
-            <p>
-              Name your session and it's always there. Rejoin tomorrow with the
-              same code, same queue, same team—pick up exactly where you left
-              off.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <rect x="3" y="3" width="16" height="16" rx="3" stroke="currentColor" stroke-width="1.5"></rect>
-                <path d="M8 11h6M11 8v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-              </svg>
-            </div>
-            <h3>Mob Programming</h3>
-            <p>
-              Shared sessions sync across multiple Macs in real time. Every team
-              member stays perfectly in sync—down to the millisecond.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M7 4h8M5 8h12M9 12h4M11 16v0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round">
-                </path>
-              </svg>
-            </div>
-            <h3>Distraction-Free</h3>
-            <p>
-              Frameless floating window lives quietly in your corner. A status
-              bar icon shows your remaining time without stealing focus.
-            </p>
-          </div>
-
-          <div class="feature-card">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <path d="M4 11a7 7 0 0 1 7-7M18 11a7 7 0 0 1-7 7" stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round"></path>
-                <path d="M15 7l3-3 1 4-4-1M7 15l-3 3-1-4 4 1" stroke="currentColor" stroke-width="1.5"
-                  stroke-linecap="round" stroke-linejoin="round"></path>
-              </svg>
-            </div>
-            <h3>Turn Rotation</h3>
-            <p>
-              When a turn ends, the next driver is automatically highlighted and
-              everyone gets notified. Fair, effortless, zero manual
-              coordination.
-            </p>
-          </div>
-
-          <div class="feature-card feature-card-accent">
-            <div class="feature-icon">
-              <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
-                <circle cx="11" cy="11" r="9" stroke="currentColor" stroke-width="1.5"></circle>
-                <path d="M11 6v5l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"></path>
-              </svg>
-            </div>
-            <h3>Instant Timer Setup</h3>
-            <p>
-              One click to start a Pomodoro, Deep Work, or Quick session. No
-              configuration hell—just focused work from the moment you open the
-              app.
-            </p>
-            <div class="feature-pill">Pomodoro · Deep Work · Quick</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== HOW IT WORKS ========== -->
-    <section class="how-it-works" id="how-it-works">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">How it works</div>
-          <h2 class="section-title">Three steps to<br>pure focus</h2>
-        </div>
-
-        <div class="steps">
-          <div class="step">
-            <div class="step-number">01</div>
-            <div class="step-content">
-              <h3>Share a session</h3>
-              <p>
-                Create a session and share the code with your team. Everyone
-                joins instantly — no accounts, no setup required.
-              </p>
-            </div>
-            <div class="step-visual">
-              <div class="step-card step-card-session">
-                <div class="app-settings-label">MOB TIMER SESSION</div>
-                <div class="app-settings-desc">
-                  A shared timer for your whole team. Everyone sees the same
-                  countdown and knows whose turn it is to drive.
-                </div>
-                <div class="app-input-field">Session code or name</div>
-                <button class="app-join-btn">Join Session</button>
-                <div class="app-divider">or create</div>
-                <div class="app-input-field">Session name (optional)</div>
-                <button class="app-create-btn">Create Session</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-connector">
-            <div class="connector-line"></div>
-          </div>
-
-          <div class="step">
-            <div class="step-number">02</div>
-            <div class="step-content">
-              <h3>Focus on your work</h3>
-              <p>
-                Once your session is running, Mob Timer stays out of your way. A
-                countdown in the menu bar keeps everyone on track—no switching
-                windows, no interruptions.
-              </p>
-            </div>
-            <div class="step-visual">
-              <div class="step-card step-card-timer">
-                <div class="step-menubar">
-                  <span class="step-menubar-spacer"></span>
-                  <span class="step-menubar-item" id="step-menubar-time">Gabriel: 07:28</span>
-                </div>
-                <div class="app-ring-container">
-                  <svg viewBox="0 0 100 100" class="app-ring-svg">
-                    <circle cx="50" cy="50" r="42" class="app-ring-track"></circle>
-                    <circle cx="50" cy="50" r="42" class="app-ring-progress" id="step-ring-progress"
-                      style="--progress: 0.5"></circle>
-                  </svg>
-                  <div class="app-ring-inner">
-                    <div class="app-ring-name">GABRIEL</div>
-                    <div class="app-ring-time">03:28</div>
-                    <div class="app-ring-label">Now driving</div>
-                  </div>
-                </div>
-                <div class="app-next-label">Next: Siri</div>
-                <div class="app-participants-row">
-                  <span class="app-participant">Siri</span>
-                  <span class="app-participant active">Gabriel</span>
-                  <span class="app-participant">Bekhal</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="step-connector">
-            <div class="connector-line"></div>
-          </div>
-
-          <div class="step">
-            <div class="step-number">03</div>
-            <div class="step-content">
-              <h3>Set your work and break intervals</h3>
-              <p>
-                Choose how long to focus and how long to rest. Mob Timer handles
-                the countdown and alerts you when it's time to take a break.
-              </p>
-            </div>
-            <div class="step-visual">
-              <div class="step-card step-card-presets">
-                <div class="app-settings-label">CYCLE PRESET</div>
-                <div class="app-preset-grid">
-                  <div class="app-preset-item">
-                    <div class="app-preset-name">Pomodoro</div>
-                    <div class="app-preset-sub">25 / 5</div>
-                  </div>
-                  <div class="app-preset-item">
-                    <div class="app-preset-name">Deep Work</div>
-                    <div class="app-preset-sub">50 / 10</div>
-                  </div>
-                  <div class="app-preset-item active">
-                    <div class="app-preset-name">Quick</div>
-                    <div class="app-preset-sub">15 / 3</div>
-                  </div>
-                  <div class="app-preset-item">
-                    <div class="app-preset-name">Custom</div>
-                    <div class="app-preset-sub">28 / 5</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== APP PREVIEW ========== -->
-    <section class="preview" id="preview" style="display: none">
-      <div class="container">
-        <div class="section-header">
-          <div class="section-tag">App Preview</div>
-          <h2 class="section-title">
-            Built for the way<br>you actually work
-          </h2>
-          <p class="section-subtitle">
-            Every pixel designed to minimize friction and maximize focus.
-          </p>
-        </div>
-
-        <div class="preview-grid">
-          <!-- Mob Timer Preview -->
-          <div class="preview-window preview-window-main">
-            <div class="window-chrome">
-              <div class="window-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
-              </div>
-            </div>
-            <div class="window-body preview-body">
-              <div class="app-tabs">
-                <button class="app-tab active">Mob Timer</button>
-                <button class="app-tab">Break Timer</button>
-                <button class="app-tab app-tab-icon">
-                  <svg width="16" height="12" viewBox="0 0 20 14" fill="none">
-                    <ellipse cx="10" cy="10" rx="4" ry="4" fill="#4a9eff" opacity="0.3"></ellipse>
-                    <circle cx="10" cy="10" r="3" fill="#4a9eff"></circle>
-                    <ellipse cx="4" cy="9" rx="3" ry="3" fill="#4a9eff" opacity="0.6"></ellipse>
-                    <ellipse cx="16" cy="9" rx="3" ry="3" fill="#4a9eff" opacity="0.6"></ellipse>
-                  </svg>
-                </button>
-              </div>
-              <div class="pv-ring-wrap">
-                <svg viewBox="0 0 180 180" class="pv-ring-svg">
-                  <circle cx="90" cy="90" r="75" class="pv-ring-track"></circle>
-                  <circle cx="90" cy="90" r="75" class="pv-ring-progress pv-ring-green" style="--progress: 0.78">
-                  </circle>
-                </svg>
-                <div class="pv-ring-inner">
-                  <div class="pv-driver-name">GABRIEL</div>
-                  <div class="pv-time pv-time-green">03:28</div>
-                  <div class="pv-sublabel">Now driving</div>
-                </div>
-              </div>
-              <div class="pv-next">Next: Siri</div>
-              <div class="pv-duration-row">
-                <span class="pv-dur-btn">−</span>
-                <span class="pv-dur-val">15 min</span>
-                <span class="pv-dur-btn">+</span>
-              </div>
-              <div class="pv-controls">
-                <button class="pv-ctrl-btn">↺</button>
-                <button class="pv-ctrl-btn pv-ctrl-main pv-ctrl-green">
-                  ⏸
-                </button>
-                <button class="pv-ctrl-btn">⏭</button>
-              </div>
-              <div class="pv-participants-section">
-                <div class="pv-participants-header">
-                  <span class="pv-participants-label">PARTICIPANTS</span>
-                  <span class="pv-session-tag">Session: NEWSWEB <span class="pv-dot-green">●</span></span>
-                </div>
-                <div class="pv-chips">
-                  <span class="pv-chip">Siri ×</span>
-                  <span class="pv-chip">Bekhal ×</span>
-                  <span class="pv-chip pv-chip-active">● Gabriel ×</span>
-                  <span class="pv-chip pv-chip-add">+</span>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Break Timer Preview -->
-          <div class="preview-window preview-window-side">
-            <div class="window-chrome">
-              <div class="window-dots">
-                <span class="dot dot-red"></span>
-                <span class="dot dot-yellow"></span>
-                <span class="dot dot-green"></span>
-              </div>
-            </div>
-            <div class="window-body preview-body">
-              <div class="app-tabs">
-                <button class="app-tab">Mob Timer</button>
-                <button class="app-tab active">Break Timer</button>
-                <button class="app-tab app-tab-icon">
-                  <svg width="16" height="12" viewBox="0 0 20 14" fill="none">
-                    <ellipse cx="10" cy="10" rx="4" ry="4" fill="#4a9eff" opacity="0.3"></ellipse>
-                    <circle cx="10" cy="10" r="3" fill="#4a9eff"></circle>
-                    <ellipse cx="4" cy="9" rx="3" ry="3" fill="#4a9eff" opacity="0.6"></ellipse>
-                    <ellipse cx="16" cy="9" rx="3" ry="3" fill="#4a9eff" opacity="0.6"></ellipse>
-                  </svg>
-                </button>
-              </div>
-              <div class="pv-ring-wrap">
-                <svg viewBox="0 0 180 180" class="pv-ring-svg">
-                  <circle cx="90" cy="90" r="75" class="pv-ring-track"></circle>
-                  <circle cx="90" cy="90" r="75" class="pv-ring-progress pv-ring-blue" style="--progress: 0"></circle>
-                </svg>
-                <div class="pv-ring-inner">
-                  <div class="pv-driver-name">WORK</div>
-                  <div class="pv-time pv-time-blue">28:00</div>
-                  <div class="pv-sublabel">Locked in. Keep it up.</div>
-                </div>
-              </div>
-              <div class="pv-duration-row">
-                <span class="pv-dur-btn">−</span>
-                <span class="pv-dur-val">28 min</span>
-                <span class="pv-dur-btn">+</span>
-              </div>
-              <div class="pv-controls">
-                <button class="pv-ctrl-btn">↺</button>
-                <button class="pv-ctrl-btn pv-ctrl-main pv-ctrl-blue">▶</button>
-                <button class="pv-ctrl-btn">⏭</button>
-              </div>
-              <div class="pv-participants-section">
-                <div class="pv-participants-header">
-                  <span class="pv-participants-label">CYCLE PRESET</span>
-                  <span class="pv-session-tag">Session: NEWSWEB <span class="pv-dot-green">●</span></span>
-                </div>
-                <div class="pv-preset-grid">
-                  <div class="pv-preset">
-                    Pomodoro<br><small>25 / 5</small>
-                  </div>
-                  <div class="pv-preset">
-                    Deep Work<br><small>50 / 10</small>
-                  </div>
-                  <div class="pv-preset">Quick<br><small>15 / 3</small></div>
-                  <div class="pv-preset pv-preset-active">
-                    Custom<br><small>28 / 5</small>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Settings Preview -->
-          <div class="preview-menubar">
-            <div class="menubar-window pv-settings-panel">
-              <div class="pv-settings-title">Settings</div>
-              <div class="pv-settings-section">
-                <div class="pv-settings-section-title">Mob Timer Session</div>
-                <div class="pv-settings-section-desc">
-                  A shared timer for your whole team. Everyone sees the same
-                  countdown and knows whose turn it is to drive.
-                </div>
-                <div class="pv-connected-row">
-                  <div>
-                    <div class="pv-connected-label">CONNECTED</div>
-                    <div class="pv-connected-name">NEWSWEB</div>
-                  </div>
-                  <div class="pv-connected-actions">
-                    <button class="pv-icon-btn">⎘</button>
-                    <button class="pv-leave-btn">Leave</button>
-                  </div>
-                </div>
-              </div>
-              <div class="pv-settings-section">
-                <div class="pv-settings-section-title">Break Timer Sync</div>
-                <div class="pv-settings-section-desc">
-                  Join a session to sync your break timer with teammates. Break
-                  phases are shared across all participants.
-                </div>
-                <div class="pv-connected-row">
-                  <div>
-                    <div class="pv-connected-label">CONNECTED</div>
-                    <div class="pv-connected-name">NEWSWEB</div>
-                  </div>
-                  <div class="pv-connected-actions">
-                    <button class="pv-icon-btn">⎘</button>
-                    <button class="pv-leave-btn">Leave</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== WHY MOB TIMER ========== -->
-    <section class="why" id="why-mob-timer">
-      <div class="container">
-        <div class="why-grid">
-          <div class="why-content">
-            <div class="section-tag">Why Mob Timer</div>
-            <h2 class="section-title">Timers shouldn't<br>add friction</h2>
-            <p class="why-body">
-              Most timers demand your attention. They fight for screen space,
-              interrupt your flow, and drown you in settings. Mob Timer takes
-              the opposite approach.
-            </p>
-            <p class="why-body">
-              It launches instantly, stays out of the way, and does exactly one
-              job exceptionally well: keeping track of time while you focus on
-              the work that matters.
-            </p>
-            <div class="why-points">
-              <div class="why-point">
-                <div class="why-check">✓</div>
-                <div>
-                  <strong>Native, not Electron</strong>
-                  <p>
-                    Pure SwiftUI. Lightweight, fast, and battery-friendly by
-                    default.
-                  </p>
-                </div>
-              </div>
-              <div class="why-point">
-                <div class="why-check">✓</div>
-                <div>
-                  <strong>No account required</strong>
-                  <p>
-                    Download and run. No sign-ups, no onboarding flows, no
-                    friction.
-                  </p>
-                </div>
-              </div>
-              <div class="why-point">
-                <div class="why-check">✓</div>
-                <div>
-                  <strong>Designed for deep work</strong>
-                  <p>
-                    Every design decision optimizes for minimizing interruptions
-                    and maximizing flow.
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div class="why-compare">
-            <div class="compare-card">
-              <div class="compare-header compare-bad">
-                <span>Other timers</span>
-              </div>
-              <ul class="compare-list">
-                <li class="compare-item bad">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"></path>
-                  </svg>
-                  Cluttered interfaces
-                </li>
-                <li class="compare-item bad">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"></path>
-                  </svg>
-                  Web-based (slow)
-                </li>
-                <li class="compare-item bad">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"></path>
-                  </svg>
-                  Require subscriptions
-                </li>
-                <li class="compare-item bad">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"></path>
-                  </svg>
-                  No team sync
-                </li>
-                <li class="compare-item bad">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M2 2l10 10M12 2L2 12" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round"></path>
-                  </svg>
-                  Generic, not macOS-native
-                </li>
-              </ul>
-            </div>
-            <div class="compare-card compare-card-good">
-              <div class="compare-header compare-good">
-                <span>Mob Timer</span>
-                <span class="compare-badge">You're here</span>
-              </div>
-              <ul class="compare-list">
-                <li class="compare-item good">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  Minimal, focused UI
-                </li>
-                <li class="compare-item good">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  Native SwiftUI app
-                </li>
-                <li class="compare-item good">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  Free forever
-                </li>
-                <li class="compare-item good">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  Real-time mob sync
-                </li>
-                <li class="compare-item good">
-                  <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                    <path d="M1.5 7l4 4 7-7" stroke="#4ade80" stroke-width="1.5" stroke-linecap="round"
-                      stroke-linejoin="round"></path>
-                  </svg>
-                  Designed for macOS
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== DOWNLOAD CTA ========== -->
-    <section class="download-cta" id="download">
-      <div class="cta-bg">
-        <div class="cta-glow"></div>
-      </div>
-      <div class="container">
-        <div class="cta-content">
-          <div class="cta-icon">
-            <img src="logo-large.png" alt="Mob Timer" width="72" height="72"
-              style="filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.5))">
-          </div>
-          <h2 class="cta-title">Start focusing today.</h2>
-          <p class="cta-subtitle">
-            Free. Native. No sign-up required. Just download and run.
-          </p>
-          <a href="#" id="download-btn" class="btn btn-cta">
-            <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-              <path d="M9 1v11M4 8l5 5 5-5M2 15h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
-                stroke-linejoin="round"></path>
-            </svg>
-            Download Mob Timer for macOS
-          </a>
-          <p class="cta-meta">Requires macOS 13 Ventura or later · Free</p>
-        </div>
-      </div>
-    </section>
-
-    <!-- ========== CONTACT ========== -->
-    <script>
-      // Contact form interaction
-      const contactForm = document.getElementById('contact-form');
-      if (contactForm) {
-        contactForm.addEventListener('submit', function(e) {
-          e.preventDefault();
-
-          const submitBtn = contactForm.querySelector('.contact-submit');
-          const submitText = contactForm.querySelector('.contact-submit-text');
-          const successMsg = document.getElementById('contact-success');
-
-          // Disable button and show loading state
-          submitBtn.disabled = true;
-          submitBtn.style.opacity = '0.7';
-          submitText.textContent = 'Sending...';
-
-          // Simulate send delay
-          setTimeout(() => {
-            // Show success
-            successMsg.classList.add('visible');
-            submitText.textContent = 'Send Message';
-            submitBtn.style.opacity = '1';
-            submitBtn.disabled = false;
-
-            // Reset form
-            contactForm.reset();
-
-            // Hide success after 5s
-            setTimeout(() => {
-              successMsg.classList.remove('visible');
-            }, 5000);
-          }, 1500);
-        });
-      }
-    </script>
     <style>
-      .contact-section {
-        padding: 120px 0;
-        position: relative;
-        overflow: hidden;
+      /* ============================================
+       CSS CUSTOM PROPERTIES (THEME VARIABLES)
+       ============================================ */
+      :root {
+        /* Light Mode Palette */
+        --bg-primary: #faf6f1;
+        --bg-secondary: #f3ece4;
+        --bg-gradient-1: #f5e6d3;
+        --bg-gradient-2: #e8d5c4;
+        --text-primary: #2c1810;
+        --text-secondary: #5a3e2b;
+        --text-muted: #8b7355;
+        --accent: #a0522d;
+        --accent-hover: #8b4513;
+        --accent-light: rgba(160, 82, 45, 0.15);
+        --glass-bg: rgba(255, 255, 255, 0.45);
+        --glass-border: rgba(255, 255, 255, 0.6);
+        --glass-shadow: rgba(139, 115, 85, 0.1);
+        --glass-bg-strong: rgba(255, 255, 255, 0.65);
+        --card-bg: rgba(255, 255, 255, 0.5);
+        --nav-bg: rgba(250, 246, 241, 0.75);
+        --hero-overlay: linear-gradient(135deg, rgba(245, 230, 211, 0.85), rgba(232, 213, 196, 0.7));
+        --input-bg: rgba(255, 255, 255, 0.5);
+        --input-border: rgba(160, 82, 45, 0.2);
+        --footer-bg: rgba(44, 24, 16, 0.9);
+        --footer-text: #f3ece4;
+        --scrollbar-track: #f3ece4;
+        --scrollbar-thumb: #c4a882;
+        --divider: rgba(160, 82, 45, 0.15);
+        --star-color: #d4a574;
+        --badge-bg: rgba(160, 82, 45, 0.1);
+        --badge-text: #a0522d;
       }
 
-      .contact-section::before {
-        content: "";
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        width: 800px;
-        height: 600px;
-        background: radial-gradient(ellipse,
-            rgba(64, 140, 255, 0.06) 0%,
-            rgba(99, 102, 241, 0.03) 40%,
-            transparent 70%);
-        filter: blur(60px);
+      [data-theme="dark"] {
+        --bg-primary: #1a1210;
+        --bg-secondary: #241c18;
+        --bg-gradient-1: #2a1f18;
+        --bg-gradient-2: #1e1510;
+        --text-primary: #f3ece4;
+        --text-secondary: #d4c4b0;
+        --text-muted: #9a8a78;
+        --accent: #d4a574;
+        --accent-hover: #e0b88a;
+        --accent-light: rgba(212, 165, 116, 0.15);
+        --glass-bg: rgba(42, 31, 24, 0.55);
+        --glass-border: rgba(212, 165, 116, 0.15);
+        --glass-shadow: rgba(0, 0, 0, 0.3);
+        --glass-bg-strong: rgba(42, 31, 24, 0.75);
+        --card-bg: rgba(42, 31, 24, 0.6);
+        --nav-bg: rgba(26, 18, 16, 0.8);
+        --hero-overlay: linear-gradient(135deg, rgba(42, 31, 24, 0.88), rgba(30, 21, 16, 0.75));
+        --input-bg: rgba(42, 31, 24, 0.6);
+        --input-border: rgba(212, 165, 116, 0.25);
+        --footer-bg: rgba(10, 7, 5, 0.95);
+        --footer-text: #d4c4b0;
+        --scrollbar-track: #241c18;
+        --scrollbar-thumb: #5a3e2b;
+        --divider: rgba(212, 165, 116, 0.12);
+        --star-color: #d4a574;
+        --badge-bg: rgba(212, 165, 116, 0.12);
+        --badge-text: #d4a574;
+      }
+
+      /* ============================================
+       RESET & BASE STYLES
+       ============================================ */
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+        scroll-padding-top: 80px;
+      }
+
+      body {
+        font-family: 'Poppins', sans-serif;
+        background-color: var(--bg-primary);
+        color: var(--text-primary);
+        line-height: 1.7;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease, color 0.5s ease;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      ::-webkit-scrollbar-track {
+        background: var(--scrollbar-track);
+      }
+
+      ::-webkit-scrollbar-thumb {
+        background: var(--scrollbar-thumb);
+        border-radius: 4px;
+      }
+
+      /* Selection */
+      ::selection {
+        background-color: var(--accent);
+        color: #fff;
+      }
+
+      /* ============================================
+       ANIMATED BACKGROUND
+       ============================================ */
+      .bg-decoration {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
         pointer-events: none;
       }
 
-      .contact-layout {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 80px;
-        align-items: start;
+      .bg-blob {
+        position: absolute;
+        border-radius: 50%;
+        filter: blur(100px);
+        opacity: 0.35;
+        animation: blobFloat 20s ease-in-out infinite;
+      }
+
+      .bg-blob:nth-child(1) {
+        width: 500px;
+        height: 500px;
+        background: var(--bg-gradient-1);
+        top: -10%;
+        left: -10%;
+        animation-delay: 0s;
+      }
+
+      .bg-blob:nth-child(2) {
+        width: 400px;
+        height: 400px;
+        background: var(--bg-gradient-2);
+        top: 40%;
+        right: -10%;
+        animation-delay: -7s;
+      }
+
+      .bg-blob:nth-child(3) {
+        width: 350px;
+        height: 350px;
+        background: var(--accent-light);
+        bottom: -5%;
+        left: 30%;
+        animation-delay: -14s;
+      }
+
+      @keyframes blobFloat {
+
+        0%,
+        100% {
+          transform: translate(0, 0) scale(1);
+        }
+
+        25% {
+          transform: translate(50px, -30px) scale(1.05);
+        }
+
+        50% {
+          transform: translate(-20px, 40px) scale(0.95);
+        }
+
+        75% {
+          transform: translate(30px, 20px) scale(1.02);
+        }
+      }
+
+      /* ============================================
+       TYPOGRAPHY
+       ============================================ */
+      h1,
+      h2,
+      h3,
+      h4 {
+        font-family: 'Playfair Display', serif;
+        font-weight: 700;
+        line-height: 1.2;
+      }
+
+      a {
+        text-decoration: none;
+        color: inherit;
+        transition: color 0.3s ease;
+      }
+
+      img {
+        max-width: 100%;
+        display: block;
+      }
+
+      /* ============================================
+       UTILITY CLASSES
+       ============================================ */
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      .section-padding {
+        padding: 100px 0;
+      }
+
+      .section-header {
+        text-align: center;
+        margin-bottom: 60px;
+      }
+
+      .section-header h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        color: var(--text-primary);
+        margin-bottom: 12px;
         position: relative;
-        z-index: 1;
-      }
-
-      .contact-info .section-tag {
         display: inline-block;
-        margin-bottom: 20px;
       }
 
-      .contact-info .section-title {
-        text-align: left;
-        margin-bottom: 20px;
+      .section-header h2::after {
+        content: '';
+        position: absolute;
+        bottom: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 60px;
+        height: 3px;
+        background: var(--accent);
+        border-radius: 2px;
       }
 
-      .contact-desc {
-        font-size: 16px;
-        color: var(--text-2);
-        line-height: 1.7;
-        margin-bottom: 40px;
-        max-width: 420px;
+      .section-header p {
+        color: var(--text-muted);
+        font-size: 1rem;
+        margin-top: 20px;
+        max-width: 550px;
+        margin-left: auto;
+        margin-right: auto;
       }
 
-      .contact-details {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+      /* Glassmorphism Card */
+      .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px var(--glass-shadow);
+        transition: transform 0.4s ease, box-shadow 0.4s ease, background 0.5s ease;
       }
 
-      .contact-detail-item {
+      .glass-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 16px 48px var(--glass-shadow);
+      }
+
+      /* Scroll Reveal Animation */
+      .reveal {
+        opacity: 0;
+        transform: translateY(40px);
+        transition: opacity 0.8s ease, transform 0.8s ease;
+      }
+
+      .reveal.revealed {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-delay-1 {
+        transition-delay: 0.1s;
+      }
+
+      .reveal-delay-2 {
+        transition-delay: 0.2s;
+      }
+
+      .reveal-delay-3 {
+        transition-delay: 0.3s;
+      }
+
+      .reveal-delay-4 {
+        transition-delay: 0.4s;
+      }
+
+      .reveal-delay-5 {
+        transition-delay: 0.5s;
+      }
+
+      .reveal-delay-6 {
+        transition-delay: 0.6s;
+      }
+
+      /* ============================================
+       NAVIGATION BAR
+       ============================================ */
+      .navbar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+        padding: 16px 0;
+        background: var(--nav-bg);
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        border-bottom: 1px solid var(--glass-border);
+        transition: padding 0.3s ease, background-color 0.5s ease, box-shadow 0.3s ease;
+      }
+
+      .navbar.scrolled {
+        padding: 10px 0;
+        box-shadow: 0 4px 20px var(--glass-shadow);
+      }
+
+      .nav-container {
         display: flex;
         align-items: center;
-        gap: 16px;
+        justify-content: space-between;
       }
 
-      .contact-detail-icon {
-        width: 44px;
-        height: 44px;
-        background: rgba(64, 140, 255, 0.1);
-        border: 1px solid rgba(64, 140, 255, 0.2);
-        border-radius: 12px;
+      .nav-logo {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.6rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .nav-logo-icon {
+        font-size: 1.4rem;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 32px;
+        list-style: none;
+      }
+
+      .nav-links a {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        position: relative;
+        padding: 4px 0;
+      }
+
+      .nav-links a::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 0;
+        height: 2px;
+        background: var(--accent);
+        border-radius: 1px;
+        transition: width 0.3s ease;
+      }
+
+      .nav-links a:hover {
+        color: var(--accent);
+      }
+
+      .nav-links a:hover::after {
+        width: 100%;
+      }
+
+      /* Theme Toggle */
+      .theme-toggle-btn {
+        background: var(--glass-bg);
+        border: 1px solid var(--glass-border);
+        border-radius: 50%;
+        width: 42px;
+        height: 42px;
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
-        color: var(--accent);
-        flex-shrink: 0;
+        font-size: 1.15rem;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
       }
 
-      .contact-detail-item strong {
+      .theme-toggle-btn:hover {
+        background: var(--accent-light);
+        transform: rotate(20deg);
+      }
+
+      /* Mobile Menu Button */
+      .mobile-menu-btn {
+        display: none;
+        flex-direction: column;
+        gap: 5px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 5px;
+        z-index: 1001;
+      }
+
+      .mobile-menu-btn span {
+        width: 25px;
+        height: 2.5px;
+        background: var(--text-primary);
+        border-radius: 2px;
+        transition: all 0.3s ease;
         display: block;
-        font-size: 14px;
+      }
+
+      .mobile-menu-btn.active span:nth-child(1) {
+        transform: rotate(45deg) translate(5px, 5px);
+      }
+
+      .mobile-menu-btn.active span:nth-child(2) {
+        opacity: 0;
+      }
+
+      .mobile-menu-btn.active span:nth-child(3) {
+        transform: rotate(-45deg) translate(6px, -6px);
+      }
+
+      /* Mobile Menu Overlay */
+      .mobile-nav-overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--nav-bg);
+        backdrop-filter: blur(30px);
+        -webkit-backdrop-filter: blur(30px);
+        z-index: 999;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 30px;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+      }
+
+      .mobile-nav-overlay.active {
+        display: flex;
+        opacity: 1;
+      }
+
+      .mobile-nav-overlay a {
+        font-size: 1.5rem;
+        font-family: 'Playfair Display', serif;
         font-weight: 600;
-        color: var(--text);
-        margin-bottom: 2px;
+        color: var(--text-primary);
+        transition: color 0.3s ease, transform 0.3s ease;
       }
 
-      .contact-detail-item span {
-        font-size: 13px;
-        color: var(--text-2);
+      .mobile-nav-overlay a:hover {
+        color: var(--accent);
+        transform: scale(1.05);
       }
 
-      /* Form card */
-      .contact-form-wrap {
-        background: var(--bg-card);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-lg);
-        padding: 36px;
-        box-shadow: var(--shadow);
+      /* ============================================
+       HERO SECTION
+       ============================================ */
+      .hero {
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         position: relative;
         overflow: hidden;
+        padding-top: 80px;
       }
 
-      .contact-form-wrap::before {
-        content: "";
+      .hero-background {
         position: absolute;
-        inset: 0;
-        background: linear-gradient(135deg,
-            rgba(255, 255, 255, 0.03) 0%,
-            transparent 60%);
-        pointer-events: none;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: 0;
       }
 
-      .contact-form {
+      .hero-bg-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.7);
+      }
+
+      .hero-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--hero-overlay);
+        z-index: 1;
+      }
+
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        text-align: center;
+        padding: 40px;
+        max-width: 800px;
+      }
+
+      .hero-badge {
+        display: inline-block;
+        padding: 8px 24px;
+        background: var(--badge-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--badge-text);
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        animation: fadeInDown 1s ease 0.2s both;
+      }
+
+      .hero-title {
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
+        color: var(--text-primary);
+        margin-bottom: 16px;
+        letter-spacing: -1px;
+        animation: fadeInDown 1s ease 0.4s both;
+      }
+
+      .hero-title .accent-text {
+        color: var(--accent);
+        font-style: italic;
+      }
+
+      .hero-subtitle {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        color: var(--text-secondary);
+        font-weight: 300;
+        max-width: 500px;
+        margin: 0 auto 40px;
+        line-height: 1.8;
+        animation: fadeInDown 1s ease 0.6s both;
+      }
+
+      .hero-buttons {
+        display: flex;
+        gap: 16px;
+        justify-content: center;
+        flex-wrap: wrap;
+        animation: fadeInUp 1s ease 0.8s both;
+      }
+
+      .btn-primary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 36px;
+        background: var(--accent);
+        color: #fff;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-primary:hover {
+        background: var(--accent-hover);
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(160, 82, 45, 0.3);
+      }
+
+      .btn-secondary {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 14px 36px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        border: 1px solid var(--glass-border);
+        color: var(--text-primary);
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.95rem;
+        font-weight: 600;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-secondary:hover {
+        background: var(--glass-bg-strong);
+        transform: translateY(-2px);
+      }
+
+      /* Scroll Indicator */
+      .scroll-indicator {
+        position: absolute;
+        bottom: 30px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 2;
+        animation: bounceDown 2s ease-in-out infinite;
+      }
+
+      .scroll-indicator a {
         display: flex;
         flex-direction: column;
-        gap: 20px;
+        align-items: center;
+        gap: 8px;
+        font-size: 0.75rem;
+        font-weight: 500;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .scroll-arrow {
+        width: 24px;
+        height: 36px;
+        border: 2px solid var(--text-muted);
+        border-radius: 12px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: center;
+        padding-top: 6px;
+      }
+
+      .scroll-arrow-dot {
+        width: 4px;
+        height: 8px;
+        background: var(--accent);
+        border-radius: 2px;
+        animation: scrollDot 2s ease-in-out infinite;
+      }
+
+      @keyframes scrollDot {
+
+        0%,
+        100% {
+          opacity: 0;
+          transform: translateY(0);
+        }
+
+        50% {
+          opacity: 1;
+          transform: translateY(8px);
+        }
+      }
+
+      @keyframes bounceDown {
+
+        0%,
+        100% {
+          transform: translateX(-50%) translateY(0);
+        }
+
+        50% {
+          transform: translateX(-50%) translateY(8px);
+        }
+      }
+
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-30px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(30px);
+        }
+
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ============================================
+       ABOUT SECTION
+       ============================================ */
+      .about-section {
+        background: var(--bg-secondary);
+        transition: background-color 0.5s ease;
+      }
+
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 60px;
+        align-items: center;
+      }
+
+      .about-image-wrapper {
         position: relative;
+      }
+
+      .about-image-main {
+        width: 100%;
+        height: 480px;
+        object-fit: cover;
+        border-radius: 24px;
+        box-shadow: 0 20px 60px var(--glass-shadow);
+      }
+
+      .about-image-accent {
+        position: absolute;
+        bottom: -20px;
+        right: -20px;
+        width: 180px;
+        height: 180px;
+        object-fit: cover;
+        border-radius: 20px;
+        border: 4px solid var(--bg-secondary);
+        box-shadow: 0 10px 30px var(--glass-shadow);
+      }
+
+      .about-stats {
+        position: absolute;
+        top: 20px;
+        left: -20px;
+        padding: 20px 28px;
+        background: var(--glass-bg-strong);
+        backdrop-filter: blur(20px);
+        -webkit-backdrop-filter: blur(20px);
+        border: 1px solid var(--glass-border);
+        border-radius: 16px;
+        text-align: center;
+      }
+
+      .about-stats-number {
+        font-family: 'Playfair Display', serif;
+        font-size: 2.2rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .about-stats-label {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+        font-weight: 500;
+      }
+
+      .about-content h2 {
+        font-size: clamp(2rem, 3.5vw, 2.8rem);
+        margin-bottom: 8px;
+      }
+
+      .about-content .section-label {
+        font-size: 0.85rem;
+        color: var(--accent);
+        font-weight: 600;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        margin-bottom: 12px;
+      }
+
+      .about-content p {
+        color: var(--text-secondary);
+        margin-bottom: 16px;
+        font-size: 0.95rem;
+      }
+
+      .about-features {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-top: 30px;
+      }
+
+      .about-feature-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 16px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 12px;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+      }
+
+      .about-feature-item:hover {
+        background: var(--accent-light);
+        transform: translateX(4px);
+      }
+
+      .about-feature-icon {
+        font-size: 1.2rem;
+      }
+
+      /* ============================================
+       MENU SECTION
+       ============================================ */
+      .menu-section {
+        transition: background-color 0.5s ease;
+      }
+
+      .menu-categories {
+        display: flex;
+        justify-content: center;
+        gap: 12px;
+        margin-bottom: 50px;
+        flex-wrap: wrap;
+      }
+
+      .menu-category-btn {
+        padding: 10px 28px;
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 50px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.88rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .menu-category-btn:hover,
+      .menu-category-btn.active {
+        background: var(--accent);
+        color: #fff;
+        border-color: var(--accent);
+      }
+
+      .menu-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 24px;
+      }
+
+      .menu-card {
+        padding: 28px;
+        display: flex;
+        gap: 20px;
+        align-items: flex-start;
+        cursor: default;
+      }
+
+      .menu-card-icon {
+        width: 60px;
+        height: 60px;
+        min-width: 60px;
+        background: var(--accent-light);
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.6rem;
+        transition: transform 0.3s ease;
+      }
+
+      .menu-card:hover .menu-card-icon {
+        transform: scale(1.1) rotate(-5deg);
+      }
+
+      .menu-card-info {
+        flex: 1;
+      }
+
+      .menu-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 6px;
+      }
+
+      .menu-card-name {
+        font-family: 'Playfair Display', serif;
+        font-size: 1.15rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+
+      .menu-card-price {
+        font-size: 1.05rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+
+      .menu-card-desc {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        line-height: 1.6;
+      }
+
+      .menu-card-tags {
+        display: flex;
+        gap: 6px;
+        margin-top: 10px;
+        flex-wrap: wrap;
+      }
+
+      .menu-tag {
+        padding: 3px 10px;
+        background: var(--badge-bg);
+        border-radius: 20px;
+        font-size: 0.72rem;
+        font-weight: 500;
+        color: var(--badge-text);
+      }
+
+      /* ============================================
+       GALLERY SECTION
+       ============================================ */
+      .gallery-section {
+        background: var(--bg-secondary);
+        transition: background-color 0.5s ease;
+      }
+
+      .gallery-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        grid-template-rows: repeat(2, 250px);
+        gap: 16px;
+      }
+
+      .gallery-item {
+        position: relative;
+        border-radius: 20px;
+        overflow: hidden;
+        cursor: pointer;
+      }
+
+      .gallery-item:nth-child(1) {
+        grid-column: span 2;
+        grid-row: span 2;
+      }
+
+      .gallery-item img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+      }
+
+      .gallery-item:hover img {
+        transform: scale(1.08);
+      }
+
+      .gallery-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.6), transparent);
+        opacity: 0;
+        transition: opacity 0.4s ease;
+        display: flex;
+        align-items: flex-end;
+        padding: 24px;
+      }
+
+      .gallery-item:hover .gallery-overlay {
+        opacity: 1;
+      }
+
+      .gallery-overlay-text {
+        color: #fff;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.1rem;
+        font-weight: 600;
+      }
+
+      /* ============================================
+       TESTIMONIALS SECTION
+       ============================================ */
+      .testimonials-section {
+        transition: background-color 0.5s ease;
+      }
+
+      .testimonials-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 24px;
+      }
+
+      .testimonial-card {
+        padding: 36px;
+      }
+
+      .testimonial-stars {
+        display: flex;
+        gap: 3px;
+        margin-bottom: 16px;
+      }
+
+      .star-icon {
+        color: var(--star-color);
+        font-size: 1rem;
+      }
+
+      .testimonial-text {
+        font-size: 0.95rem;
+        color: var(--text-secondary);
+        line-height: 1.8;
+        margin-bottom: 24px;
+        font-style: italic;
+        position: relative;
+      }
+
+      .testimonial-text::before {
+        content: '"';
+        font-family: 'Playfair Display', serif;
+        font-size: 4rem;
+        color: var(--accent);
+        opacity: 0.2;
+        position: absolute;
+        top: -20px;
+        left: -5px;
+        line-height: 1;
+      }
+
+      .testimonial-author {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .testimonial-avatar {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid var(--glass-border);
+      }
+
+      .testimonial-author-name {
+        font-weight: 600;
+        font-size: 0.95rem;
+        color: var(--text-primary);
+      }
+
+      .testimonial-author-role {
+        font-size: 0.8rem;
+        color: var(--text-muted);
+      }
+
+      /* ============================================
+       CONTACT SECTION
+       ============================================ */
+      .contact-section {
+        background: var(--bg-secondary);
+        transition: background-color 0.5s ease;
+      }
+
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 48px;
+      }
+
+      .contact-form-card {
+        padding: 40px;
+      }
+
+      .contact-form-card h3 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+      }
+
+      .contact-form-card>p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        font-size: 0.85rem;
+        font-weight: 500;
+        color: var(--text-secondary);
+        margin-bottom: 6px;
+      }
+
+      .form-group input,
+      .form-group textarea {
+        width: 100%;
+        padding: 14px 18px;
+        background: var(--input-bg);
+        border: 1px solid var(--input-border);
+        border-radius: 12px;
+        font-family: 'Poppins', sans-serif;
+        font-size: 0.9rem;
+        color: var(--text-primary);
+        transition: all 0.3s ease;
+        outline: none;
+      }
+
+      .form-group input:focus,
+      .form-group textarea:focus {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 3px var(--accent-light);
+      }
+
+      .form-group input.error,
+      .form-group textarea.error {
+        border-color: #e74c3c;
+        box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.15);
+      }
+
+      .form-error-msg {
+        font-size: 0.78rem;
+        color: #e74c3c;
+        margin-top: 4px;
+        display: none;
+      }
+
+      .form-error-msg.visible {
+        display: block;
+      }
+
+      .form-group textarea {
+        resize: vertical;
+        min-height: 120px;
       }
 
       .form-row {
@@ -1397,258 +1171,1302 @@
         gap: 16px;
       }
 
-      .form-group {
+      .form-success-msg {
+        display: none;
+        padding: 16px;
+        background: rgba(46, 204, 113, 0.15);
+        border: 1px solid rgba(46, 204, 113, 0.3);
+        border-radius: 12px;
+        color: #27ae60;
+        font-size: 0.9rem;
+        font-weight: 500;
+        text-align: center;
+        margin-top: 16px;
+      }
+
+      .form-success-msg.visible {
+        display: block;
+        animation: fadeInUp 0.5s ease;
+      }
+
+      .contact-info-card {
+        padding: 40px;
+      }
+
+      .contact-info-card h3 {
+        font-size: 1.6rem;
+        margin-bottom: 8px;
+      }
+
+      .contact-info-card>p {
+        color: var(--text-muted);
+        font-size: 0.9rem;
+        margin-bottom: 30px;
+      }
+
+      .contact-info-list {
         display: flex;
         flex-direction: column;
-        gap: 6px;
+        gap: 20px;
+        margin-bottom: 30px;
       }
 
-      .form-label {
-        font-size: 13px;
-        font-weight: 600;
-        color: var(--text-2);
-        letter-spacing: -0.01em;
-      }
-
-      .form-input {
-        width: 100%;
-        background: rgba(255, 255, 255, 0.04);
-        border: 1px solid var(--border);
-        border-radius: var(--radius-sm);
-        padding: 12px 14px;
-        font-size: 14px;
-        color: var(--text);
-        font-family: var(--font);
-        outline: none;
-        transition: all var(--transition);
-        -webkit-font-smoothing: antialiased;
-      }
-
-      .form-input::placeholder {
-        color: var(--text-3);
-      }
-
-      .form-input:hover {
-        border-color: var(--border-hover);
-        background: rgba(255, 255, 255, 0.06);
-      }
-
-      .form-input:focus {
-        border-color: var(--accent);
-        background: rgba(64, 140, 255, 0.04);
-        box-shadow: 0 0 0 3px rgba(64, 140, 255, 0.1);
-      }
-
-      .form-textarea {
-        resize: vertical;
-        min-height: 120px;
-        line-height: 1.6;
-      }
-
-      .contact-submit {
-        align-self: flex-start;
-        margin-top: 4px;
-        position: relative;
-        overflow: hidden;
-      }
-
-      .contact-submit-icon {
-        transition: transform var(--transition);
-      }
-
-      .contact-submit:hover .contact-submit-icon {
-        transform: translate(2px, -2px);
-      }
-
-      /* Success message */
-      .contact-success {
-        display: none;
-        align-items: center;
-        gap: 10px;
-        padding: 14px 18px;
-        background: rgba(74, 222, 128, 0.08);
-        border: 1px solid rgba(74, 222, 128, 0.2);
-        border-radius: var(--radius-sm);
-        font-size: 14px;
-        font-weight: 500;
-        color: var(--accent-green);
-        animation: fadeInUp 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
-      }
-
-      .contact-success.visible {
+      .contact-info-item {
         display: flex;
+        align-items: flex-start;
+        gap: 16px;
       }
 
-      /* Responsive */
-      @media (max-width: 900px) {
-        .contact-layout {
-          grid-template-columns: 1fr;
-          gap: 48px;
+      .contact-info-icon {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
+        background: var(--accent-light);
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.2rem;
+      }
+
+      .contact-info-text strong {
+        display: block;
+        font-size: 0.92rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 2px;
+      }
+
+      .contact-info-text span {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+      }
+
+      .contact-map {
+        width: 100%;
+        height: 200px;
+        border-radius: 16px;
+        overflow: hidden;
+        border: 1px solid var(--glass-border);
+        /* Decorative map placeholder */
+        background: var(--glass-bg);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 3rem;
+        position: relative;
+      }
+
+      .contact-map-placeholder {
+        text-align: center;
+      }
+
+      .contact-map-placeholder p {
+        font-size: 0.85rem;
+        color: var(--text-muted);
+        margin-top: 8px;
+      }
+
+      .contact-hours {
+        margin-top: 24px;
+        padding: 20px;
+        background: var(--glass-bg);
+        border-radius: 14px;
+        border: 1px solid var(--glass-border);
+      }
+
+      .contact-hours h4 {
+        font-size: 1rem;
+        margin-bottom: 12px;
+        color: var(--text-primary);
+      }
+
+      .hours-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 6px 0;
+        border-bottom: 1px solid var(--divider);
+        font-size: 0.85rem;
+      }
+
+      .hours-row:last-child {
+        border-bottom: none;
+      }
+
+      .hours-day {
+        font-weight: 500;
+        color: var(--text-secondary);
+      }
+
+      .hours-time {
+        color: var(--text-muted);
+      }
+
+      /* ============================================
+       FOOTER
+       ============================================ */
+      .footer {
+        background: var(--footer-bg);
+        color: var(--footer-text);
+        padding: 60px 0 30px;
+        transition: background-color 0.5s ease;
+      }
+
+      .footer-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 40px;
+        margin-bottom: 40px;
+      }
+
+      .footer-brand h3 {
+        font-size: 1.5rem;
+        color: #fff;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .footer-brand p {
+        font-size: 0.88rem;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.7;
+        max-width: 320px;
+      }
+
+      .footer-social {
+        display: flex;
+        gap: 12px;
+        margin-top: 20px;
+      }
+
+      .footer-social-link {
+        width: 42px;
+        height: 42px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 12px;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 1.1rem;
+        transition: all 0.3s ease;
+      }
+
+      .footer-social-link:hover {
+        background: var(--accent);
+        color: #fff;
+        transform: translateY(-3px);
+      }
+
+      .footer-column h4 {
+        font-size: 1rem;
+        color: #fff;
+        margin-bottom: 16px;
+        font-family: 'Poppins', sans-serif;
+        font-weight: 600;
+      }
+
+      .footer-column ul {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .footer-column ul li a {
+        font-size: 0.85rem;
+        color: rgba(255, 255, 255, 0.55);
+        transition: all 0.3s ease;
+      }
+
+      .footer-column ul li a:hover {
+        color: var(--accent);
+        padding-left: 6px;
+      }
+
+      .footer-bottom {
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 24px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .footer-bottom p {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .footer-bottom-links {
+        display: flex;
+        gap: 20px;
+      }
+
+      .footer-bottom-links a {
+        font-size: 0.82rem;
+        color: rgba(255, 255, 255, 0.4);
+      }
+
+      .footer-bottom-links a:hover {
+        color: var(--accent);
+      }
+
+      /* ============================================
+       RESPONSIVE DESIGN
+       ============================================ */
+      @media (max-width: 1024px) {
+        .about-grid {
+          gap: 40px;
         }
 
-        .contact-info .section-title {
-          text-align: center;
+        .gallery-grid {
+          grid-template-columns: repeat(2, 1fr);
+          grid-template-rows: repeat(3, 220px);
         }
 
-        .contact-info .section-tag {
-          display: block;
-          text-align: center;
+        .gallery-item:nth-child(1) {
+          grid-column: span 2;
+          grid-row: span 1;
         }
 
-        .contact-desc {
-          text-align: center;
-          margin: 0 auto 40px;
+        .footer-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
         }
 
-        .contact-details {
+        .mobile-menu-btn {
+          display: flex;
+        }
+
+        .nav-right {
+          display: flex;
           align-items: center;
+          gap: 12px;
         }
-      }
 
-      @media (max-width: 640px) {
+        .about-grid {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .about-image-accent {
+          display: none;
+        }
+
+        .about-stats {
+          left: 16px;
+          top: 16px;
+        }
+
+        .about-image-main {
+          height: 350px;
+        }
+
+        .about-features {
+          grid-template-columns: 1fr;
+        }
+
+        .menu-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: repeat(3, 180px);
+        }
+
+        .gallery-item:nth-child(1) {
+          grid-column: span 2;
+        }
+
+        .testimonials-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .contact-grid {
+          grid-template-columns: 1fr;
+        }
+
         .form-row {
           grid-template-columns: 1fr;
         }
 
-        .contact-form-wrap {
-          padding: 24px;
+        .footer-grid {
+          grid-template-columns: 1fr;
+          gap: 30px;
         }
 
-        .contact-submit {
-          width: 100%;
-          justify-content: center;
+        .footer-bottom {
+          flex-direction: column;
+          text-align: center;
+        }
+
+        .section-padding {
+          padding: 70px 0;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .hero-title {
+          font-size: 2.4rem;
+        }
+
+        .hero-content {
+          padding: 20px;
+        }
+
+        .gallery-grid {
+          grid-template-columns: 1fr;
+          grid-template-rows: auto;
+        }
+
+        .gallery-item:nth-child(1) {
+          grid-column: span 1;
+        }
+
+        .gallery-item {
+          height: 200px;
+        }
+
+        .menu-card {
+          padding: 20px;
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+
+        .menu-card-header {
+          flex-direction: column;
+          gap: 4px;
         }
       }
     </style>
-    <section id="contact" class="contact-section">
+  </head>
+
+  <body>
+    <style>
+      .footer-social-link svg {
+        transition: opacity 0.2s ease, transform 0.2s ease;
+      }
+
+      .footer-social-link:hover svg {
+        opacity: 0.8;
+        transform: scale(1.15);
+      }
+    </style>
+    <!-- ========== ANIMATED BACKGROUND ========== -->
+    <div class="bg-decoration" aria-hidden="true">
+      <div class="bg-blob"></div>
+      <div class="bg-blob"></div>
+      <div class="bg-blob"></div>
+    </div>
+
+    <!-- ========== NAVIGATION ========== -->
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+      <div class="container nav-container">
+        <a href="#hero" class="nav-logo">
+          <span class="nav-logo-icon">☕</span>
+          Brewed Awakening
+        </a>
+
+        <ul class="nav-links" id="navLinks">
+          <li><a href="#about">About</a></li>
+          <li><a href="#menu">Menu</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+
+        <div class="nav-right">
+          <button class="theme-toggle-btn" id="themeToggle" aria-label="Toggle dark mode" title="Toggle theme">
+            <span id="themeIcon">🌙</span>
+          </button>
+          <button class="mobile-menu-btn" id="mobileMenuBtn" aria-label="Toggle mobile menu" aria-expanded="false">
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Mobile Navigation Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNavOverlay" role="dialog" aria-label="Mobile navigation">
+      <a href="#about" class="mobile-nav-link">About</a>
+      <a href="#menu" class="mobile-nav-link">Menu</a>
+      <a href="#gallery" class="mobile-nav-link">Gallery</a>
+      <a href="#testimonials" class="mobile-nav-link">Reviews</a>
+      <a href="#contact" class="mobile-nav-link">Contact</a>
+    </div>
+
+    <!-- ========== HERO SECTION ========== -->
+    <section class="hero" id="hero">
+      <div class="hero-background">
+        <!-- Using a gradient as background since we can't load external images reliably -->
+        <div class="hero-bg-image"
+          style="background: linear-gradient(135deg, #3e2723, #5d4037, #4e342e, #3e2723); width:100%; height:100%;">
+        </div>
+      </div>
+      <div class="hero-overlay"></div>
+
+      <div class="hero-content">
+        <span class="hero-badge">Est. 2019 · Artisan Coffee</span>
+        <h1 class="hero-title">
+          Where Every Cup<br>
+          Tells a <span class="accent-text">Story</span>
+        </h1>
+        <p class="hero-subtitle">
+          Hand-crafted beverages and freshly baked goods in a warm,
+          inviting atmosphere. Your daily ritual, elevated.
+        </p>
+        <div class="hero-buttons">
+          <a href="#menu" class="btn-primary">
+            ☕ View Our Menu
+          </a>
+          <a href="#contact" class="btn-secondary">
+            📅 Book a Table
+          </a>
+        </div>
+      </div>
+
+      <div class="scroll-indicator">
+        <a href="#about">
+          <span>Scroll</span>
+          <div class="scroll-arrow">
+            <div class="scroll-arrow-dot"></div>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- ========== ABOUT SECTION ========== -->
+    <section class="about-section section-padding" id="about">
       <div class="container">
-        <div class="contact-layout">
-          <div class="contact-info">
-            <span class="section-tag">Get in Touch</span>
-            <h2 class="section-title">Let's start a<br><span class="gradient-text">conversation</span></h2>
-            <p class="contact-desc">Have a question, feedback, or just want to say hello? We'd love to hear from you.
-              Fill out the form and we'll get back to you shortly.</p>
-            <div class="contact-details">
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <rect x="2" y="4" width="20" height="16" rx="2"></rect>
-                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
-                  </svg>
-                </div>
-                <div>
-                  <strong>Email us</strong>
-                  <span>hello@mobtimer.app</span>
-                </div>
+        <div class="about-grid">
+          <div class="about-image-wrapper reveal">
+            <!-- Placeholder image using gradient -->
+            <div class="about-image-main" style="border-radius: 24px; overflow: hidden;">
+              <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?w=600&amp;h=700&amp;fit=crop"
+                alt="About our coffee shop" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div class="about-image-accent" style="border-radius: 20px; overflow: hidden;">
+              <img src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?w=400&amp;h=400&amp;fit=crop"
+                alt="Coffee brewing" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+            </div>
+            <div class="about-stats">
+              <div class="about-stats-number">5+</div>
+              <div class="about-stats-label">Years of Passion</div>
+            </div>
+          </div>
+
+          <div class="about-content reveal reveal-delay-2">
+            <p class="section-label">Our Story</p>
+            <h2>Crafted with Love,<br>Served with Soul</h2>
+            <p>
+              Brewed Awakening was born from a simple belief: that great coffee
+              can transform ordinary moments into extraordinary ones. Founded in
+              2019, we've grown from a tiny corner shop into a beloved community gathering place.
+            </p>
+            <p>
+              We source our beans directly from sustainable farms in Ethiopia,
+              Colombia, and Guatemala — roasting them in small batches to ensure
+              every cup delivers exceptional flavor and aroma.
+            </p>
+
+            <div class="about-features">
+              <div class="about-feature-item">
+                <span class="about-feature-icon">🌱</span>
+                Organic Beans
               </div>
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"></path>
-                    <circle cx="12" cy="9" r="2.5"></circle>
-                  </svg>
-                </div>
-                <div>
-                  <strong>Based in</strong>
-                  <span>San Francisco, CA</span>
-                </div>
+              <div class="about-feature-item">
+                <span class="about-feature-icon">🎨</span>
+                Latte Art
               </div>
-              <div class="contact-detail-item">
-                <div class="contact-detail-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10"></circle>
-                    <polyline points="12 6 12 12 16 14"></polyline>
-                  </svg>
-                </div>
-                <div>
-                  <strong>Response time</strong>
-                  <span>Within 24 hours</span>
-                </div>
+              <div class="about-feature-item">
+                <span class="about-feature-icon">🥐</span>
+                Fresh Pastries
+              </div>
+              <div class="about-feature-item">
+                <span class="about-feature-icon">💚</span>
+                Eco-Friendly
               </div>
             </div>
           </div>
-          <div class="contact-form-wrap">
-            <form id="contact-form" class="contact-form" onsubmit="return false;">
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== MENU SECTION ========== -->
+    <section class="menu-section section-padding" id="menu">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Our Menu</h2>
+          <p>From single-origin pour-overs to indulgent pastries — discover what makes our menu special.</p>
+        </div>
+
+        <div class="menu-categories reveal reveal-delay-1">
+          <button class="menu-category-btn active" data-category="all">All</button>
+          <button class="menu-category-btn" data-category="coffee">Coffee</button>
+          <button class="menu-category-btn" data-category="pastries">Pastries</button>
+          <button class="menu-category-btn" data-category="specials">Specials</button>
+        </div>
+
+        <div class="menu-grid" id="menuGrid">
+          <!-- Coffee Items -->
+          <div class="glass-card menu-card reveal reveal-delay-1" data-category="coffee">
+            <div class="menu-card-icon">☕</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Ethiopian Pour Over</span>
+                <span class="menu-card-price">$5.50</span>
+              </div>
+              <p class="menu-card-desc">Single-origin Ethiopian Yirgacheffe with bright citrus notes and floral
+                undertones.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Single Origin</span>
+                <span class="menu-tag">Light Roast</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-2" data-category="coffee">
+            <div class="menu-card-icon">🍵</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Matcha Oat Latte</span>
+                <span class="menu-card-price">$6.00</span>
+              </div>
+              <p class="menu-card-desc">Ceremonial grade matcha whisked with creamy oat milk and a hint of vanilla.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Vegan</span>
+                <span class="menu-tag">Popular</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-3" data-category="coffee">
+            <div class="menu-card-icon">🧊</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Cold Brew Classic</span>
+                <span class="menu-card-price">$4.75</span>
+              </div>
+              <p class="menu-card-desc">Slow-steeped for 18 hours with our house blend for a smooth, rich experience.
+              </p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Refreshing</span>
+                <span class="menu-tag">Bold</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-1" data-category="coffee">
+            <div class="menu-card-icon">🥛</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Caramel Macchiato</span>
+                <span class="menu-card-price">$5.75</span>
+              </div>
+              <p class="menu-card-desc">Espresso layered with steamed milk, vanilla, and housemade caramel drizzle.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Sweet</span>
+                <span class="menu-tag">Best Seller</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pastry Items -->
+          <div class="glass-card menu-card reveal reveal-delay-2" data-category="pastries">
+            <div class="menu-card-icon">🥐</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Butter Croissant</span>
+                <span class="menu-card-price">$4.25</span>
+              </div>
+              <p class="menu-card-desc">Flaky, golden layers of French-style puff pastry with premium European butter.
+              </p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Fresh Daily</span>
+                <span class="menu-tag">Classic</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-3" data-category="pastries">
+            <div class="menu-card-icon">🍰</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Tiramisu Slice</span>
+                <span class="menu-card-price">$6.50</span>
+              </div>
+              <p class="menu-card-desc">Layers of espresso-soaked ladyfingers and mascarpone cream dusted with cocoa.
+              </p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Signature</span>
+                <span class="menu-tag">Rich</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-1" data-category="pastries">
+            <div class="menu-card-icon">🍪</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Sea Salt Cookie</span>
+                <span class="menu-card-price">$3.50</span>
+              </div>
+              <p class="menu-card-desc">Dark chocolate chunk cookie with Maldon sea salt and brown butter notes.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Homemade</span>
+                <span class="menu-tag">Sweet &amp; Salty</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Specials -->
+          <div class="glass-card menu-card reveal reveal-delay-2" data-category="specials">
+            <div class="menu-card-icon">✨</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Lavender Honey Latte</span>
+                <span class="menu-card-price">$6.75</span>
+              </div>
+              <p class="menu-card-desc">Espresso with lavender-infused milk and local wildflower honey. A seasonal
+                favorite.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Seasonal</span>
+                <span class="menu-tag">Limited</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card menu-card reveal reveal-delay-3" data-category="specials">
+            <div class="menu-card-icon">🍊</div>
+            <div class="menu-card-info">
+              <div class="menu-card-header">
+                <span class="menu-card-name">Orange Espresso Tonic</span>
+                <span class="menu-card-price">$5.50</span>
+              </div>
+              <p class="menu-card-desc">Double shot over tonic water with fresh orange peel. Effervescent and bold.</p>
+              <div class="menu-card-tags">
+                <span class="menu-tag">Unique</span>
+                <span class="menu-tag">Refreshing</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== GALLERY SECTION ========== -->
+    <section class="gallery-section section-padding" id="gallery">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Our Space</h2>
+          <p>Take a peek inside our cozy haven where good vibes and great coffee meet.</p>
+        </div>
+
+        <div class="gallery-grid reveal reveal-delay-1">
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?w=600&amp;h=400&amp;fit=crop"
+              alt="The Main Hall" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay">
+              <span class="gallery-overlay-text">The Main Hall</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1534778101976-62847782c213?w=600&amp;h=400&amp;fit=crop"
+              alt="Latte Art" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay">
+              <span class="gallery-overlay-text">Latte Art</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1558326567-98ae2405596b?w=600&amp;h=400&amp;fit=crop"
+              alt="Fresh Pastries" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay">
+              <span class="gallery-overlay-text">Fresh Pastries</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=600&amp;h=400&amp;fit=crop"
+              alt="Cozy Corner" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay">
+              <span class="gallery-overlay-text">Cozy Corner</span>
+            </div>
+          </div>
+          <div class="gallery-item">
+            <img src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?w=600&amp;h=400&amp;fit=crop"
+              alt="Bean Selection" style="width:100%;height:100%;object-fit:cover;">
+            <div class="gallery-overlay">
+              <span class="gallery-overlay-text">Bean Selection</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== TESTIMONIALS SECTION ========== -->
+    <section class="testimonials-section section-padding" id="testimonials">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>What People Say</h2>
+          <p>Don't just take our word for it — hear from our beloved regulars.</p>
+        </div>
+
+        <div class="testimonials-grid">
+          <div class="glass-card testimonial-card reveal reveal-delay-1">
+            <div class="testimonial-stars">
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+            </div>
+            <p class="testimonial-text">
+              This place has completely changed my morning routine. The Ethiopian pour-over
+              is otherworldly, and the atmosphere makes me want to stay all day. Truly a gem
+              in the neighborhood.
+            </p>
+            <div class="testimonial-author">
+              <div
+                style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#a1887f,#8d6e63);flex-shrink:0;">
+              </div>
+              <div>
+                <div class="testimonial-author-name">Sarah Mitchell</div>
+                <div class="testimonial-author-role">Freelance Writer</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card testimonial-card reveal reveal-delay-2">
+            <div class="testimonial-stars">
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+            </div>
+            <p class="testimonial-text">
+              As someone who's visited cafés all over Europe, I can confidently say Brewed
+              Awakening holds its own. The attention to detail in every cup and pastry is remarkable.
+              My go-to spot for weekend brunch.
+            </p>
+            <div class="testimonial-author">
+              <div
+                style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#6d4c41,#5d4037);flex-shrink:0;">
+              </div>
+              <div>
+                <div class="testimonial-author-name">James Rodriguez</div>
+                <div class="testimonial-author-role">Food Critic</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="glass-card testimonial-card reveal reveal-delay-3">
+            <div class="testimonial-stars">
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+              <span class="star-icon">★</span>
+            </div>
+            <p class="testimonial-text">
+              The matcha latte here is the best I've ever had — perfectly balanced and silky smooth.
+              The staff remembers my name and order, which makes every visit feel special.
+              Can't recommend enough!
+            </p>
+            <div class="testimonial-author">
+              <div
+                style="width:50px;height:50px;border-radius:50%;background:linear-gradient(135deg,#bcaaa4,#d7ccc8);flex-shrink:0;">
+              </div>
+              <div>
+                <div class="testimonial-author-name">Emily Chen</div>
+                <div class="testimonial-author-role">UX Designer</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONTACT SECTION ========== -->
+    <section class="contact-section section-padding" id="contact">
+      <div class="container">
+        <div class="section-header reveal">
+          <h2>Get in Touch</h2>
+          <p>Have a question, want to book a table, or just say hello? We'd love to hear from you.</p>
+        </div>
+
+        <div class="contact-grid">
+          <!-- Contact Form -->
+          <div class="glass-card contact-form-card reveal reveal-delay-1">
+            <h3>Send a Message</h3>
+            <p>Fill out the form below and we'll get back to you within 24 hours.</p>
+
+            <form id="contactForm" novalidate="">
               <div class="form-row">
                 <div class="form-group">
-                  <label class="form-label" for="contact-name">Name</label>
-                  <input class="form-input" type="text" id="contact-name" placeholder="Your name" required="">
+                  <label for="contactName">Full Name *</label>
+                  <input type="text" id="contactName" name="name" placeholder="John Doe" required="">
+                  <div class="form-error-msg" id="nameError">Please enter your name</div>
                 </div>
                 <div class="form-group">
-                  <label class="form-label" for="contact-email">Email</label>
-                  <input class="form-input" type="email" id="contact-email" placeholder="you@example.com" required="">
+                  <label for="contactEmail">Email Address *</label>
+                  <input type="email" id="contactEmail" name="email" placeholder="john@example.com" required="">
+                  <div class="form-error-msg" id="emailError">Please enter a valid email</div>
                 </div>
               </div>
+
               <div class="form-group">
-                <label class="form-label" for="contact-subject">Subject</label>
-                <input class="form-input" type="text" id="contact-subject" placeholder="What's this about?">
+                <label for="contactSubject">Subject</label>
+                <input type="text" id="contactSubject" name="subject"
+                  placeholder="Table reservation, catering inquiry...">
               </div>
+
               <div class="form-group">
-                <label class="form-label" for="contact-message">Message</label>
-                <textarea class="form-input form-textarea" id="contact-message" rows="5" placeholder="Tell us more..."
+                <label for="contactMessage">Message *</label>
+                <textarea id="contactMessage" name="message" placeholder="Tell us what's on your mind..." rows="5"
                   required=""></textarea>
+                <div class="form-error-msg" id="messageError">Please enter your message</div>
               </div>
-              <button type="submit" class="btn btn-primary btn-lg contact-submit">
-                <span class="contact-submit-text">Send Message</span>
-                <svg class="contact-submit-icon" width="18" height="18" viewBox="0 0 24 24" fill="none"
-                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <line x1="22" y1="2" x2="11" y2="13"></line>
-                  <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
+
+              <button type="submit" class="btn-primary" style="width:100%;justify-content:center;">
+                ✉️ Send Message
               </button>
-              <div id="contact-success" class="contact-success">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
-                  stroke-linecap="round" stroke-linejoin="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg>
-                <span>Message sent! We'll get back to you soon.</span>
+
+              <div class="form-success-msg" id="formSuccess">
+                ✅ Thank you! Your message has been sent successfully. We'll be in touch soon!
               </div>
             </form>
+          </div>
+
+          <!-- Contact Info -->
+          <div class="glass-card contact-info-card reveal reveal-delay-2">
+            <h3>Visit Us</h3>
+            <p>Come experience our café in person — we're always happy to welcome you.</p>
+
+            <div class="contact-info-list">
+              <div class="contact-info-item">
+                <div class="contact-info-icon">📍</div>
+                <div class="contact-info-text">
+                  <strong>Address</strong>
+                  <span>142 Maple Street, Brooklyn<br>New York, NY 11201</span>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">📞</div>
+                <div class="contact-info-text">
+                  <strong>Phone</strong>
+                  <span>+1 (555) 234-5678</span>
+                </div>
+              </div>
+
+              <div class="contact-info-item">
+                <div class="contact-info-icon">📧</div>
+                <div class="contact-info-text">
+                  <strong>Email</strong>
+                  <span>hello@brewedawakening.com</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-map">
+              <div class="contact-map-placeholder">
+                <span>🗺️</span>
+                <p>142 Maple St, Brooklyn NY</p>
+              </div>
+            </div>
+
+            <div class="contact-hours">
+              <h4>☕ Opening Hours</h4>
+              <div class="hours-row">
+                <span class="hours-day">Monday - Friday</span>
+                <span class="hours-time">7:00 AM – 8:00 PM</span>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Saturday</span>
+                <span class="hours-time">8:00 AM – 9:00 PM</span>
+              </div>
+              <div class="hours-row">
+                <span class="hours-day">Sunday</span>
+                <span class="hours-time">8:00 AM – 6:00 PM</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </section>
 
     <!-- ========== FOOTER ========== -->
-    <footer class="footer">
+    <footer class="footer" id="footer">
       <div class="container">
-        <div class="footer-inner">
+        <div class="footer-grid">
           <div class="footer-brand">
-            <img src="logo.png" alt="Mob Timer" width="24" height="24" style="border-radius: 6px; flex-shrink: 0">
-            <span class="footer-name">Mob Timer</span>
+            <h3>☕ Brewed Awakening</h3>
+            <p>
+              Crafting exceptional coffee experiences since 2019.
+              Every cup is a commitment to quality, sustainability,
+              and the simple joy of slowing down.
+            </p>
+            <div class="footer-social">
+              <a href="#" class="footer-social-link" aria-label="Instagram" title="Instagram">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z">
+                  </path>
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Facebook" title="Facebook">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z">
+                  </path>
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="Twitter" title="Twitter">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                  </path>
+                </svg>
+              </a>
+              <a href="#" class="footer-social-link" aria-label="TikTok" title="TikTok">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                  <path
+                    d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z">
+                  </path>
+                </svg>
+              </a>
+            </div>
           </div>
-          <p class="footer-copy">
-            © 2026 Mob Timer. Built with ♥ for focused teams.
-          </p>
-          <div class="footer-links">
-            <a href="#">Privacy</a>
-            <a href="#">GitHub</a>
-            <a href="#">Support</a>
+
+          <div class="footer-column">
+            <h4>Quick Links</h4>
+            <ul>
+              <li><a href="#about">Our Story</a></li>
+              <li><a href="#menu">Menu</a></li>
+              <li><a href="#gallery">Gallery</a></li>
+              <li><a href="#testimonials">Reviews</a></li>
+              <li><a href="#contact">Contact</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Menu</h4>
+            <ul>
+              <li><a href="#menu">Coffee</a></li>
+              <li><a href="#menu">Pastries</a></li>
+              <li><a href="#menu">Seasonal Specials</a></li>
+              <li><a href="#menu">Cold Beverages</a></li>
+              <li><a href="#menu">Catering</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-column">
+            <h4>Support</h4>
+            <ul>
+              <li><a href="#">FAQ</a></li>
+              <li><a href="#">Gift Cards</a></li>
+              <li><a href="#">Loyalty Program</a></li>
+              <li><a href="#">Careers</a></li>
+              <li><a href="#">Press</a></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>© 2024 Brewed Awakening. All rights reserved.</p>
+          <div class="footer-bottom-links">
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+            <a href="#">Cookies</a>
           </div>
         </div>
       </div>
     </footer>
 
-    <!-- Password modal -->
-    <div id="download-modal" class="dl-modal-overlay">
-      <div class="dl-modal-box">
-        <h3 class="dl-modal-title">Enter password to download</h3>
-        <input id="dl-password" class="dl-modal-input" type="password" placeholder="Password" autocomplete="off">
-        <p id="dl-error" class="dl-modal-error">Incorrect password</p>
-        <div class="dl-modal-actions">
-          <button id="dl-cancel" class="dl-btn-cancel">Cancel</button>
-          <button id="dl-confirm" class="dl-btn-confirm">Download</button>
-        </div>
-      </div>
-    </div>
+    <!-- ========== JAVASCRIPT ========== -->
+    <script>
+      /* ============================================
+       THEME TOGGLE (DARK/LIGHT MODE)
+       ============================================ */
+      (function initTheme() {
+        const html = document.documentElement;
+        const themeToggle = document.getElementById('themeToggle');
+        const themeIcon = document.getElementById('themeIcon');
 
-    <script src="main.js"></script>
+        // Load saved theme preference or default to light
+        const savedTheme = localStorage.getItem('cafe-theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme);
 
+        themeToggle.addEventListener('click', () => {
+          const current = html.getAttribute('data-theme');
+          const next = current === 'light' ? 'dark' : 'light';
 
+          html.setAttribute('data-theme', next);
+          localStorage.setItem('cafe-theme', next);
+          updateThemeIcon(next);
+        });
+
+        function updateThemeIcon(theme) {
+          themeIcon.textContent = theme === 'light' ? '🌙' : '☀️';
+          themeIcon.style.transition = 'transform 0.3s ease';
+          themeIcon.style.transform = 'rotate(360deg)';
+          setTimeout(() => {
+            themeIcon.style.transform = 'rotate(0deg)';
+          }, 300);
+        }
+      })();
+
+      /* ============================================
+         STICKY NAVBAR SCROLL EFFECT
+         ============================================ */
+      (function initNavbar() {
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+          if (window.scrollY > 50) {
+            navbar.classList.add('scrolled');
+          } else {
+            navbar.classList.remove('scrolled');
+          }
+        });
+      })();
+
+      /* ============================================
+         MOBILE NAVIGATION MENU
+         ============================================ */
+      (function initMobileMenu() {
+        const mobileBtn = document.getElementById('mobileMenuBtn');
+        const mobileOverlay = document.getElementById('mobileNavOverlay');
+        const mobileLinks = mobileOverlay.querySelectorAll('.mobile-nav-link');
+
+        mobileBtn.addEventListener('click', () => {
+          const isActive = mobileBtn.classList.toggle('active');
+          mobileOverlay.classList.toggle('active');
+          mobileBtn.setAttribute('aria-expanded', isActive);
+          document.body.style.overflow = isActive ? 'hidden' : '';
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileLinks.forEach(link => {
+          link.addEventListener('click', () => {
+            mobileBtn.classList.remove('active');
+            mobileOverlay.classList.remove('active');
+            mobileBtn.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+          });
+        });
+      })();
+
+      /* ============================================
+         SMOOTH SCROLLING FOR NAV LINKS
+         ============================================ */
+      (function initSmoothScroll() {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+          anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            const targetId = this.getAttribute('href');
+            const targetEl = document.querySelector(targetId);
+
+            if (targetEl) {
+              const navHeight = document.getElementById('navbar').offsetHeight;
+              const targetPosition = targetEl.getBoundingClientRect().top + window.scrollY - navHeight;
+
+              window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+              });
+            }
+          });
+        });
+      })();
+
+      /* ============================================
+         SCROLL REVEAL ANIMATION
+         ============================================ */
+      (function initScrollReveal() {
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('revealed');
+              observer.unobserve(entry.target); // Only animate once
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        revealElements.forEach(el => observer.observe(el));
+      })();
+
+      /* ============================================
+         MENU CATEGORY FILTER
+         ============================================ */
+      (function initMenuFilter() {
+        const categoryBtns = document.querySelectorAll('.menu-category-btn');
+        const menuCards = document.querySelectorAll('.menu-card');
+
+        categoryBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            // Update active button
+            categoryBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            const category = btn.dataset.category;
+
+            // Filter cards with animation
+            menuCards.forEach(card => {
+              const cardCategory = card.dataset.category;
+
+              if (category === 'all' || cardCategory === category) {
+                card.style.display = '';
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+
+                requestAnimationFrame(() => {
+                  card.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                  card.style.opacity = '1';
+                  card.style.transform = 'translateY(0)';
+                });
+              } else {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                  card.style.display = 'none';
+                }, 400);
+              }
+            });
+          });
+        });
+      })();
+
+      /* ============================================
+         CONTACT FORM VALIDATION
+         ============================================ */
+      (function initFormValidation() {
+        const form = document.getElementById('contactForm');
+        const nameInput = document.getElementById('contactName');
+        const emailInput = document.getElementById('contactEmail');
+        const messageInput = document.getElementById('contactMessage');
+        const nameError = document.getElementById('nameError');
+        const emailError = document.getElementById('emailError');
+        const messageError = document.getElementById('messageError');
+        const successMsg = document.getElementById('formSuccess');
+
+        // Email regex pattern
+        const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Real-time validation on blur
+        nameInput.addEventListener('blur', () => validateField(nameInput, nameError, val => val.trim().length >= 2));
+        emailInput.addEventListener('blur', () => validateField(emailInput, emailError, val => emailPattern.test(
+          val)));
+        messageInput.addEventListener('blur', () => validateField(messageInput, messageError, val => val.trim()
+          .length >= 10));
+
+        // Clear error on input
+        nameInput.addEventListener('input', () => clearError(nameInput, nameError));
+        emailInput.addEventListener('input', () => clearError(emailInput, emailError));
+        messageInput.addEventListener('input', () => clearError(messageInput, messageError));
+
+        function validateField(input, errorEl, testFn) {
+          const isValid = testFn(input.value);
+          if (!isValid) {
+            input.classList.add('error');
+            errorEl.classList.add('visible');
+          } else {
+            input.classList.remove('error');
+            errorEl.classList.remove('visible');
+          }
+          return isValid;
+        }
+
+        function clearError(input, errorEl) {
+          input.classList.remove('error');
+          errorEl.classList.remove('visible');
+        }
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+
+          // Validate all fields
+          const isNameValid = validateField(nameInput, nameError, val => val.trim().length >= 2);
+          const isEmailValid = validateField(emailInput, emailError, val => emailPattern.test(val));
+          const isMessageValid = validateField(messageInput, messageError, val => val.trim().length >= 10);
+
+          if (isNameValid && isEmailValid && isMessageValid) {
+            // Show success message
+            successMsg.classList.add('visible');
+
+            // Reset form
+            form.reset();
+
+            // Hide success message after 5 seconds
+            setTimeout(() => {
+              successMsg.classList.remove('visible');
+            }, 5000);
+          }
+        });
+      })();
+
+      /* ============================================
+         PARALLAX BACKGROUND EFFECT
+         ============================================ */
+      (function initParallax() {
+        const blobs = document.querySelectorAll('.bg-blob');
+
+        window.addEventListener('scroll', () => {
+          const scrollY = window.scrollY;
+          blobs.forEach((blob, i) => {
+            const speed = 0.02 + (i * 0.015);
+            blob.style.transform = `translateY(${scrollY * speed}px)`;
+          });
+        });
+      })();
+
+      /* ============================================
+         ACTIVE NAV LINK HIGHLIGHTING
+         ============================================ */
+      (function initActiveNav() {
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-links a');
+
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              const id = entry.target.getAttribute('id');
+              navLinks.forEach(link => {
+                link.style.color = '';
+                if (link.getAttribute('href') === `#${id}`) {
+                  link.style.color = 'var(--accent)';
+                }
+              });
+            }
+          });
+        }, {
+          threshold: 0.3,
+          rootMargin: '-80px 0px -50% 0px'
+        });
+
+        sections.forEach(section => observer.observe(section));
+      })();
+    </script>
 
   </body>
 </html>
